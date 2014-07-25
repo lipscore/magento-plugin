@@ -12,8 +12,7 @@
     <modules>
         <Lipscore_RatingsReviews>
             <active>true</active>
-            <codePool>local</codePool>
+            <codePool>community</codePool>
         </Lipscore_RatingsReviews>
     </modules>
 </config>
-  
