@@ -1,0 +1,16 @@
+<?php $productsData = $this->getProductsData() ?>
+
+<?php if ($productsData) { ?>
+    <?php foreach ($productsData as $data) { ?>
+        <div class="lipscore-purchase"
+             ls-email="<?php echo $this->getCustomerEmail() ?>"
+             ls-product-name="<?php echo $data['name'] ?>" 
+             ls-brand="<?php echo $data['brand'] ?>" 
+             ls-id-type="<?php echo $data['idType'] ?>" 
+             ls-id="<?php echo $data['id'] ?>"
+             ls-product-url="<?php echo $data['url'] ?>"
+             ls-voucher-code="<?php echo $this->getCouponCode() ?>"
+             ls-voucher-descr="<?php echo $this->getCouponDescription() ?>">
+        </div>
+    <?php } ?>
+<?php } ?>

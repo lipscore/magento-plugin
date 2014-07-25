@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<layout>
+    <catalog_product_view>
+        <update handle="lipscore_common_head" />
+            
+        <reference name="head">
+            <action method="addItem"><type>skin_css</type><file>css/lipscore.css</file></action>
+        </reference>
+        
+        <reference name="product.info">
+            <block type="core/template" name="lipscore.reviews" template="lipscore/reviews/view.phtml">
+                <action method="addToParentGroup"><group>detailed_info</group></action>
+                <action method="setTitle" translate="value"><value>Reviews</value></action>
+            </block>
+        </reference>
+    </catalog_product_view>
+    
+    <checkout_onepage_success>
+        <update handle="lipscore_common_head" />
+        <reference name="before_body_end">
+            <block type="lipscore_ratingsreviews/purchase_onepage" name="purchase.onepage" template="lipscore/purchase/view.phtml" />
+        </reference>        
+    </checkout_onepage_success>
+    
+    <checkout_multishipping_success>
+        <update handle="lipscore_common_head" />
+        <reference name="before_body_end">
+            <block type="lipscore_ratingsreviews/purchase_multishipping" name="purchase.multishipping" template="lipscore/purchase/view.phtml" />
+        </reference>        
+    </checkout_multishipping_success>
+    
+    <lipscore_common_head>
+        <reference name="head">
+            <block type="core/text" name="lipscore.assets.js">
+                <action method="setText">
+                    <text>
+                        <![CDATA[<script src="//assets.lipscore.dev:3000/assets/lipscore-v1.js"></script>]]>
+                    </text>
+                </action>
+            </block>
+            <block type="core/text" name="lipscore.assets.css">
+                <action method="setText">
+                    <text>
+                        <![CDATA[<link href="//assets.lipscore.dev:3000/assets/lipscore-v1.css" rel="stylesheet" type="text/css">]]>
+                    </text>
+                </action>
+            </block>
+            <block type="core/template" name="lipscore.js.init" template="lipscore/js/init.phtml" />
+        </reference>
+    </lipscore_common_head>
+</layout>

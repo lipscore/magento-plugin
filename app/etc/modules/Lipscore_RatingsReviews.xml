@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+/**
+* Module initial config
+*
+* @author @oivanova
+*/
+-->
+
+<config>
+    <modules>
+        <Lipscore_RatingsReviews>
+            <active>true</active>
+            <codePool>local</codePool>
+        </Lipscore_RatingsReviews>
+    </modules>
+</config>
+  

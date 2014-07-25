@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+/**
+* Module configuration
+*
+* @author oivanova
+*/
+-->
+
+<config>
+    <modules>
+        <Lipscore_RatingsReviews>
+            <version>1.0.0.0.1</version>
+        </Lipscore_RatingsReviews>
+    </modules>
+    
+    <global>
+        <blocks>
+            <lipscore_ratingsreviews>
+                <class>Lipscore_RatingsReviews_Block</class>
+            </lipscore_ratingsreviews>
+            <catalog>
+                <rewrite>
+                    <product_view>Lipscore_RatingsReviews_Block_Catalog_Product_View</product_view>
+                </rewrite>
+            </catalog>
+        </blocks>
+        
+        <models>
+            <lipscore_ratingsreviews>
+                <class>Lipscore_RatingsReviews_Model</class>
+            </lipscore_ratingsreviews>
+        </models>
+        
+        <helpers>
+            <lipscore_ratingsreviews>
+                <class>Lipscore_RatingsReviews_Helper</class>
+            </lipscore_ratingsreviews>
+        </helpers>
+        
+        <events>
+            <controller_action_layout_load_before>
+                <observers>
+                    <lipscore_ratingsreviews>
+                        <class>lipscore_ratingsreviews/observer</class>
+                        <method>disableMageReviewModule</method>
+                    </lipscore_ratingsreviews>
+                </observers>
+            </controller_action_layout_load_before>
+        </events>
+    </global>
+    
+    <frontend>
+        <layout>
+            <updates>
+                <lipscore_ratingsreviews>
+                    <file>lipscore_ratingsreviews.xml</file>
+                </lipscore_ratingsreviews>
+            </updates>
+        </layout>
+        
+        <routers>
+            <lipscore_ratingsreviews>
+                <use>standard</use>
+                <args>
+                    <module>Lipscore_RatingsReviews</module>
+                    <frontName>lipscore</frontName>
+                </args>
+            </lipscore_ratingsreviews>
+        </routers>                
+    </frontend>
+    
+    <default>
+        <lipscore_general>
+            <product_identifier>
+                <type>sku</type>
+                <attr>sku</attr>
+                <brand>brand</brand>
+            </product_identifier>
+            <product_brand>
+                <attr>brand</attr>
+            </product_brand>            
+        </lipscore_general>
+        <lipscore_coupons>
+            <coupons>
+                <length>12</length>
+            </coupons>
+        </lipscore_coupons>
+    </default>
+</config>

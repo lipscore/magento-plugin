@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<config>
+    <acl>
+        <resources>
+            <admin>
+                <children>
+                    <system>
+                        <children>
+                            <config>
+                                <children>
+                                    <lipscore_general translate="title">
+                                        <title>General</title>
+                                    </lipscore_general>
+                                    <lipscore_coupons translate="title">
+                                        <title>Coupons</title>
+                                    </lipscore_coupons>
+                                </children>
+                            </config>
+                        </children>
+                    </system>
+                </children>
+            </admin>
+        </resources>
+    </acl>
+</config>
