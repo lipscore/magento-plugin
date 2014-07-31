@@ -4,9 +4,7 @@ class Lipscore_RatingsReviews_Model_System_Config_Source_ProductAttr_Identifier
 {
     public function toOptionArray()
     {
-        $attrs = array(
-            array('value' =>'', 'label' => Mage::helper('adminhtml')->__('--Please Select--'))
-        );
+        $attrs = array();
         $collection = Mage::getResourceModel('catalog/product_attribute_collection')
             ->setFrontendInputTypeFilter('text')
             ->addVisibleFilter();

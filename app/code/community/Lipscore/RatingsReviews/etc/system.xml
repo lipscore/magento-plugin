@@ -19,7 +19,7 @@
             
             <groups>
                 <api_key translate="label">
-                    <label>Api key</label>
+                    <label>Api Key</label>
                     <frontend_type>text</frontend_type>
                     <sort_order>100</sort_order>
                     <show_in_default>1</show_in_default>
@@ -29,8 +29,7 @@
                     
                     <fields>
                         <api_key translate="label comment">
-                            <label>Api key</label>
-                            <comment>Api key</comment>
+                            <label>Api Key</label>
                             <frontend_type>text</frontend_type>
                             <validate>required-entry</validate>
                             <sort_order>10</sort_order>
@@ -42,17 +41,17 @@
 		        </api_key>
 		        
                 <product_identifier translate="label">
-                    <label>Product identifier</label>
+                    <label>Product Identifier</label>
                     <frontend_type>text</frontend_type>
                     <sort_order>200</sort_order>
                     <show_in_default>1</show_in_default>
                     <show_in_website>1</show_in_website>
                     <show_in_store>1</show_in_store>
+                    <expanded>1</expanded>
                     
                     <fields>
                         <type translate="label comment">
-                            <label>Identifier type</label>
-                            <comment>Identifier type</comment>
+                            <label>Identifier Type</label>
                             <frontend_type>select</frontend_type>
                             <validate>required-entry</validate>
                             <source_model>
@@ -64,8 +63,7 @@
                             <show_in_store>1</show_in_store>
                         </type>
                         <attr translate="label comment">
-                            <label>Identifier attribute</label>
-                            <comment>Product's identifier attribute</comment>
+                            <label>Identifier Attribute</label>
                             <frontend_type>select</frontend_type>
                             <validate>required-entry</validate>
                             <source_model>
@@ -80,16 +78,17 @@
                 </product_identifier>
                 
                 <product_brand translate="label">
-                    <label>Product brand</label>
+                    <label>Product Brand</label>
                     <frontend_type>text</frontend_type>
                     <sort_order>300</sort_order>
                     <show_in_default>1</show_in_default>
                     <show_in_website>1</show_in_website>
                     <show_in_store>1</show_in_store>
+                    <expanded>1</expanded>
                     <fields>
                         <attr translate="label comment">
-                            <label>Brand attribute</label>
-                            <comment>Product's brand attribute</comment>
+                            <label>Brand Attribute</label>
+                            <comment>Optional, but strongly recommended to increase accuracy of product identification.</comment>
                             <frontend_type>select</frontend_type>
                             <source_model>
                                 lipscore_ratingsreviews/system_config_source_productattr_brand
@@ -125,8 +124,8 @@
                     
                     <fields>
                         <rule_id translate="label comment">
-                            <label>Price rule</label>
-                            <comment>Price rule</comment>
+                            <label>Price Rule</label>
+                            <comment>Price rule should use auto generation to generate multiple coupon codes.</comment>
                             <frontend_type>select</frontend_type>
                             <validate>required-entry</validate>
                             <source_model>
