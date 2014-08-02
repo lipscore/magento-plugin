@@ -1,1 +1,6 @@
 #lipscore-rating { margin: 10px 0; }
+.extra-info #lipscore-rating { margin-top: 0; margin-bottom: 15px; }
+
+.lipscore-review-form { display: inherit; }
+
+.lipscore-review-list-footer-logo { display: inherit; }

@@ -18,9 +18,9 @@ class Lipscore_RatingsReviews_Helper_Product extends Lipscore_RatingsReviews_Hel
 
         return array(
             'name'   => $product->getName(),
-            'brand'  => $brandAttr ? $this->_getAttributeValue($product, $brandAttr) : null,
+            'brand'  => $this->_getAttributeValue($product, $brandAttr),
             'idType' => $idType,
-            'id'     => $idAttr ? $this->_getAttributeValue($product, $idAttr) : null,
+            'id'     => $this->_getAttributeValue($product, $idAttr),
             'url'    => $product->getProductUrl()
         );
     }
@@ -28,6 +28,10 @@ class Lipscore_RatingsReviews_Helper_Product extends Lipscore_RatingsReviews_Hel
     protected function _getAttributeValue(Mage_Catalog_Model_Product $product, $attrCode)
     {
         $attr = $product->getResource()->getAttribute($attrCode);
+        
+        if (!$attr) {
+            return null;
+        }
         
         if ('select' == $attr->getFrontendInput()) {
             return $attr->getSource()->getOptionText($product->getData($attrCode));

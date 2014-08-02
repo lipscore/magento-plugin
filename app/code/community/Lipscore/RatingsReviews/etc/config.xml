@@ -48,6 +48,14 @@
                     </lipscore_ratingsreviews>
                 </observers>
             </controller_action_layout_load_before>
+            <adminhtml_init_system_config>
+                <observers>
+                    <lipscore_ratingsreviews>
+                        <class>lipscore_ratingsreviews/observer</class>
+                        <method>manageCouponsSection</method>
+                    </lipscore_ratingsreviews>
+                </observers>
+            </adminhtml_init_system_config>
         </events>
     </global>
     
