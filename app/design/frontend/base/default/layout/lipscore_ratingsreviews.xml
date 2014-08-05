@@ -35,14 +35,14 @@
             <block type="core/text" name="lipscore.assets.js">
                 <action method="setText">
                     <text>
-                        <![CDATA[<script src="//assets.staging.lipscore.com/assets/lipscore-v1.js"></script>]]>
+                        <![CDATA[<script src="//static.lipscore.com/assets/lipscore-v1.js"></script>]]>
                     </text>
                 </action>
             </block>
             <block type="core/text" name="lipscore.assets.css">
                 <action method="setText">
                     <text>
-                        <![CDATA[<link href="//assets.staging.lipscore.com/assets/lipscore-v1.css" rel="stylesheet" type="text/css">]]>
+                        <![CDATA[<link href="//static.lipscore.com/assets/lipscore-v1.css" rel="stylesheet" type="text/css">]]>
                     </text>
                 </action>
             </block>
