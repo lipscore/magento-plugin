@@ -6,6 +6,7 @@ class Lipscore_RatingsReviews_Model_System_Config_Source_ProductAttr_Identifier
     {
         $attrs = array();
         $collection = Mage::getResourceModel('catalog/product_attribute_collection')
+            ->addStoreLabel(Mage::app()->getStore()->getId())
             ->setFrontendInputTypeFilter('text')
             ->addVisibleFilter();
         

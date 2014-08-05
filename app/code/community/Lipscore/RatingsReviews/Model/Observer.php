@@ -17,14 +17,4 @@ class Lipscore_RatingsReviews_Model_Observer
         }
         Mage::app()->getCache()->clean();
     }
-
-    public function manageCouponsSection(Varien_Event_Observer $observer)
-    {
-        $config = $observer->getConfig();
-        
-        if (!defined('Mage_SalesRule_Model_Rule::COUPON_TYPE_AUTO')) {
-            // magento doesn't support auto generation
-            $config->setNode('sections/lipscore_coupons', null);
-        }
-    }
 }

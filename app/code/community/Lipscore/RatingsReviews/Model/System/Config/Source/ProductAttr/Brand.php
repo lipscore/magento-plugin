@@ -9,7 +9,8 @@ class Lipscore_RatingsReviews_Model_System_Config_Source_ProductAttr_Brand
         );
 
         $collection = Mage::getResourceModel('catalog/product_attribute_collection')
-            ->setFrontendInputTypeFilter(array('text', 'select'))
+            ->addStoreLabel(Mage::app()->getStore()->getId())
+            ->addFieldToFilter('frontend_input', array('in' => array('text', 'select')))
             ->addVisibleFilter();
         
         if ($collection->getSize() > 0) {

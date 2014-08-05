@@ -3,14 +3,16 @@
 class Lipscore_RatingsReviews_Helper_Coupon extends Lipscore_RatingsReviews_Helper_Abstract
 {
     protected $_rule;
+    protected $_ruleModel;
     
     public function __construct()
     {
         parent::__construct();
         
+        $this->_ruleModel = Mage::getModel('salesrule/rule');
         $ruleId = $this->_lipscoreConfig->get('rule_id', 'coupon');
         if ($ruleId) {
-            $this->_rule = Mage::getModel('salesrule/rule')->load($ruleId);
+            $this->_rule = $this->_ruleModel->load($ruleId);
         }
     }
     
@@ -39,5 +41,10 @@ class Lipscore_RatingsReviews_Helper_Coupon extends Lipscore_RatingsReviews_Help
     public function getCouponDescription()
     {
         return $this->_rule ? $this->_rule->getDescription() : '';
+    }
+    
+    public function isAutoGenerationSupported()
+    {
+        return method_exists($this->_ruleModel, 'getCouponMassGenerator');
     }
 }

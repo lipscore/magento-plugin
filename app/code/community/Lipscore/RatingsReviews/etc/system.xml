@@ -107,6 +107,7 @@
             <label>Coupons</label>
             <tab>lipscore</tab>
             <frontend_type>text</frontend_type>
+            <frontend_model>lipscore_ratingsreviews/system_config_form_coupons</frontend_model>
             <sort_order>200</sort_order>
             <show_in_default>1</show_in_default>
             <show_in_website>1</show_in_website>
@@ -125,9 +126,8 @@
                     <fields>
                         <rule_id translate="label comment">
                             <label>Price Rule</label>
-                            <comment>Price rule should use auto generation to generate multiple coupon codes.</comment>
+                            <comment>Price rule have to use auto generation to generate multiple coupon codes.</comment>
                             <frontend_type>select</frontend_type>
-                            <validate>required-entry</validate>
                             <source_model>
                                 lipscore_ratingsreviews/system_config_source_pricerule
                             </source_model>
@@ -140,7 +140,7 @@
                             <label>Code Length</label>
                             <comment>Excluding prefix, suffix and separators.</comment>
                             <frontend_type>text</frontend_type>
-                            <validate>validate-digits validate-greater-than-zero required-entry</validate>
+                            <validate>validate-digits validate-greater-than-zero</validate>
                             <sort_order>20</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
@@ -173,7 +173,7 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </suffix>
-                        <suffix translate="label comment">
+                        <dash translate="label comment">
                             <label>Dash Every X Characters</label>
                             <comment>If empty no separation.</comment>
                             <frontend_type>text</frontend_type>
@@ -182,9 +182,19 @@
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
-                        </suffix>
+                        </dash>
                     </fields>
                 </coupons>
+                <coupons_warning translate="label">
+                    <label>Coupons</label>
+                    <frontend_model>lipscore_ratingsreviews/system_config_form_fieldset_coupons</frontend_model>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>100</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <expanded>1</expanded>
+                </coupons_warning>                
             </groups>
         </lipscore_coupons>
     </sections>    

@@ -25,7 +25,7 @@ class Lipscore_RatingsReviews_Block_Purchase_Multishipping extends Lipscore_Rati
         foreach ($this->_orders as $order) {
             $orderItems = $order->getAllVisibleItems();
             foreach ($orderItems as $item) {
-                $product = $item->getProduct();
+                $product = Mage::getModel('catalog/product')->load($item->getProductId());
                 $productsData[$product->getid()] = $productHelper->getProductData($product);
             }
         }
