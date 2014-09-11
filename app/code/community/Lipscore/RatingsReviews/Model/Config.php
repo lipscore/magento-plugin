@@ -6,7 +6,8 @@ class Lipscore_RatingsReviews_Model_Config
         'coupon'     => 'lipscore_coupons/coupons/',
         'identifier' => 'lipscore_general/product_identifier/',
         'brand'      => 'lipscore_general/product_brand/',
-        'apiKey'     => 'lipscore_general/api_key/'
+        'apiKey'     => 'lipscore_general/api_key/',
+        'locale'     => 'lipscore_general/locale/',
     );
     
     public function get($param, $type)

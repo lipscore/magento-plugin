@@ -32,21 +32,7 @@
     
     <lipscore_common_head>
         <reference name="head">
-            <block type="core/text" name="lipscore.assets.js">
-                <action method="setText">
-                    <text>
-                        <![CDATA[<script src="//static.lipscore.com/assets/lipscore-v1.js"></script>]]>
-                    </text>
-                </action>
-            </block>
-            <block type="core/text" name="lipscore.assets.css">
-                <action method="setText">
-                    <text>
-                        <![CDATA[<link href="//static.lipscore.com/assets/lipscore-v1.css" rel="stylesheet" type="text/css">]]>
-                    </text>
-                </action>
-            </block>
-            <block type="core/template" name="lipscore.js.init" template="lipscore/js/init.phtml" />
+            <block type="lipscore_ratingsreviews/init" name="lipscore.init" template="lipscore/init.phtml" />
         </reference>
     </lipscore_common_head>
 </layout>

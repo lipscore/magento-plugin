@@ -1,0 +1,22 @@
+<?php
+/**
+ * JS block for lipscore initialization
+ *
+ * @see Mage_Core_Block_Template
+ */
+?>
+
+<script src="//static.lipscore.com/assets/<?php echo $this->getLipscoreLocale() ?>lipscore-v1.js"></script>
+<link href="//static.lipscore.com/assets/lipscore-v1.css" rel="stylesheet" type="text/css">
+
+<?php if ($this->lipscoreApiKey) { ?>
+    <script type="text/javascript">
+    //<![CDATA[
+    window.lipscoreInit = function() {
+        lipscore.init({
+            apiKey: "<?php echo $this->lipscoreApiKey ?>"
+        });
+    };       
+    //]]>
+    </script>
+<?php } ?>
