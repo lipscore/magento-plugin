@@ -124,6 +124,17 @@
                         </locale>
                     </fields>
                 </locale>
+                
+                <dashboard_link translate="label">
+                    <label>Advanced settings</label>
+                    <frontend_model>lipscore_ratingsreviews/system_config_form_fieldset_dashboardlink</frontend_model>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>500</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <expanded>1</expanded>
+                </dashboard_link>                
             </groups>
         </lipscore_general>
         
