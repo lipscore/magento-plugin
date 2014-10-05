@@ -1,6 +1,6 @@
 <?php
 
-class Lipscore_RatingsReviews_Model_System_Config_Source_LOcale
+class Lipscore_RatingsReviews_Model_System_Config_Source_Locale
 {
     public function toOptionArray()
     {
