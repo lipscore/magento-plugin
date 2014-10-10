@@ -38,13 +38,8 @@ class Lipscore_RatingsReviews_Block_Purchase_Onepage extends Lipscore_RatingsRev
         }
 
         // email
-        if ($this->_order->getBillingAddress()->getEmail()) {
-            $email = $this->_order->getBillingAddress()->getEmail();
-        } else {
-            $email = $this->_order->getCustomerEmail();
-        }
-        
-        $this->setCustomerEmail($email);
+        $purchaseHelper = $this->helper('lipscore_ratingsreviews/purchase');
+        $this->setCustomerEmail($purchaseHelper->getEmail($this->_order));
 
         // coupon
         $this->_prepareCouponInfo();

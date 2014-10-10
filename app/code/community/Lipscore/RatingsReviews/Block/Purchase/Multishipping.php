@@ -35,10 +35,8 @@ class Lipscore_RatingsReviews_Block_Purchase_Multishipping extends Lipscore_Rati
     
     protected function _preparePurchaseInfo()
     {
-        $customer = Mage::getSingleton('customer/session')->getCustomer();
-        if ($customer) {
-            $this->setCustomerEmail($customer->getEmail());
-        }
+        $purchaseHelper = $this->helper('lipscore_ratingsreviews/purchase');
+        $this->setCustomerEmail($purchaseHelper->getEmail());
         
         // coupon
         $this->_prepareCouponInfo();

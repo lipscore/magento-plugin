@@ -11,11 +11,21 @@
 <config>
     <modules>
         <Lipscore_RatingsReviews>
-            <version>1.0.0.0</version>
+            <version>1.1.0.0</version>
         </Lipscore_RatingsReviews>
     </modules>
     
     <global>
+        <cache>
+            <types>
+                <config_api translate="label,description" module="lipscore_ratingsreviews">
+                    <label>Lipscore Extension Configuration</label>
+                    <description>Environment configuration files.</description>
+                    <tags>CONFIG_LIPSCORE_ENV</tags>
+                </config_api>
+            </types>
+        </cache>
+    
         <blocks>
             <lipscore_ratingsreviews>
                 <class>Lipscore_RatingsReviews_Block</class>
@@ -51,6 +61,19 @@
         </events>
     </global>
     
+	<admin>
+	     <routers>
+            <adminhtml>
+                <args>
+                    <modules>
+                        <lipscore_ratingsreviews after="Mage_Adminhtml">Lipscore_RatingsReviews</lipscore_ratingsreviews>
+                    </modules>
+                    <frontName>lipscore</frontName>
+                </args>
+            </adminhtml>
+	     </routers>
+	</admin>    
+    
     <frontend>
         <layout>
             <updates>
@@ -60,6 +83,16 @@
             </updates>
         </layout>
     </frontend>
+
+    <adminhtml>
+        <layout>
+            <updates>
+                <lipscore_ratingsreviews>
+                    <file>lipscore_ratingsreviews.xml</file>
+                </lipscore_ratingsreviews>
+            </updates>
+        </layout>
+    </adminhtml>
     
     <default>
         <lipscore_general>

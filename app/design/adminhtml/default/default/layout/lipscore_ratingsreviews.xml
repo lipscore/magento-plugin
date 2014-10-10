@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<layout>
+    <adminhtml_system_config_edit>
+        <reference name="head">
+            <action method="addItem"><type>skin_css</type><file>lipscore.css</file></action>
+            <action method="addItem"><type>skin_js</type><file>js/lipscore.js</file></action>
+        </reference>
+    </adminhtml_system_config_edit>
+</layout>

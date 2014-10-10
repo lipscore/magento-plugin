@@ -12,9 +12,9 @@ class Lipscore_RatingsReviews_Helper_Product extends Lipscore_RatingsReviews_Hel
     {
         $product or $product = Mage::registry('product');
         
-        $idType    = $this->_lipscoreConfig->get('type', 'identifier');
-        $idAttr    = $this->_lipscoreConfig->get('attr', 'identifier');
-        $brandAttr = $this->_lipscoreConfig->get('attr', 'brand');
+        $idType    = $this->_lipscoreConfig->identifierType();
+        $idAttr    = $this->_lipscoreConfig->identifierAttr();
+        $brandAttr = $this->_lipscoreConfig->brandAttr();
 
         return array(
             'name'   => $product->getName(),

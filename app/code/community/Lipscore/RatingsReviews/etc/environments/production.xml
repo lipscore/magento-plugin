@@ -1,0 +1,4 @@
+<config>
+    <lipscore_api_url>api.lipscore.com</lipscore_api_url>
+    <lipscore_assets_url>static.lipscore.com/assets</lipscore_assets_url>
+</config>
