@@ -6,7 +6,7 @@ class Lipscore_RatingsReviews_Block_System_Config_Form_Field_Reminderperiod
     
     public function render(Varien_Data_Form_Element_Abstract $element)
     {
-        return $this->getPeriodLabel() . $this->getPeriodSelect() . $this->getReminderButton(); 
+        return $this->getNote() . $this->getPeriodLabel() . $this->getPeriodSelect() . $this->getReminderButton(); 
     }
     
     public function getPeriodSelect()
@@ -40,5 +40,18 @@ class Lipscore_RatingsReviews_Block_System_Config_Form_Field_Reminderperiod
                 'onclick'   => "sendLipscoreReminder('$url', '$perioSelectId');",
             ));
         return $button->toHtml();             
+    }
+    
+    public function getNote()
+    {
+        $linkToDasboard = 'https://members.lipscore.com/';
+        $linkToCoupons  = $this->getUrl('*/*/*', array('section' => 'lipscore_coupons'));
+                  
+        $msg  = "You're able to send purchase reminders to customers from a selected period back.
+                 They will be delivered according to <a href='$linkToDasboard'>reminder delay setting</a>. 
+                 Note that reminders wouldn't be sent repeatedly.";
+        $coupons = "You can add coupons to purchase reminders. Set up coupons <a href='$linkToCoupons'>here</a>.";
+        
+        return "<p>$msg<br/>$coupons<p>";
     }
 }

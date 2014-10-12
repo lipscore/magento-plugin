@@ -85,7 +85,7 @@ class Lipscore_RatingsReviews_Model_Purchase_Reminder
         $result   = $response->isSuccessful();
                     
         self::_log($data, $result, $response->getRawBody());            
-        return $result ? count(json_decode($response->getBody())) : 0;
+        return $result ? count(json_decode($response->getRawBody())) : 0;
     }
     
     protected static function _log($data, $isSuccessful, $msg)
