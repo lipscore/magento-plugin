@@ -21,7 +21,7 @@ class Lipscore_RatingsReviews_Purchases_RemindersController extends Mage_Adminht
         
         $sentItems = Mage::getModel('lipscore_ratingsreviews/purchase_reminder')->send($orders);
         
-        $this->_response(true, "Reminders were created for $sentItems customers.");
+        $this->_response(true, "$sentItems purchase reminders were created.");
     }
     
     protected function _checkKey()
