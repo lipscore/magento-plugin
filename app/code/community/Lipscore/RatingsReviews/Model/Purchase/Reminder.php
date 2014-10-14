@@ -77,18 +77,19 @@ class Lipscore_RatingsReviews_Model_Purchase_Reminder
         $apiKey = Mage::getModel('lipscore_ratingsreviews/config')->apiKey();
         $apiUrl = Mage::getModel('lipscore_ratingsreviews/config_env')->apiUrl();
         
-        $client = new Varien_Http_Client('http://api.lip-stripe.ngrok.com/purchases?api_key=' . $apiKey);
+        $client = new Zend_Http_Client("http://$apiUrl/purchases?api_key=$apiKey");
         $client->setRawData(json_encode($data), 'application/json')
                ->setMethod(Zend_Http_Client::POST);
         
         $response = $client->request();
         $result   = $response->isSuccessful();
+        
+        self::_log($result, $response->getBody());
                     
-        self::_log($data, $result, $response->getRawBody());            
-        return $result ? count(json_decode($response->getRawBody())) : 0;
+        return $result ? count(json_decode($response->getBody())) : 0;
     }
     
-    protected static function _log($data, $isSuccessful, $msg)
+    protected static function _log($isSuccessful, $msg)
     {
         $result = $isSuccessful ? 'Reminders were created: ' : 'Reminders weren\'t created: ';
         Mage::log($result . $msg, Zend_Log::INFO, self::LOG_FILE);

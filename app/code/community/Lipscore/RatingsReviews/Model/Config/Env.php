@@ -22,8 +22,9 @@ class Lipscore_RatingsReviews_Model_Config_Env extends Varien_Simplexml_Config
             }
         }
         
-        $env = getenv('MAGE_ENV') == self::DEV_ENV ? self::DEV_ENV : self::PROD_ENV;
+        $env = getenv('LIPSCORE_MAGE_ENV') == self::DEV_ENV ? self::DEV_ENV : self::PROD_ENV;
         $configFile = Mage::getModuleDir('etc', 'Lipscore_RatingsReviews'). DS . 'environments' . DS . $env . '.xml';
+        
         parent::__construct($configFile);
         
         if ($canUserCache) {

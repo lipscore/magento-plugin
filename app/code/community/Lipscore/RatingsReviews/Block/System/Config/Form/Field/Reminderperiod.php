@@ -47,11 +47,9 @@ class Lipscore_RatingsReviews_Block_System_Config_Form_Field_Reminderperiod
         $linkToDasboard = 'https://members.lipscore.com/';
         $linkToCoupons  = $this->getUrl('*/*/*', array('section' => 'lipscore_coupons'));
                   
-        $msg  = "You're able to send purchase reminders to customers from a selected period back.
-                 They will be delivered according to <a href='$linkToDasboard'>reminder delay setting</a>. 
-                 Note that reminders wouldn't be sent repeatedly.";
-        $coupons = "You can add coupons to purchase reminders. Set up coupons <a href='$linkToCoupons'>here</a>.";
+        $msg  = "After installation of Lipscore you can send emails to recent customers asking them to write reviews of the purchases they have done. This is done automatically for all future customers but customers from before Lipscore was installed will not get these emails unless you invoke it below. They will be delivered according to <a href='$linkToDasboard'>reminder delay settings</a> and will only be done once.";
+        $coupons = "To increase the chance of getting reviews you can also add coupons to these emails. Set up coupons <a href='$linkToCoupons'>here</a>.";
         
-        return "<p>$msg<br/>$coupons<p>";
+        return "<p>$msg $coupons<p>";
     }
 }
