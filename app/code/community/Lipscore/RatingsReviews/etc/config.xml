@@ -30,11 +30,17 @@
             <lipscore_ratingsreviews>
                 <class>Lipscore_RatingsReviews_Block</class>
             </lipscore_ratingsreviews>
-            <catalog>
+            <review>
                 <rewrite>
-                    <product_view>Lipscore_RatingsReviews_Block_Catalog_Product_View</product_view>
+                    <helper>Lipscore_RatingsReviews_Block_Review_Helper</helper>
+                    <product_list>Lipscore_RatingsReviews_Block_Catalog_Product_List</product_list>
                 </rewrite>
-            </catalog>
+            </review>
+            <catalog>
+	            <rewrite>
+	                <product_view>Lipscore_RatingsReviews_Block_Catalog_Product_View</product_view>
+	            </rewrite>
+	        </catalog>
         </blocks>
         
         <models>
@@ -58,6 +64,14 @@
                     </lipscore_ratingsreviews>
                 </observers>
             </controller_action_layout_load_before>
+            <catalog_product_collection_load_after>
+                <observers>
+                    <lipscore_ratingsreviews>
+                        <class>lipscore_ratingsreviews/observer</class>
+                        <method>addRatings</method>
+                    </lipscore_ratingsreviews>
+                </observers>
+            </catalog_product_collection_load_after>
         </events>
     </global>
     

@@ -1,6 +1,6 @@
-<?php $_data = $this->helper('lipscore_ratingsreviews/product')->getProductData()  ?>
+<?php $_data = $this->helper('lipscore_ratingsreviews/product')->getProductData($this->getProduct())  ?>
 
-<div id="lipscore-rating"
+<div <?php echo $this->getRatingType() ?>
      ls-product-name="<?php echo $_data['name'] ?>" 
      ls-brand="<?php echo $_data['brand'] ?>" 
      ls-id-type="<?php echo $_data['idType'] ?>" 
