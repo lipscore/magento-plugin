@@ -20,6 +20,11 @@ class Lipscore_RatingsReviews_Model_Config
         return $this->get('api_key', 'apiKey');
     }
     
+    public function demoApiKey()
+    {
+        return $this->get('demo_api_key', 'apiKey');
+    }
+    
     public function locale()
     {
         return $this->get('locale', 'locale');

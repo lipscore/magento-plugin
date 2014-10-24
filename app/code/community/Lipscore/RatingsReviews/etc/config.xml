@@ -110,6 +110,10 @@
     
     <default>
         <lipscore_general>
+            <api_key>
+                <api_key>889c3f3e4b6ac67269261324</api_key>
+                <demo_api_key>889c3f3e4b6ac67269261324</demo_api_key>
+            </api_key>
             <product_identifier>
                 <type>sku</type>
                 <attr>sku</attr>
