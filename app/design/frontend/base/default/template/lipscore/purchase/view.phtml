@@ -4,6 +4,7 @@
     <?php foreach ($productsData as $data) { ?>
         <div class="lipscore-purchase"
              ls-email="<?php echo $this->getCustomerEmail() ?>"
+             ls-name="<?php echo $this->getCustomerName() ?>"
              ls-product-name="<?php echo $data['name'] ?>" 
              ls-brand="<?php echo $data['brand'] ?>" 
              ls-id-type="<?php echo $data['idType'] ?>" 

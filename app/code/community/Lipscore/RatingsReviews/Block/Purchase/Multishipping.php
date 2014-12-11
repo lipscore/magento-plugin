@@ -37,6 +37,7 @@ class Lipscore_RatingsReviews_Block_Purchase_Multishipping extends Lipscore_Rati
     {
         $purchaseHelper = $this->helper('lipscore_ratingsreviews/purchase');
         $this->setCustomerEmail($purchaseHelper->getEmail());
+        $this->setCustomerName($purchaseHelper->getName());
         
         // coupon
         $this->_prepareCouponInfo();

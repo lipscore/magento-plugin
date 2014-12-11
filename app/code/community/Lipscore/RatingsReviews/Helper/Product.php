@@ -7,7 +7,7 @@
 */
 
 class Lipscore_RatingsReviews_Helper_Product extends Lipscore_RatingsReviews_Helper_Abstract
-{    
+{   
     function getProductData(Mage_Catalog_Model_Product $product = null)
     {
         $product or $product = Mage::registry('product');
@@ -29,7 +29,7 @@ class Lipscore_RatingsReviews_Helper_Product extends Lipscore_RatingsReviews_Hel
     {
         $attr = $product->getResource()->getAttribute($attrCode);
         
-        if (!$attr) {
+        if (!$attr) {            
             return null;
         }
         
