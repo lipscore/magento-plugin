@@ -6,12 +6,8 @@
     </default>
     
     <catalog_product_view>
-        <reference name="head">
-            <action method="addItem"><type>skin_css</type><file>css/lipscore.css</file></action>
-        </reference>
-        
         <reference name="product.info">
-            <block type="core/template" name="lipscore.reviews" template="lipscore/reviews/view.phtml">
+            <block type="core/template" name="lipscore.reviews" as="lipscore-reviews" template="lipscore/reviews/view.phtml">
                 <action method="addToParentGroup"><group>detailed_info</group></action>
                 <action method="setTitle" translate="value"><value>Reviews</value></action>
             </block>
@@ -35,6 +31,7 @@
     <lipscore_common_head>
         <reference name="head">
             <block type="lipscore_ratingsreviews/init" name="lipscore.init" template="lipscore/init.phtml" />
+            <action method="addItem"><type>skin_css</type><file>css/lipscore.css</file></action>
         </reference>
     </lipscore_common_head>
 </layout>
