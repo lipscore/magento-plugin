@@ -9,6 +9,7 @@ class Lipscore_RatingsReviews_Model_System_Config_Source_Locale
             array('value' => 'en',   'label' => Mage::helper('adminhtml')->__('English')),
             array('value' => 'it',   'label' => Mage::helper('adminhtml')->__('Italian')),
             array('value' => 'no',   'label' => Mage::helper('adminhtml')->__('Norwegian')),
+            array('value' => 'es',   'label' => Mage::helper('adminhtml')->__('Spanish')),
         );
     }
 }
