@@ -5,7 +5,7 @@ class Lipscore_RatingsReviews_Model_Observer
     const REVIEW_MODULE = 'Mage_Review';
     const RATING_MODULE = 'Mage_Rating';
     
-    public function disableMageReviewModule(Varien_Event_Observer $observer)
+    public function manageMageReviewModule(Varien_Event_Observer $observer)
     {
         if (!Mage::helper('core/data')->isModuleEnabled(self::REVIEW_MODULE)) {
             $nodePath = 'modules/' . self::REVIEW_MODULE . '/active';

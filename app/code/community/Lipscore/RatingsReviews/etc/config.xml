@@ -33,7 +33,6 @@
             <review>
                 <rewrite>
                     <helper>Lipscore_RatingsReviews_Block_Review_Helper</helper>
-                    <product_list>Lipscore_RatingsReviews_Block_Catalog_Product_List</product_list>
                 </rewrite>
             </review>
             <catalog>
@@ -60,7 +59,7 @@
                 <observers>
                     <lipscore_ratingsreviews>
                         <class>lipscore_ratingsreviews/observer</class>
-                        <method>disableMageReviewModule</method>
+                        <method>manageMageReviewModule</method>
                     </lipscore_ratingsreviews>
                 </observers>
             </controller_action_layout_load_before>
