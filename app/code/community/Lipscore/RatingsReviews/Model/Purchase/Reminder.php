@@ -50,11 +50,11 @@ class Lipscore_RatingsReviews_Model_Purchase_Reminder
     {
         $data = $this->_productHelper->getProductData($product);
         return array(
-            'name'     => $data['name'], 
-            'brand'    => $data['brand'], 
-            'id_type'  => $data['idType'], 
-            'id_value' => $data['id'], 
-            'url'      => $data['url'], 
+            'name'      => $data['name'],
+            'brand'     => $data['brand'],
+            'id_type'   => $data['idType'],
+            'id_values' => $data['id'],
+            'url'       => $data['url'],
         );
     }
     
