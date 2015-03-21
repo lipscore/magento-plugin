@@ -2,13 +2,15 @@
 
 class Lipscore_RatingsReviews_Model_Purchase_Reminder
 {
-    protected $_productHelper = null;
+    protected $_productHelper  = null;
+    protected $_purchaseHelper = null;
     
     const LOG_FILE = 'lipscore_reminder.log';
     
     public function __construct()
     {
-        $this->_productHelper = Mage::helper('lipscore_ratingsreviews/product');        
+        $this->_productHelper  = Mage::helper('lipscore_ratingsreviews/product');
+        $this->_purchaseHelper = Mage::helper('lipscore_ratingsreviews/purchase');
     }
     
     public function send($orders)
@@ -53,7 +55,7 @@ class Lipscore_RatingsReviews_Model_Purchase_Reminder
             'name'      => $data['name'],
             'brand'     => $data['brand'],
             'id_type'   => $data['idType'],
-            'id_values' => $data['id'],
+            'id_values' => array($data['id']),
             'url'       => $data['url'],
         );
     }
@@ -62,10 +64,12 @@ class Lipscore_RatingsReviews_Model_Purchase_Reminder
     {
         $couponHelper = Mage::helper('lipscore_ratingsreviews/coupon');
         $coupon = $couponHelper->generateCoupon();
-        $email  = Mage::helper('lipscore_ratingsreviews/purchase')->getEmail($order);        
+        $email  = $this->_purchaseHelper->getEmail($order);
+        $name   = $this->_purchaseHelper->getName($order);
         
         return array(
             'buyer_email'      => $email,
+            'buyer_name'       => $name,
             'discount_descr'   => $coupon ? $couponHelper->getCouponDescription() : '',
             'discount_voucher' => $coupon ? $coupon->getCode() : '',
             'purchased_at'     => $order->getCreatedAtDate()->get()
