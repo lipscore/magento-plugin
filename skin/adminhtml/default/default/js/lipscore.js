@@ -26,6 +26,7 @@ function showReminderMessage(response) {
         type = 'error';
         break;
     case 408:
+    case 503:
         txt  = 'The server timed out waiting for the request.';
         type = 'error';
         break;

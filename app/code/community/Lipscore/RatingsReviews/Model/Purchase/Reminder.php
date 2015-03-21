@@ -81,7 +81,9 @@ class Lipscore_RatingsReviews_Model_Purchase_Reminder
         $apiKey = Mage::getModel('lipscore_ratingsreviews/config')->apiKey();
         $apiUrl = Mage::getModel('lipscore_ratingsreviews/config_env')->apiUrl();
         
-        $client = new Zend_Http_Client("http://$apiUrl/purchases?api_key=$apiKey");
+        $client = new Zend_Http_Client("http://$apiUrl/purchases?api_key=$apiKey", array(
+            'timeout' => 300
+        ));
         $client->setRawData(json_encode($data), 'application/json')
                ->setMethod(Zend_Http_Client::POST);
         
