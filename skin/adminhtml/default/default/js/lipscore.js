@@ -2,7 +2,7 @@ function sendLipscoreReminder(url, periodElementId) {
     $periodEl = $(periodElementId);
     new Ajax.Request(url, {
         method: 'post',
-        parameters: {period: $periodEl.getValue()},
+        parameters: {period: $periodEl.getValue(), isAjax: true},
         onSuccess: function(response) {
             showReminderMessage(response);
             $periodEl.setValue('');
@@ -14,25 +14,38 @@ function sendLipscoreReminder(url, periodElementId) {
 };
 
 function showReminderMessage(response) {
-    var type = txt = '';
+    var txt = '';
+    var type = 'error';
+    var commonErr = "We're sorry, but something went wrong with reminders, please try again or contact support.<br/><br/>";
+
+    var errMessage = function(response) {
+        return commonErr + response.status + ': ' + response.request.url + '.<br/> Params: ' +
+               response.request.body + '.<br/> Text: ' + response.responseText;
+    };
     
     switch(response.status) {
     case 200:
-        txt  = response.responseJSON.message;
-        type = 'success';
+        if (response.responseJSON && 'message' in response.responseJSON) {
+            txt  = response.responseJSON.message;
+            type = 'success';
+        } else {
+            txt  = errMessage(response);
+        }
+        break;
+    case 403:
+        txt = '403 Forbidden';
+        break;
+    case 404:
+        txt = commonErr + '404 Not Found: ' + response.request.url;
         break;
     case 422:
-        txt  = response.responseJSON.message;
-        type = 'error';
+        txt = response.responseJSON.message;
         break;
     case 408:
-    case 503:
-        txt  = 'The server timed out waiting for the request.';
-        type = 'error';
+        txt = 'The server timed out waiting for the request.';
         break;
     default:
-        txt  = "We're sorry, but something went wrong with reminders, please try again or contact support.";
-        type = 'error';
+        txt = errMessage(response);
         break;
     }
     

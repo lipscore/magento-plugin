@@ -11,6 +11,7 @@ class Lipscore_RatingsReviews_Model_Coupon_Generator
         }
 
         $generator->setData($data);
+        $size = $generator->getQty();
         
         $maxProbability = $generator->getMaxProbability() ? $generator->getMaxProbability() : $generator::MAX_PROBABILITY_OF_GUESSING;
         $maxAttempts = $generator->getMaxAttempts() ? $generator->getMaxAttempts() : $generator::MAX_GENERATE_ATTEMPTS;

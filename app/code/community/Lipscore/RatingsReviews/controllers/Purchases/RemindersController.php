@@ -2,6 +2,12 @@
 
 class Lipscore_RatingsReviews_Purchases_RemindersController extends Mage_Adminhtml_Controller_Action
 {
+    public function preDispatch()
+    {
+        Mage::setIsDeveloperMode(true);
+        parent::preDispatch();
+    }    
+    
     public function sendAction()
     {
         if (!$this->getRequest()->isAjax()) {
@@ -11,8 +17,9 @@ class Lipscore_RatingsReviews_Purchases_RemindersController extends Mage_Adminht
         
         $this->_checkKey();
         
+        $start = $this->_getStartDate();
         $orders = Mage::getModel('sales/order')->getCollection()
-            ->addAttributeToFilter('created_at', array('from' => $this->_getStartDate()))
+            ->addAttributeToFilter('created_at', array('from' => $start))
             ->addAttributeToFilter('status', array('eq' => Mage_Sales_Model_Order::STATE_COMPLETE));
         
         if (!count($orders)) {
@@ -49,9 +56,13 @@ class Lipscore_RatingsReviews_Purchases_RemindersController extends Mage_Adminht
         $body = Zend_Json::encode(array('message' => $response));
         $this->getResponse()
             ->setHeader('Content-Type', 'application/json')
-            ->setBody($body)
-            ->setHttpResponseCode($result ? 200 : 422)
-            ->sendResponse();
+            ->setBody($body);
+        
+        if (!$result) {
+            $this->getResponse()->setHttpResponseCode(422);
+        }
+        
+        $this->getResponse()->sendResponse();
         
         exit(0);        
     }
