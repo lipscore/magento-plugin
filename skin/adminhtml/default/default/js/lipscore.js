@@ -2,7 +2,7 @@ function sendLipscoreReminder(url, periodElementId) {
     $periodEl = $(periodElementId);
     new Ajax.Request(url, {
         method: 'post',
-        parameters: {period: $periodEl.getValue(), isAjax: true},
+        parameters: {period: $periodEl.getValue()},
         onSuccess: function(response) {
             showReminderMessage(response);
             $periodEl.setValue('');
