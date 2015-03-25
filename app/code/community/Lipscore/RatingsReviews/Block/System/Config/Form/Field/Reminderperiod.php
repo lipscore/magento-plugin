@@ -28,7 +28,7 @@ class Lipscore_RatingsReviews_Block_System_Config_Form_Field_Reminderperiod
     
     public function getReminderButton()
     {
-        $url           = $this->getUrl('/purchases_reminders/send');
+        $url           = Mage::getModel('adminhtml/url')->getUrl('*/purchases_reminders/send');
         $perioSelectId = self::$_periodSelect;
         
         $apiKey = Mage::getModel('lipscore_ratingsreviews/config')->apiKey();
@@ -45,7 +45,7 @@ class Lipscore_RatingsReviews_Block_System_Config_Form_Field_Reminderperiod
     public function getNote()
     {
         $linkToDasboard = 'https://members.lipscore.com/';
-        $linkToCoupons  = $this->getUrl('*/*/*', array('section' => 'lipscore_coupons'));
+        $linkToCoupons  = Mage::getModel('adminhtml/url')->getUrl('*/*/*', array('section' => 'lipscore_coupons'));
                   
         $msg  = "After installation of Lipscore you can send emails to recent customers asking them to write reviews of the purchases they have done. This is done automatically for all future customers but customers from before Lipscore was installed will not get these emails unless you invoke it below. They will be delivered according to <a href='$linkToDasboard'>reminder delay settings</a> and will only be done once.";
         $coupons = "To increase the chance of getting reviews you can also add coupons to these emails. Set up coupons <a href='$linkToCoupons'>here</a>.";
