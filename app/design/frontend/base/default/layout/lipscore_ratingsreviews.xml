@@ -12,14 +12,6 @@
                 <action method="setTitle" translate="value"><value>Reviews</value></action>
             </block>
         </reference>
-        <reference name="product.info.tabs">
-            <action method="addTab" translate="title" module="lipscore_ratingsreviews">
-                <alias>lipscore.reviews</alias>
-                <title>Reviews</title>
-                <block>core/template</block>
-                <template>lipscore/reviews/view.phtml</template>
-            </action>
-        </reference>
     </catalog_product_view>
     
     <checkout_onepage_success>

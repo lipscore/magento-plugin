@@ -28,6 +28,15 @@ class Lipscore_RatingsReviews_Model_Observer
         return $this;
     }
     
+    public function beforeLoadProductPage(Varien_Event_Observer $observer)
+    {
+        $layout = $observer->getEvent()->getLayout();
+        $tabs = $layout->getBlock('product.info.tabs');
+        if ($tabs) {
+            $tabs->addTab('lipscore.reviews', 'Reviews', 'core/template', 'lipscore/reviews/view.phtml');
+        }   
+    }
+
     protected function _disableModuleOutput($moduleName)
     {
         $outputPath = 'advanced/modules_disable_output/' . $moduleName;

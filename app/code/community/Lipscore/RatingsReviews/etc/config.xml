@@ -71,6 +71,14 @@
                     </lipscore_ratingsreviews>
                 </observers>
             </catalog_product_collection_load_after>
+            <controller_action_layout_generate_blocks_after>
+                <observers>
+                    <lipscore_ratingsreviews>
+                        <class>lipscore_ratingsreviews/observer</class>
+                        <method>beforeLoadProductPage</method>
+                    </lipscore_ratingsreviews>
+                </observers>
+            </controller_action_layout_generate_blocks_after>
         </events>
     </global>
     
