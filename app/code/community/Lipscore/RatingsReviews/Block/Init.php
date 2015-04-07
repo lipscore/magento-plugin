@@ -18,23 +18,39 @@ class Lipscore_RatingsReviews_Block_Init extends Mage_Core_Block_Template
     {
         $this->_lipscoreConfig = Mage::getModel('lipscore_ratingsreviews/config');
         $this->_envConfig      = Mage::getModel('lipscore_ratingsreviews/config_env');
-        
+            
         parent::_construct();
     }
     
     protected function _beforeToHtml()
     {
-        $this->setLipscoreApiKey($this->_lipscoreConfig->apiKey());
-        $this->setAssetsUrl($this->_envConfig->assetsUrl());
-    
+        try {
+            $this->setLipscoreApiKey($this->_lipscoreConfig->apiKey());
+            $this->setAssetsUrl($this->_envConfig->assetsUrl());
+        } catch (Exception $e) {
+            Lipscore_RatingsReviews_Logger::logException($e);
+        }
+            
         return parent::_beforeToHtml();
     }    
         
     protected function getLipscoreLocale()
     {
-        $locale = $this->_lipscoreConfig->locale();
+        $locale = null;        
+        try {
+            $locale = $this->_lipscoreConfig->locale();
+        } catch (Exception $e) {
+            Lipscore_RatingsReviews_Logger::logException($e);
+        }
+        
         if ($locale == 'auto') {
-            $storeLocale = Mage::app()->getLocale()->getLocale()->getLanguage();
+            $storeLocale = null;
+            try {
+                $storeLocale = Mage::app()->getLocale()->getLocale()->getLanguage();
+            } catch (Exception $e) {
+                Lipscore_RatingsReviews_Logger::logException($e);
+            }
+                
             $locale = in_array($storeLocale, self::$_availableLocales) ? $storeLocale : null;
         }
         return $locale ? $locale . '/' : '';

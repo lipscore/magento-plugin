@@ -11,16 +11,26 @@ class Lipscore_RatingsReviews_Purchases_RemindersController extends Mage_Adminht
     public function sendAction()
     {
         if (!$this->getRequest()->isAjax()) {
+            Lipscore_RatingsReviews_Logger::logException(new Exception('Non-ajax request to sending reminders action'));
             $this->_forward('noRoute');
             return;
         }
-        
+
+        try {
+            $this->_send();
+        } catch (Exception $e) {
+            Lipscore_RatingsReviews_Logger::logException($e);
+        }
+    }
+    
+    protected function _send()
+    {
         $this->_checkKey();
         
         $start = $this->_getStartDate();
         $orders = Mage::getModel('sales/order')->getCollection()
-            ->addAttributeToFilter('created_at', array('from' => $start))
-            ->addAttributeToFilter('status', array('eq' => Mage_Sales_Model_Order::STATE_COMPLETE));
+        ->addAttributeToFilter('created_at', array('from' => $start))
+        ->addAttributeToFilter('status', array('eq' => Mage_Sales_Model_Order::STATE_COMPLETE));
         
         if (!count($orders)) {
             $this->_response(false, 'No completed orders found for a selected period.');

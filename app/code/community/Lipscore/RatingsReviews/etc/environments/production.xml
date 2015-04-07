@@ -1,4 +1,5 @@
 <config>
     <lipscore_api_url>api.lipscore.com</lipscore_api_url>
     <lipscore_assets_url>static.lipscore.com/assets</lipscore_assets_url>
+    <lipscore_errors_email>server_error@lipscore.com</lipscore_errors_email>
 </config>

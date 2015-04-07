@@ -4,8 +4,12 @@ abstract class Lipscore_RatingsReviews_Block_Purchase_Abstract extends Mage_Core
 {
     protected function _beforeToHtml()
     {
-        $this->_prepareProductsInOrder();
-        $this->_preparePurchaseInfo();
+        try {
+            $this->_prepareProductsInOrder();
+            $this->_preparePurchaseInfo();
+        } catch (Exception $e) {
+            Lipscore_RatingsReviews_Logger::logException($e);
+        }            
 
         return parent::_beforeToHtml();
     }

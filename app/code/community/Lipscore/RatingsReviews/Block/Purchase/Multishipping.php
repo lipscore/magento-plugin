@@ -6,12 +6,16 @@ class Lipscore_RatingsReviews_Block_Purchase_Multishipping extends Lipscore_Rati
     
     protected function _construct()
     {
-        $orderIds = Mage::getSingleton('checkout/type_multishipping')->getOrderIds();
-        if ($orderIds) {            
-            $this->_orders = Mage::getModel('sales/order')
-                ->getCollection()
-                ->addFieldToFilter('entity_id', array('in' => $orderIds));
-        }
+        try {
+            $orderIds = Mage::getSingleton('checkout/type_multishipping')->getOrderIds();
+            if ($orderIds) {            
+                $this->_orders = Mage::getModel('sales/order')
+                    ->getCollection()
+                    ->addFieldToFilter('entity_id', array('in' => $orderIds));
+            }
+        } catch (Exception $e) {
+            Lipscore_RatingsReviews_Logger::logException($e);
+        }            
         
         parent::_construct();
     }

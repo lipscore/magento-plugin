@@ -4,8 +4,16 @@ class Lipscore_RatingsReviews_Model_Observer
 {
     const REVIEW_MODULE = 'Mage_Review';
     const RATING_MODULE = 'Mage_Rating';
+
+    public function __call($method, $arguments) {
+        try {
+            call_user_func_array(array($this, $method), $arguments);
+        } catch (Exception $e) {
+            Lipscore_RatingsReviews_Logger::logException($e);
+        }
+    }
     
-    public function manageMageReviewModule(Varien_Event_Observer $observer)
+    protected function manageMageReviewModule(Varien_Event_Observer $observer)
     {
         if (!Mage::helper('core/data')->isModuleEnabled(self::REVIEW_MODULE)) {
             $nodePath = 'modules/' . self::REVIEW_MODULE . '/active';
@@ -16,7 +24,7 @@ class Lipscore_RatingsReviews_Model_Observer
         $this->_disableModuleOutput(self::RATING_MODULE);
     }
     
-    public function addRatings(Varien_Event_Observer $observer)
+    protected function addRatings(Varien_Event_Observer $observer)
     {
         $collection = $observer->getEvent()->getCollection();
         if ($collection->count()) {
@@ -28,7 +36,7 @@ class Lipscore_RatingsReviews_Model_Observer
         return $this;
     }
     
-    public function beforeLoadProductPage(Varien_Event_Observer $observer)
+    protected function beforeLoadProductPage(Varien_Event_Observer $observer)
     {
         $layout = $observer->getEvent()->getLayout();
         $tabs = $layout->getBlock('product.info.tabs');

@@ -6,7 +6,13 @@ class Lipscore_RatingsReviews_Block_System_Config_Form_Field_Reminderperiod
     
     public function render(Varien_Data_Form_Element_Abstract $element)
     {
-        return $this->getNote() . $this->getPeriodLabel() . $this->getPeriodSelect() . $this->getReminderButton(); 
+        $text = '';
+        try {
+            $text = $this->getNote() . $this->getPeriodLabel() . $this->getPeriodSelect() . $this->getReminderButton();
+        } catch (Exception $e) {
+            Lipscore_RatingsReviews_Logger::logException($e);
+        }            
+        return $text; 
     }
     
     public function getPeriodSelect()

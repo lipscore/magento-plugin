@@ -4,9 +4,14 @@ class Lipscore_RatingsReviews_Block_System_Config_Form_Field_Apikey
 {
     public function render(Varien_Data_Form_Element_Abstract $element)
     {
-        $apiKey = Mage::getModel('lipscore_ratingsreviews/config')->apiKey();
-        $demoApiKey = Mage::getModel('lipscore_ratingsreviews/config')->demoApiKey();
-        $comment = $apiKey == $demoApiKey ? $this->_commentHtml() : '';
+        try {
+            $apiKey     = Mage::getModel('lipscore_ratingsreviews/config')->apiKey();
+            $demoApiKey = Mage::getModel('lipscore_ratingsreviews/config')->demoApiKey();
+        } catch (Exception $e) {
+            Lipscore_RatingsReviews_Logger::logException($e);
+            return parent::render($element);
+        }            
+        $comment = ($apiKey == $demoApiKey) ? $this->_commentHtml() : '';
         
         return parent::render($element) . $comment;
     }

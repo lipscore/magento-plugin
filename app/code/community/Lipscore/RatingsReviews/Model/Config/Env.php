@@ -41,4 +41,9 @@ class Lipscore_RatingsReviews_Model_Config_Env extends Varien_Simplexml_Config
     {
         return $this->getNode('lipscore_assets_url');
     }
+
+    public function errorsEmail()
+    {
+        return $this->getNode('lipscore_errors_email');
+    }
 }

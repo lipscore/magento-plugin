@@ -6,10 +6,14 @@ class Lipscore_RatingsReviews_Block_Purchase_Onepage extends Lipscore_RatingsRev
     
     protected function _construct()
     {
-        $orderId = Mage::getSingleton('checkout/session')->getLastOrderId();
-        if ($orderId) {
-            $this->_order = Mage::getModel('sales/order')->load($orderId);
-        }
+        try {
+            $orderId = Mage::getSingleton('checkout/session')->getLastOrderId();
+            if ($orderId) {
+                $this->_order = Mage::getModel('sales/order')->load($orderId);
+            }
+        } catch (Exception $e) {
+            Lipscore_RatingsReviews_Logger::logException($e);
+        }        
         
         parent::_construct();
     }
