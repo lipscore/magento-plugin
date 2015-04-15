@@ -62,7 +62,7 @@ class Lipscore_RatingsReviews_Model_Observer
             $html = $transport->getHtml();
             
             // set review title
-            $titleBlock = $block->getLayout()->createBlock('lipscore_ratingsreviews/review_tabtitle');
+            $titleBlock = $block->getLayout()->createBlock('lipscore_ratingsreviews/review_tabTitle');
             $html = str_replace(self::REVIEW_TITLE_PLACEHOLDER, $titleBlock->toHtml(), $html);
             
             // ensure that reviews block exists on a page
