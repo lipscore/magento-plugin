@@ -75,10 +75,18 @@
                 <observers>
                     <lipscore_ratingsreviews>
                         <class>lipscore_ratingsreviews/observer</class>
-                        <method>beforeLoadProductPage</method>
+                        <method>addReviewsTab</method>
                     </lipscore_ratingsreviews>
                 </observers>
             </controller_action_layout_generate_blocks_after>
+            <core_block_abstract_to_html_after>
+                <observers>
+                    <lipscore_ratingsreviews>
+                        <class>lipscore_ratingsreviews/observer</class>
+                        <method>addReviewsFeatures</method>
+                    </lipscore_ratingsreviews>
+                </observers>
+            </core_block_abstract_to_html_after>
         </events>
     </global>
     

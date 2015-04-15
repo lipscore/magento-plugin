@@ -40,7 +40,6 @@ class Lipscore_RatingsReviews_Logger
         
         if (!empty($to)) {
             try {
-                file_put_contents('/tmp/processor.log',"{$e->getMessage()} \n", FILE_APPEND);
                 self::_sendEmail($to, $sbj, $msg);
             } catch (Exception $e) {}
         }

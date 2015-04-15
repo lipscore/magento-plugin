@@ -4,6 +4,8 @@ class Lipscore_RatingsReviews_Model_Observer
 {
     const REVIEW_MODULE = 'Mage_Review';
     const RATING_MODULE = 'Mage_Rating';
+    
+    const REVIEW_TITLE_PLACEHOLDER = 'lipscore_reviews_placeholder';
 
     public function __call($method, $arguments) {
         try {
@@ -36,13 +38,42 @@ class Lipscore_RatingsReviews_Model_Observer
         return $this;
     }
     
-    protected function beforeLoadProductPage(Varien_Event_Observer $observer)
+    protected function addReviewsTab(Varien_Event_Observer $observer)
     {
         $layout = $observer->getEvent()->getLayout();
         $tabs = $layout->getBlock('product.info.tabs');
         if ($tabs) {
-            $tabs->addTab('lipscore.reviews', 'Reviews', 'core/template', 'lipscore/reviews/view.phtml');
+            $tabs->addTab(
+                'lipscore.reviews', self::REVIEW_TITLE_PLACEHOLDER, 'core/template', 'lipscore/reviews/view.phtml'
+            );
         }   
+    }
+    
+    public function addReviewsFeatures(Varien_Event_Observer $observer)
+    {
+        $block = $observer->getBlock();
+        
+        $layoutHandles = $block->getLayout()->getUpdate()->getHandles();
+        $properLayout  = in_array('catalog_product_view', $layoutHandles);
+        $properBlock   = $block->getNameInLayout() == 'product.info';
+        
+        if ($properLayout && $properBlock) {
+            $transport = $observer->getTransport();
+            $html = $transport->getHtml();
+            
+            // set review title
+            $titleBlock = $block->getLayout()->createBlock('lipscore_ratingsreviews/review_tabtitle');
+            $html = str_replace(self::REVIEW_TITLE_PLACEHOLDER, $titleBlock->toHtml(), $html);
+            
+            // ensure that reviews block exists on a page
+            $pos = strripos($html, 'lipscore-review-list');
+            if ($pos === false) {
+                $reviewsBlock = $block->getLayout()->createBlock('core/template', '', array('template' => 'lipscore/reviews/view.phtml'));
+                $html .= $reviewsBlock->toHtml();
+            }
+            
+            $transport->setHtml($html);
+        }
     }
 
     protected function _disableModuleOutput($moduleName)
