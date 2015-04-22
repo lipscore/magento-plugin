@@ -41,6 +41,11 @@ class Lipscore_RatingsReviews_Model_Observer
     protected function addReviewsTab(Varien_Event_Observer $observer)
     {
         $layout = $observer->getEvent()->getLayout();
+        
+        if (!$layout) {
+            return;
+        }
+        
         $tabs = $layout->getBlock('product.info.tabs');
         if ($tabs) {
             $tabs->addTab(
@@ -51,9 +56,14 @@ class Lipscore_RatingsReviews_Model_Observer
     
     public function addReviewsFeatures(Varien_Event_Observer $observer)
     {
-        $block = $observer->getBlock();
+        $block  = $observer->getBlock();
+        $layout = $block->getLayout();
         
-        $layoutHandles = $block->getLayout()->getUpdate()->getHandles();
+        if (!$layout) {
+            return;
+        }
+        
+        $layoutHandles = $layout->getUpdate()->getHandles();
         $properLayout  = in_array('catalog_product_view', $layoutHandles);
         $properBlock   = $block->getNameInLayout() == 'product.info';
         
