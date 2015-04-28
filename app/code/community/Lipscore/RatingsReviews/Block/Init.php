@@ -12,7 +12,7 @@ class Lipscore_RatingsReviews_Block_Init extends Mage_Core_Block_Template
      */
     protected $_envConfig;
     
-    protected static $_availableLocales = array('en', 'it', 'no', 'es', 'br');
+    protected static $_availableLocales = array('en', 'it', 'no', 'es', 'br', 'ru');
     
     public function __construct()
     {
