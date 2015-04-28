@@ -1,11 +1,13 @@
 <?php $_data = $this->helper('lipscore_ratingsreviews/product')->getProductData($this->getProduct())  ?>
 <?php if ($_data) { ?>
-    <div <?php echo $this->getRatingType() ?>
-         ls-product-name="<?php echo $_data['name'] ?>" 
-         ls-brand="<?php echo $_data['brand'] ?>" 
-         ls-id-type="<?php echo $_data['idType'] ?>" 
-         ls-id="<?php echo $_data['id'] ?>">
-    </div>
+    <div class="ratings mg-lipscore-rating-wrapper">
+        <div <?php echo $this->getRatingType() ?>
+             ls-product-name="<?php echo $_data['name'] ?>" 
+             ls-brand="<?php echo $_data['brand'] ?>" 
+             ls-id-type="<?php echo $_data['idType'] ?>" 
+             ls-id="<?php echo $_data['id'] ?>">
+        </div>
+     </div>   
 <?php } else { ?>
     <div style="display:none;">Lipscore: empty product data</div>
 <?php } ?>

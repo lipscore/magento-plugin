@@ -11,9 +11,7 @@ document.observe("dom:loaded", function() {
             
             // open reviews tab if reviews link clicked            
             lipscore.on('review-count-link-clicked', function(data) {
-                $$(tabSelector).each(function(el) {
-                    el.up().click();
-                });
+                $$(tabSelector)[0].up().click();
             });
         }
     }   

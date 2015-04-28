@@ -24,6 +24,12 @@ class Lipscore_RatingsReviews_Model_Observer
         
         $this->_disableModuleOutput(self::REVIEW_MODULE);
         $this->_disableModuleOutput(self::RATING_MODULE);
+        
+        $nodePath = 'global/blocks/review/rewrite/helper';
+        Mage::getConfig()->setNode($nodePath, 'Lipscore_RatingsReviews_Block_Review_Helper', true);
+        
+        $nodePath = 'global/blocks/catalog/rewrite/product_view';
+        Mage::getConfig()->setNode($nodePath, 'Lipscore_RatingsReviews_Block_Catalog_Product_View', true);
     }
     
     protected function addRatings(Varien_Event_Observer $observer)
