@@ -12,7 +12,7 @@ class Lipscore_RatingsReviews_Block_Init extends Mage_Core_Block_Template
      */
     protected $_envConfig;
     
-    protected static $_availableLocales = array('en', 'it', 'no', 'es', 'br', 'ru');
+    protected static $_availableLocales = array('en', 'it', 'no', 'es', 'br', 'ru', 'se');
     
     public function __construct()
     {
@@ -51,8 +51,23 @@ class Lipscore_RatingsReviews_Block_Init extends Mage_Core_Block_Template
                 Lipscore_RatingsReviews_Logger::logException($e);
             }
                 
-            $locale = in_array($storeLocale, self::$_availableLocales) ? $storeLocale : null;
+            $locale = $this->getAvailableLocale($storeLocale);
+            
+            if (is_null($locale)) {
+                try {
+                    $storeLocale = Mage::app()->getLocale()->getLocale()->getRegion();
+                } catch (Exception $e) {
+                    Lipscore_RatingsReviews_Logger::logException($e);
+                }
+                $locale = $this->getAvailableLocale($storeLocale);
+            }    
+            
         }
         return $locale ? $locale . '/' : '';
+    }
+    
+    protected function getAvailableLocale($storeLocale)
+    {
+        return in_array(strtolower($storeLocale), self::$_availableLocales) ? $storeLocale : null;
     }
 }
