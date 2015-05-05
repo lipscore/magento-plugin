@@ -2,83 +2,39 @@
 
 class Lipscore_RatingsReviews_Model_Purchase_Reminder
 {
-    protected $_productHelper  = null;
-    protected $_purchaseHelper = null;
+    protected $lipscoreConfig = null;
+    protected $response       = null;
     
     const LOG_FILE = 'lipscore_reminder.log';
     
-    public function __construct()
+    public function __construct($params)
     {
-        $this->_productHelper  = Mage::helper('lipscore_ratingsreviews/product');
-        $this->_purchaseHelper = Mage::helper('lipscore_ratingsreviews/purchase');
+        $websiteCode = isset($params['websiteCode']) ? $params['websiteCode'] : null;
+        $storeCode = isset($params['storeCode']) ? $params['storeCode'] : null;
+        
+        $this->lipscoreConfig = Mage::helper('lipscore_ratingsreviews/config')->getScoped($websiteCode, $storeCode);
     }
     
     public function send($orders)
     {
         $data = array();
+        $dataHelper = Mage::helper('lipscore_ratingsreviews/reminder');
+        
         foreach ($orders as $order) {
-            $data[] = array(
-                'purchase' => $this->_purchaseData($order),
-                'products' => $this->_productsData($order)
-            );
+            $data[] = $dataHelper->orderData($order);
         }
         
-        return $this->_sendRequest(array('purchases' => $data));
+        return $this->sendRequest(array('purchases' => $data));
     }
     
-    protected function _productsData($order)
+    public function getResponseMsg()
     {
-        $orderItems = $order->getAllVisibleItems();
-        $productIds = array();
-        foreach ($orderItems as $item) {
-            $productIds[] = $item->getProductId();
-        }
-        
-        $products = Mage::getModel('catalog/product')->getCollection()
-            ->addAttributeToFilter('entity_id', array('in' => $productIds))
-            ->addAttributeToSelect(Mage::getSingleton('catalog/config')->getProductAttributes());
-        
-        $productsData = array();
-        $key = 1;
-        foreach ($products as $product) {
-            // we use keys to force json encoding of array to object (php 5.2 doesn't support JSON_FORCE_OBJECT)
-            $productsData[$key++] = $this->_productData($product);
-        }
-        
-        return $productsData;
+        return $this->response ? $this->response->__toString() : '';
     }
     
-    protected function _productData($product)
+    protected function sendRequest($data)
     {
-        $data = $this->_productHelper->getProductData($product);
-        return array(
-            'name'      => $data['name'],
-            'brand'     => $data['brand'],
-            'id_type'   => $data['idType'],
-            'id_values' => array($data['id']),
-            'url'       => $data['url'],
-        );
-    }
-    
-    protected function _purchaseData($order)
-    {
-        $couponHelper = Mage::helper('lipscore_ratingsreviews/coupon');
-        $coupon = $couponHelper->generateCoupon();
-        $email  = $this->_purchaseHelper->getEmail($order);
-        $name   = $this->_purchaseHelper->getName($order);
-        
-        return array(
-            'buyer_email'      => $email,
-            'buyer_name'       => $name,
-            'discount_descr'   => $coupon ? $couponHelper->getCouponDescription() : '',
-            'discount_voucher' => $coupon ? $coupon->getCode() : '',
-            'purchased_at'     => $order->getCreatedAtDate()->get()
-        );        
-    }
-    
-    protected function _sendRequest($data)
-    {
-        $apiKey = Mage::getModel('lipscore_ratingsreviews/config')->apiKey();
+        $apiKey = $this->lipscoreConfig->apiKey();
         $apiUrl = Mage::getModel('lipscore_ratingsreviews/config_env')->apiUrl();
         
         $client = new Zend_Http_Client("http://$apiUrl/purchases?api_key=$apiKey", array(
@@ -87,17 +43,17 @@ class Lipscore_RatingsReviews_Model_Purchase_Reminder
         $client->setRawData(json_encode($data), 'application/json')
                ->setMethod(Zend_Http_Client::POST);
         
-        $response = $client->request();
-        $result   = $response->isSuccessful();
+        $this->response = $client->request();
+        $result = $this->response->isSuccessful();
         
-        self::_log($result, $response->getBody());
+        $this->log($result);
                     
-        return $result ? count(json_decode($response->getBody())) : 0;
+        return $result;
     }
     
-    protected static function _log($isSuccessful, $msg)
+    protected function log($isSuccessful)
     {
         $result = $isSuccessful ? 'Reminders were created: ' : 'Reminders weren\'t created: ';
-        Mage::log($result . $msg, Zend_Log::INFO, self::LOG_FILE);
+        Mage::log($result . $this->getResponseMsg(), Zend_Log::INFO, self::LOG_FILE);
     }
 }

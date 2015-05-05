@@ -12,8 +12,6 @@ class Lipscore_RatingsReviews_Block_Init extends Mage_Core_Block_Template
      */
     protected $_envConfig;
     
-    protected static $_availableLocales = array('en', 'it', 'no', 'es', 'br', 'ru', 'se');
-    
     public function __construct()
     {
         $this->_lipscoreConfig = Mage::getModel('lipscore_ratingsreviews/config');
@@ -38,36 +36,10 @@ class Lipscore_RatingsReviews_Block_Init extends Mage_Core_Block_Template
     {
         $locale = null;        
         try {
-            $locale = $this->_lipscoreConfig->locale();
+            $locale  = Mage::helper('lipscore_ratingsreviews/locale')->getLipscoreLocale();
         } catch (Exception $e) {
             Lipscore_RatingsReviews_Logger::logException($e);
         }
-        
-        if ($locale == 'auto') {
-            $storeLocale = null;
-            try {
-                $storeLocale = Mage::app()->getLocale()->getLocale()->getLanguage();
-            } catch (Exception $e) {
-                Lipscore_RatingsReviews_Logger::logException($e);
-            }
-                
-            $locale = $this->getAvailableLocale($storeLocale);
-            
-            if (is_null($locale)) {
-                try {
-                    $storeLocale = Mage::app()->getLocale()->getLocale()->getRegion();
-                } catch (Exception $e) {
-                    Lipscore_RatingsReviews_Logger::logException($e);
-                }
-                $locale = $this->getAvailableLocale($storeLocale);
-            }    
-            
-        }
         return $locale ? $locale . '/' : '';
-    }
-    
-    protected function getAvailableLocale($storeLocale)
-    {
-        return in_array(strtolower($storeLocale), self::$_availableLocales) ? $storeLocale : null;
     }
 }

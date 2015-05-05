@@ -9,10 +9,31 @@ class Lipscore_RatingsReviews_Model_Config
         'apiKey'     => 'lipscore_general/api_key/',
         'locale'     => 'lipscore_general/locale/',
     );
+    
+    protected $store   = null;
+    protected $website = null;
+    
+    public function __construct($params = array())
+    {
+        !empty($params['store'])   and $this->store   = $params['store'];
+        !empty($params['website']) and $this->website = $params['website'];
+    }
 
     public function get($param, $type)
     {
-        return Mage::getStoreConfig(self::$_systemConfigs[$type] . $param, Mage::app()->getStore());
+        $key = self::$_systemConfigs[$type] . $param;
+        return $this->getMageConfig($key);
+    }
+    
+    public function getMageConfig($key)
+    {
+        if ($this->store) {
+            return $this->store->getConfig($key);
+        }
+        if ($this->website) {
+            return $this->website->getConfig($key);
+        }
+        return Mage::getStoreConfig($key);        
     }
     
     public function apiKey()

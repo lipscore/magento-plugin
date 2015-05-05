@@ -11,4 +11,9 @@ abstract class Lipscore_RatingsReviews_Helper_Abstract extends Mage_Core_Helper_
     {
         $this->_lipscoreConfig = Mage::getModel('lipscore_ratingsreviews/config');
     }
+    
+    public function setLipscoreConfig($lipscoreConfig)
+    {
+        $this->_lipscoreConfig = $lipscoreConfig;
+    }
 }

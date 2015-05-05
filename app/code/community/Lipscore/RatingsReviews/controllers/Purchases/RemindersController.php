@@ -2,6 +2,8 @@
 
 class Lipscore_RatingsReviews_Purchases_RemindersController extends Mage_Adminhtml_Controller_Action
 {
+    protected $lipscoreConfig = null; 
+    
     public function preDispatch()
     {
         Mage::setIsDeveloperMode(true);
@@ -20,6 +22,7 @@ class Lipscore_RatingsReviews_Purchases_RemindersController extends Mage_Adminht
             $this->_send();
         } catch (Exception $e) {
             Lipscore_RatingsReviews_Logger::logException($e);
+            $this->_response(false, $e->getMessage() . '\n' . $e->getTraceAsString());
         }
     }
     
@@ -29,21 +32,33 @@ class Lipscore_RatingsReviews_Purchases_RemindersController extends Mage_Adminht
         
         $start = $this->_getStartDate();
         $orders = Mage::getModel('sales/order')->getCollection()
-        ->addAttributeToFilter('created_at', array('from' => $start))
-        ->addAttributeToFilter('status', array('eq' => Mage_Sales_Model_Order::STATE_COMPLETE));
+            ->addAttributeToFilter('created_at', array('from' => $start))
+            ->addAttributeToFilter('status', array('eq' => Mage_Sales_Model_Order::STATE_COMPLETE));
+        
+        $store = $this->getStore();
+        if ($store) {
+            $orders->addAttributeToFilter('store_id', array('eq' => $store->getId()));
+        }
         
         if (!count($orders)) {
             $this->_response(false, 'No completed orders found for a selected period.');
         }
         
-        $sentItems = Mage::getModel('lipscore_ratingsreviews/purchase_reminder')->send($orders);
-        
-        $this->_response(true, "$sentItems purchase reminders were created.");
+        $sender = Mage::getModel('lipscore_ratingsreviews/purchase_reminder', array(
+            'websiteCode' => $this->getWebsiteCode(),
+            'storeCode'   => $this->getStoreCode()
+        ));
+        $result = $sender->send($orders);
+        if ($result) {
+            $this->_response(true, "Emails were scheduled successfully.");
+        } else {
+            $this->_response(false, $sender->getResponseMsg());
+        }    
     }
     
     protected function _checkKey()
     {
-        $apiKey = Mage::getModel('lipscore_ratingsreviews/config')->apiKey();
+        $apiKey = $this->getLipscoreConfig()->apiKey();
         if (!$apiKey) {
             $this->_response(false, 'You should provide your Api Key and save config.');
         }        
@@ -75,5 +90,34 @@ class Lipscore_RatingsReviews_Purchases_RemindersController extends Mage_Adminht
         $this->getResponse()->sendResponse();
         
         exit(0);        
+    }
+    
+    protected function getLipscoreConfig()
+    {
+        if (!$this->lipscoreConfig) {
+            $websiteCode = $this->getWebsiteCode();
+            $storeCode   = $this->getStoreCode();
+            
+            $this->lipscoreConfig = Mage::helper('lipscore_ratingsreviews/config')->getScoped($websiteCode, $storeCode);
+        }
+        return $this->lipscoreConfig;
+    }
+    
+    protected function getStore()
+    {
+        $code = $this->getStoreCode();
+        if ($code) {
+            return Mage::getModel('core/store')->load($code);
+        }
+    }
+    
+    protected function getWebsiteCode()
+    {
+        return $this->getRequest()->getParam('website');
+    }
+    
+    protected function getStoreCode()
+    {
+        return $this->getRequest()->getParam('store');
     }
 }

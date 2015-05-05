@@ -1,5 +1,5 @@
 document.observe("dom:loaded", function() {
-    if (lipscore) {
+    if (typeof lipscore !== 'undefined') {
         tabSelector = '.lipscore-reviews-tab';
         if ($$(tabSelector)) {
             // show review count

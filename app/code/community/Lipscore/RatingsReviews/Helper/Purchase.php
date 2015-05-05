@@ -2,7 +2,7 @@
 
 class Lipscore_RatingsReviews_Helper_Purchase extends Lipscore_RatingsReviews_Helper_Abstract
 {    
-    function getEmail(Mage_Sales_Model_Order $order = null)
+    public function getEmail(Mage_Sales_Model_Order $order = null)
     {
         $email = null;
         
@@ -12,7 +12,7 @@ class Lipscore_RatingsReviews_Helper_Purchase extends Lipscore_RatingsReviews_He
                 $email = $order->getCustomerEmail();
             }            
         } else {
-            $customer = Mage::getSingleton('customer/session')->getCustomer();
+            $customer = $this->getCustomer();
             if ($customer) {
                 $email = $customer->getEmail();
             }
@@ -21,7 +21,7 @@ class Lipscore_RatingsReviews_Helper_Purchase extends Lipscore_RatingsReviews_He
         return $email;
     }
     
-    function getName(Mage_Sales_Model_Order $order = null)
+    public function getName(Mage_Sales_Model_Order $order = null)
     {
         $name = null;
         
@@ -33,12 +33,17 @@ class Lipscore_RatingsReviews_Helper_Purchase extends Lipscore_RatingsReviews_He
                 $name = $order->getCustomerFirstname() . ' ' . $order->getCustomerLastname();
             }
         } else {
-            $customer = Mage::getSingleton('customer/session')->getCustomer();
+            $customer = $this->getCustomer();
             if ($customer) {
                 $name = $customer->getName();
             }
         }
         
         return $name;
+    }
+    
+    protected function getCustomer()
+    {
+        return Mage::getSingleton('customer/session')->getCustomer();
     }
 }

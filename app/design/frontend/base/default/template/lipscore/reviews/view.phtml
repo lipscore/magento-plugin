@@ -1,3 +1,18 @@
 <div style="display: none !important;">Reviews</div>
-<div id="lipscore-review-post"></div>
-<div id="lipscore-review-list"></div>
+<?php $_data = $this->helper('lipscore_ratingsreviews/product')->getProductData($this->getProduct())  ?>
+<?php if ($_data) { ?>
+    <div id="lipscore-review-post"
+         ls-product-name="<?php echo $_data['name'] ?>" 
+         ls-brand="<?php echo $_data['brand'] ?>" 
+         ls-id-type="<?php echo $_data['idType'] ?>" 
+         ls-id="<?php echo $_data['id'] ?>">
+    </div>
+    <div id="lipscore-review-list"
+         ls-product-name="<?php echo $_data['name'] ?>" 
+         ls-brand="<?php echo $_data['brand'] ?>" 
+         ls-id-type="<?php echo $_data['idType'] ?>" 
+         ls-id="<?php echo $_data['id'] ?>">
+    </div>
+<?php } else { ?>
+    <div style="display: none !important;">Lipscore: empty product data</div>
+<?php } ?>

@@ -2,7 +2,8 @@
 class Lipscore_RatingsReviews_Block_System_Config_Form_Field_Reminderperiod
       extends Mage_Adminhtml_Block_System_Config_Form_Field
 {
-    public static $_periodSelect = 'reminder_period';
+    public static $_periodSelect  = 'reminder_period';
+    protected     $lipscoreConfig = null;
     
     public function render(Varien_Data_Form_Element_Abstract $element)
     {
@@ -34,10 +35,10 @@ class Lipscore_RatingsReviews_Block_System_Config_Form_Field_Reminderperiod
     
     public function getReminderButton()
     {
-        $url           = Mage::getModel('adminhtml/url')->getUrl('*/purchases_reminders/send');
+        $url           = $this->getReminderUrl();
         $perioSelectId = self::$_periodSelect;
         
-        $apiKey = Mage::getModel('lipscore_ratingsreviews/config')->apiKey();
+        $apiKey = $this->getLipscoreConfig()->apiKey();
         $button = $this->getLayout()->createBlock('adminhtml/widget_button')
             ->setData(array(
                 'label'     => $this->__('Send Reminders'),                
@@ -58,4 +59,35 @@ class Lipscore_RatingsReviews_Block_System_Config_Form_Field_Reminderperiod
         
         return "<p>$msg $coupons<p>";
     }
+    
+    protected function getReminderUrl()
+    {
+        $scopeParams = "section/{$this->getSection()}/website/{$this->getWebsite()}/store/{$this->getStore()}";                
+        return Mage::getModel('adminhtml/url')->getUrl("*/purchases_reminders/send/$scopeParams");
+    }
+    
+    protected function getLipscoreConfig()
+    {
+        if (!$this->lipscoreConfig) {
+            $this->lipscoreConfig = Mage::helper('lipscore_ratingsreviews/config')->getScoped(
+                $this->getWebsite(), $this->getStore()
+            );
+        }
+        return $this->lipscoreConfig;        
+    }
+    
+    protected function getSection()
+    {
+        return $this->getRequest()->getParam('section', '');
+    }
+    
+    protected function getWebsite()
+    {
+        return $this->getRequest()->getParam('website', '');
+    }
+    
+    protected function getStore()
+    {
+        return $this->getRequest()->getParam('store', '');
+    }    
 }
