@@ -1,9 +1,8 @@
 <?php
 class Lipscore_RatingsReviews_Block_System_Config_Form_Field_Reminderperiod
-      extends Mage_Adminhtml_Block_System_Config_Form_Field
+      extends Lipscore_RatingsReviews_Block_System_Config_Form_Field_Abstract
 {
     public static $_periodSelect  = 'reminder_period';
-    protected     $lipscoreConfig = null;
     
     public function render(Varien_Data_Form_Element_Abstract $element)
     {
@@ -65,29 +64,4 @@ class Lipscore_RatingsReviews_Block_System_Config_Form_Field_Reminderperiod
         $scopeParams = "section/{$this->getSection()}/website/{$this->getWebsite()}/store/{$this->getStore()}";                
         return Mage::getModel('adminhtml/url')->getUrl("*/purchases_reminders/send/$scopeParams");
     }
-    
-    protected function getLipscoreConfig()
-    {
-        if (!$this->lipscoreConfig) {
-            $this->lipscoreConfig = Mage::helper('lipscore_ratingsreviews/config')->getScoped(
-                $this->getWebsite(), $this->getStore()
-            );
-        }
-        return $this->lipscoreConfig;        
-    }
-    
-    protected function getSection()
-    {
-        return $this->getRequest()->getParam('section', '');
-    }
-    
-    protected function getWebsite()
-    {
-        return $this->getRequest()->getParam('website', '');
-    }
-    
-    protected function getStore()
-    {
-        return $this->getRequest()->getParam('store', '');
-    }    
 }

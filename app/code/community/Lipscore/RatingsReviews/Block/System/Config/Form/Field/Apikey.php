@@ -1,12 +1,13 @@
 <?php
 class Lipscore_RatingsReviews_Block_System_Config_Form_Field_Apikey
-      extends Mage_Adminhtml_Block_System_Config_Form_Field
+      extends Lipscore_RatingsReviews_Block_System_Config_Form_Field_Abstract
 {
     public function render(Varien_Data_Form_Element_Abstract $element)
     {
-        try {
-            $apiKey     = Mage::getModel('lipscore_ratingsreviews/config')->apiKey();
-            $demoApiKey = Mage::getModel('lipscore_ratingsreviews/config')->demoApiKey();
+        
+        try {            
+            $apiKey     = $this->getLipscoreConfig()->apiKey();
+            $demoApiKey = $this->getLipscoreConfig()->demoApiKey();
         } catch (Exception $e) {
             Lipscore_RatingsReviews_Logger::logException($e);
             return parent::render($element);
