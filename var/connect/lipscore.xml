@@ -1,0 +1,126 @@
+<_>
+   <form_key>0HbGBrx7QOjakYvh</form_key>
+   <name>lipscore</name>
+   <channel>community</channel>
+   <version_ids>
+      <version_ids>2</version_ids>
+   </version_ids>
+   <summary>The best new ratings and reviews extension. </summary>
+   <description>The best new ratings and reviews extension which replaces basic magento ratings and reviews functionality.
+Lipscore has a range of great features that will
+take all the hassle out of collecting product reviews, and help convert more
+visitors in to profitable customers.</description>
+   <license>Terms of use</license>
+   <license_uri>https://lipscore.com/signup</license_uri>
+   <version>1.2.17</version>
+   <stability>stable</stability>
+   <notes>Minor fix: demo API key is checked considering current configuration scope.</notes>
+   <authors>
+      <name>
+         <name>Henning Frettem</name>
+         <name>Olga Ivanova</name>
+      </name>
+      <user>
+         <user>Lipscore</user>
+         <user>oivanova</user>
+      </user>
+      <email>
+         <email>henning@lipscore.com</email>
+         <email>o.ivanova@datacrafts.io</email>
+      </email>
+   </authors>
+   <depends_php_min>5.2.13</depends_php_min>
+   <depends_php_max>6.0.0</depends_php_max>
+   <depends>
+      <package>
+         <name>
+            <name/>
+         </name>
+         <channel>
+            <channel/>
+         </channel>
+         <min>
+            <min/>
+         </min>
+         <max>
+            <max/>
+         </max>
+         <files>
+            <files>                                             </files>
+         </files>
+      </package>
+      <extension>
+         <name>
+            <name>Core</name>
+         </name>
+         <min>
+            <min/>
+         </min>
+         <max>
+            <max/>
+         </max>
+      </extension>
+   </depends>
+   <contents>
+      <target>
+         <target>magelocal</target>
+         <target>magecommunity</target>
+         <target>magedesign</target>
+         <target>magedesign</target>
+         <target>mageetc</target>
+         <target>mageskin</target>
+         <target>mageskin</target>
+         <target>mageskin</target>
+         <target>magedesign</target>
+         <target>mageskin</target>
+      </target>
+      <path>
+         <path/>
+         <path>Lipscore</path>
+         <path>frontend/base/default/template/lipscore</path>
+         <path>frontend/base/default/layout/lipscore_ratingsreviews.xml</path>
+         <path>modules/Lipscore_RatingsReviews.xml</path>
+         <path>frontend/base/default/css/lipscore.css</path>
+         <path>adminhtml/default/default/lipscore.css</path>
+         <path>adminhtml/default/default/js/lipscore.js</path>
+         <path>adminhtml/default/default/layout/lipscore_ratingsreviews.xml</path>
+         <path>frontend/base/default/js/lipscore.js</path>
+      </path>
+      <type>
+         <type>file</type>
+         <type>dir</type>
+         <type>dir</type>
+         <type>file</type>
+         <type>file</type>
+         <type>file</type>
+         <type>file</type>
+         <type>file</type>
+         <type>file</type>
+         <type>file</type>
+      </type>
+      <include>
+         <include/>
+         <include/>
+         <include/>
+         <include/>
+         <include/>
+         <include/>
+         <include/>
+         <include/>
+         <include/>
+         <include/>
+      </include>
+      <ignore>
+         <ignore/>
+         <ignore>#development.xml#</ignore>
+         <ignore/>
+         <ignore/>
+         <ignore/>
+         <ignore/>
+         <ignore/>
+         <ignore/>
+         <ignore/>
+         <ignore/>
+      </ignore>
+   </contents>
+</_>
