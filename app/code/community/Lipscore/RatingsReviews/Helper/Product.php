@@ -19,19 +19,32 @@ class Lipscore_RatingsReviews_Helper_Product extends Lipscore_RatingsReviews_Hel
         return $data;
     }
     
+    public function getIdentifier($product)
+    {
+        $idAttr = $this->_lipscoreConfig->identifierAttr();
+        return $this->_getAttributeValue($product, $idAttr);
+    }
+    
+    public function getBrand($product)
+    {
+        $brandAttr = $this->_lipscoreConfig->brandAttr();
+        return $this->_getAttributeValue($product, $brandAttr);
+    }
+    
+    public function getIdType()
+    {
+        return $this->_lipscoreConfig->identifierType();
+    }
+    
     protected function _productData(Mage_Catalog_Model_Product $product = null)
     {
         $product or $product = Mage::registry('product');
         
-        $idType    = $this->_lipscoreConfig->identifierType();
-        $idAttr    = $this->_lipscoreConfig->identifierAttr();
-        $brandAttr = $this->_lipscoreConfig->brandAttr();
-        
         return array(
             'name'   => $product->getName(),
-            'brand'  => $this->_getAttributeValue($product, $brandAttr),
-            'idType' => $idType,
-            'id'     => $this->_getAttributeValue($product, $idAttr),
+            'brand'  => $this->getBrand($product),
+            'idType' => $this->getIdType(),
+            'id'     => $this->getIdentifier($product),
             'url'    => $product->getProductUrl()
         );        
     }

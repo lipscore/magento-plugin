@@ -11,6 +11,7 @@
                 <action method="addToParentGroup"><group>detailed_info</group></action>
                 <action method="setTitle"><value>lipscore_reviews_placeholder</value></action>
             </block>
+            <block type="lipscore_ratingsreviews/catalog_product_view_richsnippet" name="lipscore.richsnippet" as="lipscore-richsnippet" template="lipscore/richsnippet.phtml"></block>
         </reference>
     </catalog_product_view>
     
