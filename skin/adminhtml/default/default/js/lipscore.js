@@ -1,11 +1,17 @@
-function sendLipscoreReminder(url, periodElementId) {
-    $periodEl = $(periodElementId);
+function sendLipscoreReminder(url) {
+    $statusEl = $('order_status');
+    $fromEl   = $('remind_from');
+    $toEl     = $('remind_to');
+    
     new Ajax.Request(url, {
         method: 'post',
-        parameters: {period: $periodEl.getValue()},
+        parameters: {
+            'status[]': $statusEl.getValue(),
+            from:       $fromEl.getValue(),
+            to:         $toEl.getValue(),
+        },
         onSuccess: function(response) {
             showReminderMessage(response);
-            $periodEl.setValue('');
         },
         onFailure: function(response) {
             showReminderMessage(response);
