@@ -126,6 +126,7 @@
                     </fields>
                 </locale>
                 
+                <!--
                 <reminder translate="label">
                     <label>Kick-start your Lipscore integration!</label>
                     <frontend_type>text</frontend_type>
@@ -146,6 +147,7 @@
                         </period>
                     </fields>                    
                 </reminder>                
+                -->
                 
                 <dashboard_link translate="label">
                     <label>Advanced settings</label>
