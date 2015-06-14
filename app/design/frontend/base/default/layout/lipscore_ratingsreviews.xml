@@ -16,15 +16,23 @@
     
     <checkout_onepage_success>
         <update handle="lipscore_common_head" />
+
         <reference name="before_body_end">
-            <block type="lipscore_ratingsreviews/purchase_onepage" name="purchase.onepage" template="lipscore/purchase/view.phtml" />
-        </reference>        
+            <block type="lipscore_ratingsreviews/purchase_onepage" 
+                name="lipscore.purchase.onepage" 
+                as="lipscore-purchase-onepage" 
+                template="lipscore/purchase/view.phtml" />
+        </reference>
     </checkout_onepage_success>
     
     <checkout_multishipping_success>
         <update handle="lipscore_common_head" />
+
         <reference name="before_body_end">
-            <block type="lipscore_ratingsreviews/purchase_multishipping" name="purchase.multishipping" template="lipscore/purchase/view.phtml" />
+            <block type="lipscore_ratingsreviews/purchase_multishipping" 
+                   name="lipscore.purchase.multishipping"
+                   as="lipscore-purchase-multishipping"
+                   template="lipscore/purchase/view.phtml" />
         </reference>        
     </checkout_multishipping_success>
     
