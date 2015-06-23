@@ -91,6 +91,17 @@ class Lipscore_RatingsReviews_Model_Observer
             $transport->setHtml($html);
         }
     }
+    
+    public function checkModuleVersion(Varien_Event_Observer $observer)
+    {
+        $moduleHelper = Mage::helper('lipscore_ratingsreviews/module');
+        if ($moduleHelper->isNewVersion()) {
+            $website = Mage::app()->getWebsite();
+            $tracker = Mage::getModel('lipscore_ratingsreviews/tracker_installation');
+            $tracker->trackUpgrade($website);
+        }
+        
+    }
 
     protected function _disableModuleOutput($moduleName)
     {
