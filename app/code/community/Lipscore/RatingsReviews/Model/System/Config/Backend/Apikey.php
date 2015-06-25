@@ -36,6 +36,11 @@ class Lipscore_RatingsReviews_Model_System_Config_Backend_Apikey extends Mage_Co
     
     protected function findSitesForTracking()
     {
+        $storeCode = $this->getStoreCode();
+        if (!empty($storeCode)) {
+            return;
+        }
+        
         $websiteCode = $this->getWebsiteCode();
         
         if ($websiteCode) {
