@@ -1,7 +1,7 @@
 document.observe("dom:loaded", function() {
     if (typeof lipscore !== 'undefined') {
         tabSelector = '.lipscore-reviews-tab';
-        if ($$(tabSelector)) {
+        if ($$(tabSelector).length > 0) {
             // show review count
             lipscore.on('review-count-set', function(data) {
                 if (data.value > 0) {
