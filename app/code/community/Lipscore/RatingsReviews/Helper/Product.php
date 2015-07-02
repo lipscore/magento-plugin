@@ -28,11 +28,12 @@ class Lipscore_RatingsReviews_Helper_Product extends Lipscore_RatingsReviews_Hel
         $brandAttr = $this->_lipscoreConfig->brandAttr();
         
         return array(
-            'name'   => $product->getName(),
-            'brand'  => $this->_getAttributeValue($product, $brandAttr),
-            'idType' => $idType,
-            'id'     => $this->_getAttributeValue($product, $idAttr),
-            'url'    => $product->getProductUrl()
+            'name'       => $product->getName(),
+            'brand'      => $this->_getAttributeValue($product, $brandAttr),
+            'idType'     => $idType,
+            'id'         => $this->_getAttributeValue($product, $idAttr),
+            'internalId' => "{$product->getId()}",
+            'url'        => $product->getProductUrl()
         );        
     }
     

@@ -148,7 +148,6 @@
             <product_identifier>
                 <type>sku</type>
                 <attr>sku</attr>
-                <brand>brand</brand>
             </product_identifier>
             <product_brand>
                 <attr>brand</attr>
