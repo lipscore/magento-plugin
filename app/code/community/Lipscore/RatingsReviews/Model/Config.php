@@ -4,7 +4,6 @@ class Lipscore_RatingsReviews_Model_Config
 {
     protected static $_systemConfigs = array(
         'coupon'     => 'lipscore_coupons/coupons/',
-        'identifier' => 'lipscore_general/product_identifier/',
         'brand'      => 'lipscore_general/product_brand/',
         'apiKey'     => 'lipscore_general/api_key/',
         'locale'     => 'lipscore_general/locale/',
@@ -74,16 +73,6 @@ class Lipscore_RatingsReviews_Model_Config
     public function brandAttr()
     {
         return $this->get('attr', 'brand');
-    }
-    
-    public function identifierType()
-    {
-        return $this->get('type', 'identifier');
-    }
-    
-    public function identifierAttr()
-    {
-        return $this->get('attr', 'identifier');
     }
     
     public function lastTrackedVersion()

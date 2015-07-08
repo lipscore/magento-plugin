@@ -54,8 +54,7 @@ class Lipscore_RatingsReviews_Helper_Reminder extends Lipscore_RatingsReviews_He
         return array(
             'name'        => $data['name'],
             'brand'       => $data['brand'],
-            'id_type'     => $data['idType'],
-            'id_values'   => array($data['id']),
+            'sku_values'  => array($data['sku']),
             'internal_id' => $data['internalId'],
             'url'         => $data['url'],
         );

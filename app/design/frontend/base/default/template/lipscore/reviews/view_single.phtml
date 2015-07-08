@@ -1,4 +1,4 @@
 <div class="lipscore-reviews-single">
-    <h2><?php echo $this->__('Reviews') ?></h2>
+    <h2><?php echo $this->getLayout()->createBlock('lipscore_ratingsreviews/review_tabtitle')->toHtml() ?></h2>
     <?php echo $this->getLayout()->createBlock('core/template', '', array('template' => 'lipscore/reviews/view.phtml'))->toHtml() ?>
 </div>
