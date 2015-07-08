@@ -1,5 +1,5 @@
 <_>
-   <form_key>SnHQcDi3k4ff8xgU</form_key>
+   <form_key>7RiEZ8Jgw4BYgvZZ</form_key>
    <name>lipscore</name>
    <channel>community</channel>
    <version_ids>
@@ -12,9 +12,11 @@ take all the hassle out of collecting product reviews, and help convert more
 visitors in to profitable customers.</description>
    <license>Terms of use</license>
    <license_uri>https://lipscore.com/signup</license_uri>
-   <version>1.2.21</version>
+   <version>1.2.22</version>
    <stability>stable</stability>
-   <notes>Tracking of Lipscore installations</notes>
+   <notes>Product identification by shop&apos;s internal product ID.
+Minor fixes.
+</notes>
    <authors>
       <name>
          <name>Henning Frettem</name>
@@ -46,7 +48,7 @@ visitors in to profitable customers.</description>
             <max/>
          </max>
          <files>
-            <files>                                                 </files>
+            <files>                                                     </files>
          </files>
       </package>
       <extension>
