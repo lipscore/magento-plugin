@@ -22,24 +22,16 @@ class Lipscore_RatingsReviews_Block_Catalog_Product_View_Richsnippet extends Mag
         $this->setRsName($product->getName());
         $this->setRsBrand($this->productHelper()->getBrand($product));
         $this->setRsDescription($product->getDescription());
-        $this->setRsImg($this->getImgUrl());
-        $this->setRsProductId($this->getProductId());
+        $this->setRsImageUrl($this->getImageUrl());
         $this->setRsPrice($this->getPrice());
         $this->setRsCurrency($this->getCurrentCurrency());
         $this->setRsAvailability($this->getAvailability());
     }
     
-    protected function getImgUrl()
+    protected function getImageUrl()
     {
         $img = Mage::helper('catalog/image')->init($this->getProduct(), 'small_image');
         return $img->resize(self::RS_IMG_SIZE, self::RS_IMG_SIZE);
-    }
-    
-    protected function getProductId()
-    {
-        $idType = $this->productHelper()->getIdType();
-        $id     = $this->productHelper()->getIdentifier($this->getProduct());
-        return "$idType:$id";
     }
     
     protected function getPrice()
@@ -75,7 +67,7 @@ class Lipscore_RatingsReviews_Block_Catalog_Product_View_Richsnippet extends Mag
             $associated  = $product->getTypeInstance(true)->getAssociatedProducts($product);
             $isAvailable = $isAvailable && count($associated);
         }
-        return $isAvailable ? 'http://schema.org/InStock' : 'http://schema.org/OutOfStock';
+        return $isAvailable ? '1' : '0';
     }
     
     protected function productHelper()

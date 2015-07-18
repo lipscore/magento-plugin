@@ -19,12 +19,6 @@ class Lipscore_RatingsReviews_Helper_Product extends Lipscore_RatingsReviews_Hel
         return $data;
     }
     
-    public function getIdentifier($product)
-    {
-        $idAttr = $this->_lipscoreConfig->identifierAttr();
-        return $this->_getAttributeValue($product, $idAttr);
-    }
-    
     public function getBrand($product)
     {
         $brandAttr = $this->_lipscoreConfig->brandAttr();
@@ -44,7 +38,7 @@ class Lipscore_RatingsReviews_Helper_Product extends Lipscore_RatingsReviews_Hel
             'name'   => $product->getName(),
             'brand'  => $this->getBrand($product),
             'idType' => $this->getIdType(),
-            'id'     => $this->getIdentifier($product),
+            'id'     => $this->_getAttributeValue($product, 'sku'),
             'url'    => $product->getProductUrl()
         );        
     }
