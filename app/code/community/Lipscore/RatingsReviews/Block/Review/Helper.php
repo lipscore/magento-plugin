@@ -10,8 +10,13 @@ class Lipscore_RatingsReviews_Block_Review_Helper extends Mage_Review_Block_Help
     
     public function getSummaryHtml($product, $templateType, $displayIfNoReviews)
     {
-        empty(self::$_availableTypes[$templateType]) and $templateType = 'short';
-    
+        try {
+            $templateType = $this->getTemplateType($templateType);
+        } catch (Exception $e) {
+            $templateType = 'short';
+            Lipscore_RatingsReviews_Logger::logException($e);
+        }
+        
         $this->setRatingType(self::$_availableTypes[$templateType]);
         $this->setProduct($product);
         
@@ -22,6 +27,22 @@ class Lipscore_RatingsReviews_Block_Review_Helper extends Mage_Review_Block_Help
         }            
     
         return $this->toHtml();
+    }
+    
+    protected function getTemplateType($templateType)
+    {
+        $layoutHandles = $this->getLayout()->getUpdate()->getHandles();
+        $isProductView = in_array('catalog_product_view', $layoutHandles);
+        
+        if ($isProductView) {
+            return 'long';
+        }        
+        
+        if (isset(self::$_availableTypes[$templateType])) {
+            return $templateType;
+        } else {
+            return 'short';
+        }        
     }
     
     protected function setWidgetAttrs($product, $templateType)
