@@ -46,4 +46,9 @@ class Lipscore_RatingsReviews_Helper_Purchase extends Lipscore_RatingsReviews_He
     {
         return Mage::getSingleton('customer/session')->getCustomer();
     }
+    
+    public function getWidget($type)
+    {
+        return $this->getLayout()->getBlock("lipscore.purchase.$type")->toHtml();
+    }
 }

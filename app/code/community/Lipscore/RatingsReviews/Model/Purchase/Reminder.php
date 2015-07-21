@@ -2,8 +2,8 @@
 
 class Lipscore_RatingsReviews_Model_Purchase_Reminder
 {
-    protected $lipscoreConfig = null;
-    protected $response       = null;
+    protected $lipscoreConfig;
+    protected $sender;
     
     const LOG_FILE = 'lipscore_reminder.log';
     
@@ -13,6 +13,10 @@ class Lipscore_RatingsReviews_Model_Purchase_Reminder
         $storeCode = isset($params['storeCode']) ? $params['storeCode'] : null;
         
         $this->lipscoreConfig = Mage::helper('lipscore_ratingsreviews/config')->getScoped($websiteCode, $storeCode);
+        $this->sender         = Mage::getModel('lipscore_ratingsreviews/api_request', array(
+            'lipscoreConfig' => $this->lipscoreConfig,
+            'path'           => 'purchases'
+        ));
     }
     
     public function send($orders)
@@ -24,31 +28,7 @@ class Lipscore_RatingsReviews_Model_Purchase_Reminder
             $data[] = $dataHelper->orderData($order);
         }
         
-        return $this->sendRequest(array('purchases' => $data));
-    }
-    
-    public function getResponseMsg()
-    {
-        return $this->response ? $this->response->__toString() : '';
-    }
-    
-    protected function sendRequest($data)
-    {
-        $apiKey = $this->lipscoreConfig->apiKey();
-        $apiUrl = Mage::getModel('lipscore_ratingsreviews/config_env')->apiUrl();
-        
-        $client = new Zend_Http_Client("http://$apiUrl/purchases?api_key=$apiKey", array(
-            'timeout' => 300
-        ));
-        $client->setRawData(json_encode($data), 'application/json')
-               ->setMethod(Zend_Http_Client::POST);
-        
-        $this->response = $client->request();
-        $result = $this->response->isSuccessful();
-        
-        $this->log($result);
-                    
-        return $result;
+        return $this->sender->send(array('purchases' => $data));
     }
     
     protected function log($isSuccessful)

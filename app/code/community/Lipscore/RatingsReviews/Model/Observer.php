@@ -78,18 +78,29 @@ class Lipscore_RatingsReviews_Model_Observer
             $html = $transport->getHtml();
             
             // set review title
-            $titleBlock = $block->getLayout()->createBlock('lipscore_ratingsreviews/review_tabTitle');
+            $titleBlock = $block->getLayout()->createBlock('lipscore_ratingsreviews/review_tabtitle');
             $html = str_replace(self::REVIEW_TITLE_PLACEHOLDER, $titleBlock->toHtml(), $html);
             
             // ensure that reviews block exists on a page
             $pos = strripos($html, 'lipscore-review-list');
             if ($pos === false) {
-                $reviewsBlock = $block->getLayout()->createBlock('core/template', '', array('template' => 'lipscore/reviews/view.phtml'));
+                $reviewsBlock = $block->getLayout()->createBlock('lipscore_ratingsreviews/review_single');
                 $html .= $reviewsBlock->toHtml();
             }
             
             $transport->setHtml($html);
         }
+    }
+    
+    public function checkModuleVersion(Varien_Event_Observer $observer)
+    {
+        $moduleHelper = Mage::helper('lipscore_ratingsreviews/module');
+        if ($moduleHelper->isNewVersion()) {
+            $website = Mage::app()->getWebsite();
+            $tracker = Mage::getModel('lipscore_ratingsreviews/tracker_installation');
+            $tracker->trackUpgrade($website);
+        }
+        
     }
 
     protected function _disableModuleOutput($moduleName)

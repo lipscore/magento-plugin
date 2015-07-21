@@ -1,2 +1,5 @@
-#reminder_period { margin: 0 20px; width: 180px; }
+.ls-reminder-label { margin-right: 10px; display: inline-block; vertical-align: middle; }
+#ls-reminder img { margin-right: 7px; }
+#ls-reminder-button { margin-left: 8px }
+#order_status {margin-right: 15px; }
 .lipscore-notice-msg { background: url(images/warning_msg_icon.gif) no-repeat; padding: 2px 0 0 20px; }

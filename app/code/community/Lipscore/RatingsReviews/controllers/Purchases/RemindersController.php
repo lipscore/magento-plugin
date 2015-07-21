@@ -19,64 +19,93 @@ class Lipscore_RatingsReviews_Purchases_RemindersController extends Mage_Adminht
         }
 
         try {
-            $this->_send();
+            $this->send();
         } catch (Exception $e) {
             Lipscore_RatingsReviews_Logger::logException($e);
-            $this->_response(false, $e->getMessage() . '\n' . $e->getTraceAsString());
+            $this->response(false, $e->getMessage() . '\n' . $e->getTraceAsString());
         }
     }
     
-    protected function _send()
+    protected function send()
     {
-        $this->_checkKey();
+        $this->checkKey();
         
-        $start = $this->_getStartDate();
+        $period   = $this->getPeriod();
+        $statuses = $this->getStatuses();
+        
         $orders = Mage::getModel('sales/order')->getCollection()
-            ->addAttributeToFilter('created_at', array('from' => $start))
-            ->addAttributeToFilter('status', array('eq' => Mage_Sales_Model_Order::STATE_COMPLETE));
+            ->addAttributeToFilter('created_at', $period)
+            ->addAttributeToFilter('status', array('in' => $statuses));
         
         $store = $this->getStore();
         if ($store) {
             $orders->addAttributeToFilter('store_id', array('eq' => $store->getId()));
         }
-        
+
         if (!count($orders)) {
-            $this->_response(false, 'No completed orders found for a selected period.');
+            $this->response(false, 'No orders found for a selected period.');
         }
         
         $sender = Mage::getModel('lipscore_ratingsreviews/purchase_reminder', array(
             'websiteCode' => $this->getWebsiteCode(),
             'storeCode'   => $this->getStoreCode()
         ));
+        
         $result = $sender->send($orders);
         if ($result) {
-            $this->_response(true, "Emails were scheduled successfully.");
+            $this->response(true, "Emails were scheduled successfully.");
         } else {
-            $this->_response(false, $sender->getResponseMsg());
+            $this->response(false, $sender->getResponseMsg());
         }    
     }
     
-    protected function _checkKey()
+    protected function checkKey()
     {
         $apiKey = $this->getLipscoreConfig()->apiKey();
         if (!$apiKey) {
-            $this->_response(false, 'You should provide your Api Key and save config.');
+            $this->response(false, 'You should provide your Api Key and save config.');
         }        
     }
     
-    protected function _getStartDate()
+    protected function getPeriod()
     {
-        $data = $this->getRequest()->getParams();
+        $data   = $this->getRequest()->getParams();
+        $format = Mage::app()->getLocale()->getDateFormat(Mage_Core_Model_Locale::FORMAT_TYPE_SHORT);
         
-        $startDate = empty($data['period']) ? false : strtotime('-' . $data['period']);        
-        if (!$startDate) {
-            $this->_response(false, 'Please select a correct period.');
+        try {
+            $startDate = empty($data['from']) ? false : new Zend_Date($data['from'], $format);        
+            $endDate   = empty($data['to']) ? false : new Zend_Date($data['to'], $format);
+        } catch (Exception $e) {
+            $startDate = false;
+            $endDate   = false;
+        }    
+        
+        $correctPeriod = $startDate && $endDate ? $startDate->compare($endDate) <= 0 : $startDate || $endDate;        
+        if (!$correctPeriod) {
+            $this->response(false, 'Please set a correct period.');
+        }
+
+        $result = array('datetime' => true);
+        if ($startDate) {
+            $result['from'] = $startDate;
+        }
+        if ($endDate) {
+            $result['to'] = $endDate;
         }
         
-        return date('Y-m-d H:i:s', $startDate);
+        return $result;
     }
     
-    protected function _response($result, $response)
+    protected function getStatuses()
+    {
+        $statuses = $this->getRequest()->getParam('status', array());
+        if (empty($statuses)) {
+            $this->response(false, 'Please select order status.');
+        }
+        return $statuses;
+    }
+    
+    protected function response($result, $response)
     {
         $body = Zend_Json::encode(array('message' => $response));
         $this->getResponse()
