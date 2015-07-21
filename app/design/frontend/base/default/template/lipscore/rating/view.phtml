@@ -1,11 +1,8 @@
-<?php $_data = $this->helper('lipscore_ratingsreviews/product')->getProductData($this->getProduct())  ?>
-<?php if ($_data) { ?>
+<?php if ($this->getLsProductAttrs()) { ?>
     <div class="ratings mg-lipscore-rating-wrapper">
-        <div <?php echo $this->getRatingType() ?>
-             ls-product-name="<?php echo $_data['name'] ?>" 
-             ls-brand="<?php echo $_data['brand'] ?>" 
-             ls-sku="<?php echo $_data['sku'] ?>"
-             ls-product-id="<?php echo $_data['internalId'] ?>">
+        <div <?php echo $this->getRatingType() ?> 
+             <?php echo $this->getLsProductAttrs() ?>
+             <?php echo $this->getRichsnippetAttrs() ?>>
         </div>
      </div>   
 <?php } else { ?>

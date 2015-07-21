@@ -50,14 +50,7 @@ class Lipscore_RatingsReviews_Helper_Reminder extends Lipscore_RatingsReviews_He
     
     protected function _productData($product)
     {
-        $data = $this->productHelper->getProductData($product);
-        return array(
-            'name'        => $data['name'],
-            'brand'       => $data['brand'],
-            'sku_values'  => array($data['sku']),
-            'internal_id' => $data['internalId'],
-            'url'         => $data['url'],
-        );
+        return $this->productHelper->getProductData($product);
     }
     
     protected function _purchaseData(Mage_Sales_Model_Order $order)
