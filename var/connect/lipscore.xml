@@ -12,10 +12,9 @@ take all the hassle out of collecting product reviews, and help convert more
 visitors in to profitable customers.</description>
    <license>Terms of use</license>
    <license_uri>https://lipscore.com/signup</license_uri>
-   <version>1.2.23</version>
+   <version>1.2.24</version>
    <stability>stable</stability>
-   <notes>Lipscore main rating widget is shown on a product page in any case.
-Product&apos;s extra information has been added to Lipscore widgets.
+   <notes>Dutch locale
 </notes>
    <authors>
       <name>
@@ -48,7 +47,7 @@ Product&apos;s extra information has been added to Lipscore widgets.
             <max/>
          </max>
          <files>
-            <files>                                                       </files>
+            <files>                                                        </files>
          </files>
       </package>
       <extension>
