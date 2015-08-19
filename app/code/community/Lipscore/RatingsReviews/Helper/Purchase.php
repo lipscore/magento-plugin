@@ -49,6 +49,11 @@ class Lipscore_RatingsReviews_Helper_Purchase extends Lipscore_RatingsReviews_He
     
     public function getWidget($type)
     {
-        return $this->getLayout()->getBlock("lipscore.purchase.$type")->toHtml();
+        $layout = $this->getLayout();
+        
+        $layout->getUpdate()->load("checkout_{$type}_success");
+        $layout->generateXml()->generateBlocks();
+        
+        return $layout->getBlock("lipscore.purchase.$type")->toHtml();
     }
 }
