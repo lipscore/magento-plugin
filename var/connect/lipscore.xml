@@ -1,5 +1,5 @@
 <_>
-   <form_key>o6vMmVyA1ixKaIRV</form_key>
+   <form_key>Eu0Di0pcsUy9M6iG</form_key>
    <name>lipscore</name>
    <channel>community</channel>
    <version_ids>
@@ -12,9 +12,9 @@ take all the hassle out of collecting product reviews, and help convert more
 visitors in to profitable customers.</description>
    <license>Terms of use</license>
    <license_uri>https://lipscore.com/signup</license_uri>
-   <version>1.2.25</version>
+   <version>1.2.26</version>
    <stability>stable</stability>
-   <notes>Now it&apos;s possible to include the lipscore purchase block in templates independently</notes>
+   <notes>Danish locale</notes>
    <authors>
       <name>
          <name>Henning Frettem</name>
@@ -46,7 +46,7 @@ visitors in to profitable customers.</description>
             <max/>
          </max>
          <files>
-            <files>                                                           </files>
+            <files>                                                              </files>
          </files>
       </package>
       <extension>

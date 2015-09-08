@@ -7,6 +7,7 @@ class Lipscore_RatingsReviews_Model_System_Config_Source_Locale
         return array(
             array('value' => 'auto', 'label' => Mage::helper('adminhtml')->__('Auto')),
             array('value' => 'cz',   'label' => Mage::helper('adminhtml')->__('Czech')),
+            array('value' => 'dk',   'label' => Mage::helper('adminhtml')->__('Danish')),
             array('value' => 'nl',   'label' => Mage::helper('adminhtml')->__('Dutch')),
             array('value' => 'en',   'label' => Mage::helper('adminhtml')->__('English')),
             array('value' => 'it',   'label' => Mage::helper('adminhtml')->__('Italian')),
