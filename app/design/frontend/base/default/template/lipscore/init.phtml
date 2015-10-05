@@ -6,9 +6,6 @@
  */
 ?>
 
-<script src="//<?php echo $this->assetsUrl ?>/<?php echo $this->getLipscoreLocale() ?>lipscore-v1.js" charset="utf-8"></script>
-<link href="//<?php echo $this->assetsUrl ?>/lipscore-v1.css" rel="stylesheet" type="text/css">
-
 <?php if ($this->lipscoreApiKey) { ?>
     <script type="text/javascript">
     //<![CDATA[
@@ -16,7 +13,12 @@
         lipscore.init({
             apiKey: "<?php echo $this->lipscoreApiKey ?>"
         });
-    };       
+    };
+    (function() {
+        var scr = document.createElement('script'); scr.async = 1;
+        scr.src = "//<?php echo $this->assetsUrl ?>/<?php echo $this->getLipscoreLocale() ?>lipscore-v1.js";
+        document.getElementsByTagName('head')[0].appendChild(scr);
+    })();
     //]]>
     </script>
 <?php } ?>
