@@ -43,7 +43,7 @@ class Lipscore_RatingsReviews_Helper_Widget extends Lipscore_RatingsReviews_Help
     {
         $attrs = array(
             'ls-description'  => $productData['description'],
-            'ls-avaialbility' => $productData['availability']
+            'ls-availability' => $productData['availability']
         );
         return $this->_toString($attrs);
     }
