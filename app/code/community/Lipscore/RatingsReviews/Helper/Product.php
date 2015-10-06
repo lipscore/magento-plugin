@@ -39,7 +39,7 @@ class Lipscore_RatingsReviews_Helper_Product extends Lipscore_RatingsReviews_Hel
         return array(
             'name'         => $product->getName(),
             'brand'        => $this->getAttributeValue($product, $brandAttr),
-            'sku_values'   => array($this->getAttributeValue($product, 'sku')),
+            'sku_values'   => array($this->getSku($product)),
             'internal_id'  => "{$product->getId()}",
             'url'          => $product->getProductUrl(),
             'image_url'    => $this->getImageUrl($product),
@@ -103,6 +103,15 @@ class Lipscore_RatingsReviews_Helper_Product extends Lipscore_RatingsReviews_Hel
     protected function getCurrency()
     {
         return Mage::app()->getStore()->getCurrentCurrencyCode();
+    }
+    
+    protected function getSku($product)
+    {
+        $sku = $product->getSku();
+        if (!$sku) {
+            $sku = Mage::getModel('catalog/product')->load($product->getId())->getSku();
+        }
+        return $sku;    
     }
     
     protected function getAttributeValue(Mage_Catalog_Model_Product $product, $attrCode)
