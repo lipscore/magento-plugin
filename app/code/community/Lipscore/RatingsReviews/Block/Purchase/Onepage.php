@@ -27,8 +27,8 @@ class Lipscore_RatingsReviews_Block_Purchase_Onepage extends Lipscore_RatingsRev
             
             $orderItems = $this->_order->getAllVisibleItems();
             foreach ($orderItems as $item) {
-                $product = Mage::getModel('catalog/product')->load($item->getProductId());
-                $productsData[] = $productHelper->getProductData($product);
+                $product = $this->_getProductFromOrderItem($item);
+                $productsData[$product->getId()] = $productHelper->getProductData($product);
             }
         }
         

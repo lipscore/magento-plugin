@@ -27,4 +27,16 @@ abstract class Lipscore_RatingsReviews_Block_Purchase_Abstract extends Mage_Core
             $this->setCouponDescription($couponHelper->getCouponDescription());
         }
     }
+    
+    protected function _getProductFromOrderItem($item)
+    {
+        $superProductConfig = $item->getBuyRequest()->getSuperProductConfig();
+        if (!empty($superProductConfig['product_id'])) {
+            $productId = $superProductConfig['product_id'];
+        } else {
+            $productId = $item->getProductId();
+        }
+
+        return Mage::getModel('catalog/product')->load($productId);
+    }
 }

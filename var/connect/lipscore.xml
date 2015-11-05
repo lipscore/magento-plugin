@@ -1,5 +1,5 @@
 <_>
-   <form_key>wCXZbg8BUVk6xKpC</form_key>
+   <form_key>KH6QHPK51GA4Mivj</form_key>
    <name>lipscore</name>
    <channel>community</channel>
    <version_ids>
@@ -12,9 +12,10 @@ take all the hassle out of collecting product reviews, and help convert more
 visitors in to profitable customers.</description>
    <license>Terms of use</license>
    <license_uri>https://lipscore.com/signup</license_uri>
-   <version>1.2.29</version>
+   <version>1.2.30</version>
    <stability>stable</stability>
-   <notes>Add SKU to Google Rich Snippets</notes>
+   <notes>Use parent product information in email reminders for grouped products.
+Fix &quot;Reviews(N)&quot; link to open Reviews tab.</notes>
    <authors>
       <name>
          <name>Henning Frettem</name>
@@ -46,7 +47,7 @@ visitors in to profitable customers.</description>
             <max/>
          </max>
          <files>
-            <files>                                                                  </files>
+            <files>                                                                   </files>
          </files>
       </package>
       <extension>
