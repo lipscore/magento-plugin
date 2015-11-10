@@ -55,7 +55,8 @@ class Lipscore_RatingsReviews_Model_Observer
         $tabs = $layout->getBlock('product.info.tabs');
         if ($tabs) {
             $tabs->addTab(
-                'lipscore.reviews', self::REVIEW_TITLE_PLACEHOLDER, 'core/template', 'lipscore/reviews/view.phtml'
+                'lipscore.reviews', self::REVIEW_TITLE_PLACEHOLDER, 'lipscore_ratingsreviews/catalog_product_reviews',
+                'lipscore/reviews/view.phtml'
             );
         }   
     }
