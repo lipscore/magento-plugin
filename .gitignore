@@ -1,3 +1,7 @@
 /*
-!/var/connect/
 !.gitignore
+
+!/var/
+/var/*
+!/var/connect/
+!/var/connect/*
