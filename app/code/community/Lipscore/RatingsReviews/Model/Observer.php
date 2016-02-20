@@ -6,6 +6,8 @@ class Lipscore_RatingsReviews_Model_Observer
     const RATING_MODULE = 'Mage_Rating';
     
     const REVIEW_TITLE_PLACEHOLDER = 'lipscore_reviews_placeholder';
+    
+    private $moduleHelper;
 
     public function __call($method, $arguments) {
         try {
@@ -22,8 +24,8 @@ class Lipscore_RatingsReviews_Model_Observer
             Mage::getConfig()->setNode($nodePath, 'true', true);
         }
         
-        $this->_disableModuleOutput(self::REVIEW_MODULE);
-        $this->_disableModuleOutput(self::RATING_MODULE);
+        $this->disableModuleOutput(self::REVIEW_MODULE);
+        $this->disableModuleOutput(self::RATING_MODULE);
         
         $nodePath = 'global/blocks/review/rewrite/helper';
         Mage::getConfig()->setNode($nodePath, 'Lipscore_RatingsReviews_Block_Review_Helper', true);
@@ -95,8 +97,7 @@ class Lipscore_RatingsReviews_Model_Observer
     
     public function checkModuleVersion(Varien_Event_Observer $observer)
     {
-        $moduleHelper = Mage::helper('lipscore_ratingsreviews/module');
-        if ($moduleHelper->isNewVersion()) {
+        if ($this->moduleHelper()->isNewVersion()) {
             $website = Mage::app()->getWebsite();
             $tracker = Mage::getModel('lipscore_ratingsreviews/tracker_installation');
             $tracker->trackUpgrade($website);
@@ -104,11 +105,19 @@ class Lipscore_RatingsReviews_Model_Observer
         
     }
 
-    protected function _disableModuleOutput($moduleName)
+    protected function disableModuleOutput($moduleName)
     {
         $outputPath = 'advanced/modules_disable_output/' . $moduleName;
         if (!Mage::getStoreConfig($outputPath)) {
             Mage::app()->getStore()->setConfig($outputPath, true);
         }
+    }
+    
+    protected function moduleHelper()
+    {
+        if (!$this->moduleHelper) {
+            $this->moduleHelper = Mage::helper('lipscore_ratingsreviews/module');
+        }
+        return $this->moduleHelper;
     }
 }

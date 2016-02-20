@@ -150,7 +150,10 @@
             </product_brand>            
             <locale>
                 <locale>auto</locale>
-            </locale>            
+            </locale>
+            <extension>
+                <enabled>1</enabled>
+            </extension>   
         </lipscore_general>
         <lipscore_coupons>
             <coupons>

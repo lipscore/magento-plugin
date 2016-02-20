@@ -84,6 +84,11 @@ class Lipscore_RatingsReviews_Model_Config
     {
         return $this->get('plugin_installation_id', 'tracking');
     }
+
+    #public function pluginInstallationId()
+    #{
+    #    return $this->get('enabled', 'general');
+    #}
     
     public function setLastTrackedVersion($value)
     {
