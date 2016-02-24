@@ -1,5 +1,5 @@
 <_>
-   <form_key>WlvvIQ4xJw86PAcA</form_key>
+   <form_key>SpKjP205DqKjRtyl</form_key>
    <name>lipscore</name>
    <channel>community</channel>
    <version_ids>
@@ -12,9 +12,9 @@ take all the hassle out of collecting product reviews, and help convert more
 visitors in to profitable customers.</description>
    <license>Terms of use</license>
    <license_uri>https://lipscore.com/signup</license_uri>
-   <version>1.2.33</version>
+   <version>1.3.0</version>
    <stability>stable</stability>
-   <notes>German locale</notes>
+   <notes>Better support for reminder emails. It&apos;s possible to select which order status triggers a reminder email.</notes>
    <authors>
       <name>
          <name>Henning Frettem</name>
@@ -46,7 +46,7 @@ visitors in to profitable customers.</description>
             <max/>
          </max>
          <files>
-            <files>                                                                      </files>
+            <files>                                                                       </files>
          </files>
       </package>
       <extension>
