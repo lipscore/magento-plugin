@@ -2,7 +2,7 @@
 
 class Lipscore_RatingsReviews_Helper_Locale extends Lipscore_RatingsReviews_Helper_Abstract
 {
-    protected static $_availableLocales = array('en', 'it', 'no', 'es', 'br', 'ru', 'se', 'cz', 'nl', 'dk', 'ja', 'de');
+    protected static $_availableLocales = array('en', 'it', 'no', 'es', 'br', 'ru', 'se', 'cz', 'nl', 'dk', 'ja', 'de', 'fi');
 
     public function getLipscoreLocale()
     {

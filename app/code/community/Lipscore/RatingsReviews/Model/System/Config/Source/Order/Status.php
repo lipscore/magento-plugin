@@ -4,7 +4,7 @@ class Lipscore_RatingsReviews_Model_System_Config_Source_Order_Status
     public function toOptionArray()
     {
         $options = array(
-            array('value' =>'', 'label' => Mage::helper('adminhtml')->__('--Please Select--'))
+            array('value' =>'', 'label' => Mage::helper('adminhtml')->__('Disable the Review Request Email'))
         );
 
         try {

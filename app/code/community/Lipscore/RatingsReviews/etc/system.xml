@@ -91,7 +91,7 @@
                 </locale>
 
                 <emails translate="label">
-                    <label>Emails</label>
+                    <label>Rewiew request emails</label>
                     <frontend_type>text</frontend_type>
                     <sort_order>400</sort_order>
                     <show_in_default>1</show_in_default>
@@ -99,6 +99,16 @@
                     <show_in_store>1</show_in_store>
                     <expanded>1</expanded>
                     <fields>
+                        <emails_text translate="label comment">
+                            <frontend_model>
+                                lipscore_ratingsreviews/system_config_form_field_emailstext
+                            </frontend_model>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </emails_text>
                         <order_status translate="label comment">
                             <label>Order status</label>
                             <comment>Send emails for orders in this status</comment>
@@ -106,7 +116,7 @@
                             <source_model>
                                 lipscore_ratingsreviews/system_config_source_order_status
                             </source_model>
-                            <sort_order>10</sort_order>
+                            <sort_order>20</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
