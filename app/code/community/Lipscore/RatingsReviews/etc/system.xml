@@ -16,7 +16,7 @@
             <show_in_default>1</show_in_default>
             <show_in_website>1</show_in_website>
             <show_in_store>1</show_in_store>
-            
+
             <groups>
                 <api_key translate="label">
                     <label>Api Key</label>
@@ -26,7 +26,7 @@
                     <show_in_website>1</show_in_website>
                     <show_in_store>1</show_in_store>
                     <expanded>1</expanded>
-                    
+
                     <fields>
                         <api_key translate="label comment">
                             <label>Api Key</label>
@@ -41,7 +41,7 @@
                         </api_key>
                     </fields>
 		        </api_key>
-		        
+
                 <product_brand translate="label">
                     <label>Product Brand</label>
                     <frontend_type>text</frontend_type>
@@ -65,11 +65,11 @@
                         </attr>
                     </fields>
                 </product_brand>
-                
+
                 <locale translate="label">
                     <label>Interface Locale</label>
                     <frontend_type>text</frontend_type>
-                    <sort_order>400</sort_order>
+                    <sort_order>500</sort_order>
                     <show_in_default>1</show_in_default>
                     <show_in_website>1</show_in_website>
                     <show_in_store>1</show_in_store>
@@ -89,7 +89,31 @@
                         </locale>
                     </fields>
                 </locale>
-                
+
+                <emails translate="label">
+                    <label>Emails</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>400</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <expanded>1</expanded>
+                    <fields>
+                        <order_status translate="label comment">
+                            <label>Order status</label>
+                            <comment>Send emails for orders in this status</comment>
+                            <frontend_type>select</frontend_type>
+                            <source_model>
+                                lipscore_ratingsreviews/system_config_source_order_status
+                            </source_model>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </order_status>
+                    </fields>
+                </emails>
+
                 <!--
                 <reminder translate="label">
                     <label>Kick-start your Lipscore integration!</label>
@@ -107,33 +131,12 @@
                             <sort_order>10</sort_order>
 		                    <show_in_default>1</show_in_default>
 		                    <show_in_website>1</show_in_website>
-		                    <show_in_store>1</show_in_store>                            
+		                    <show_in_store>1</show_in_store>
                         </period>
-                    </fields>                    
-                </reminder>                
-                -->
-                
-                <extension translate="label">
-                    <label>Extension</label>
-                    <frontend_type>text</frontend_type>
-                    <sort_order>500</sort_order>
-                    <show_in_default>1</show_in_default>
-                    <show_in_website>1</show_in_website>
-                    <show_in_store>1</show_in_store>
-                    <expanded>1</expanded>
-                    <fields>
-                        <enabled translate="label comment">
-                            <label>Enabled</label>
-                            <comment></comment>
-                            <frontend_type>checkbox</frontend_type>
-                            <sort_order>10</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                        </enabled>
                     </fields>
-                </extension>
-                
+                </reminder>
+                -->
+
                 <dashboard_link translate="label">
                     <label>Advanced settings</label>
                     <frontend_model>lipscore_ratingsreviews/system_config_form_fieldset_dashboardlink</frontend_model>
@@ -143,10 +146,10 @@
                     <show_in_website>1</show_in_website>
                     <show_in_store>1</show_in_store>
                     <expanded>1</expanded>
-                </dashboard_link>                
+                </dashboard_link>
             </groups>
         </lipscore_general>
-        
+
         <lipscore_coupons>
             <label>Coupons</label>
             <tab>lipscore</tab>
@@ -156,7 +159,7 @@
             <show_in_default>1</show_in_default>
             <show_in_website>1</show_in_website>
             <show_in_store>1</show_in_store>
-            
+
             <groups>
                 <coupons translate="label">
                     <label>Coupons</label>
@@ -166,7 +169,7 @@
                     <show_in_website>1</show_in_website>
                     <show_in_store>1</show_in_store>
                     <expanded>1</expanded>
-                    
+
                     <fields>
                         <rule_id translate="label comment">
                             <label>Price Rule</label>
@@ -238,8 +241,8 @@
                     <show_in_website>1</show_in_website>
                     <show_in_store>1</show_in_store>
                     <expanded>1</expanded>
-                </coupons_warning>                
+                </coupons_warning>
             </groups>
         </lipscore_coupons>
-    </sections>    
+    </sections>
 </config>

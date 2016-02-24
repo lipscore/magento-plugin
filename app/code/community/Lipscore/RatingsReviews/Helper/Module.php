@@ -3,38 +3,48 @@
 class Lipscore_RatingsReviews_Helper_Module extends Lipscore_RatingsReviews_Helper_Abstract
 {
     const MODULE_NAME = 'Lipscore_RatingsReviews';
-    
+
     public function getVersion()
     {
         return (string) Mage::getConfig()->getNode('modules/Lipscore_RatingsReviews/version');
     }
-    
+
     public function isNewVersion()
     {
         $website        = Mage::app()->getWebsite();
         $lipscoreConfig = Mage::getModel('lipscore_ratingsreviews/config', array('website' => $website));
         $oldVersion     = (string) $lipscoreConfig->lastTrackedVersion();
         $newVersion     = $this->getVersion();
-        
+
         return strcmp($oldVersion, $newVersion) < 0;
     }
-    
-    public function isActive()
+
+    public function isLipscoreActive()
     {
-        return $this->isModuleEnabled() && $this->isOutputEnabled() && $this->isEnabledByConfig();
+        try {
+            return $this->isLipscoreModuleEnabled() && $this->isLipscoreOutputEnabled();
+        } catch (Exception $e) {
+            Lipscore_RatingsReviews_Logger::logException($e);
+            return false;
+        }
     }
-    
-    public function isModuleEnabled()
+
+    public function isLipscoreModuleEnabled()
     {
-        return Mage::helper('core/data')->isModuleEnabled(self::MODULE_NAME) && $this->isEnabledByConfig();
+        try {
+            return $this->isModuleEnabled(self::MODULE_NAME) && $this->isLipscoreEnabledByConfig();
+        } catch (Exception $e) {
+            Lipscore_RatingsReviews_Logger::logException($e);
+            return false;
+        }
     }
-    
-    public function isOutputEnabled()
+
+    protected function isLipscoreOutputEnabled()
     {
-        return Mage::helper('core')->isModuleOutputEnabled(self::MODULE_NAME) && $this->isEnabledByConfig();
+        return $this->isModuleOutputEnabled(self::MODULE_NAME) && $this->isLipscoreEnabledByConfig();
     }
-    
-    public function isEnabledByConfig()
+
+    protected function isLipscoreEnabledByConfig()
     {
         #return $this->_lipscoreConfig->enabled();
         return true;

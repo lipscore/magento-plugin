@@ -14,7 +14,7 @@
             <version>1.2.33.0</version>
         </Lipscore_RatingsReviews>
     </modules>
-    
+
     <global>
         <cache>
             <types>
@@ -25,7 +25,7 @@
                 </config_api>
             </types>
         </cache>
-    
+
         <blocks>
             <lipscore_ratingsreviews>
                 <class>Lipscore_RatingsReviews_Block</class>
@@ -41,24 +41,24 @@
 	            </rewrite>
 	        </catalog>
         </blocks>
-        
+
         <models>
             <lipscore_ratingsreviews>
                 <class>Lipscore_RatingsReviews_Model</class>
             </lipscore_ratingsreviews>
         </models>
-        
+
         <helpers>
             <lipscore_ratingsreviews>
                 <class>Lipscore_RatingsReviews_Helper</class>
             </lipscore_ratingsreviews>
         </helpers>
-        
+
         <events>
             <controller_action_layout_load_before>
                 <observers>
                     <lipscore_ratingsreviews>
-                        <class>lipscore_ratingsreviews/observer</class>
+                        <class>lipscore_ratingsreviews/observer_output</class>
                         <method>manageMageReviewModule</method>
                     </lipscore_ratingsreviews>
                 </observers>
@@ -66,7 +66,7 @@
             <catalog_product_collection_load_after>
                 <observers>
                     <lipscore_ratingsreviews>
-                        <class>lipscore_ratingsreviews/observer</class>
+                        <class>lipscore_ratingsreviews/observer_output</class>
                         <method>addRatings</method>
                     </lipscore_ratingsreviews>
                 </observers>
@@ -74,7 +74,7 @@
             <controller_action_layout_generate_blocks_after>
                 <observers>
                     <lipscore_ratingsreviews>
-                        <class>lipscore_ratingsreviews/observer</class>
+                        <class>lipscore_ratingsreviews/observer_output</class>
                         <method>addReviewsTab</method>
                     </lipscore_ratingsreviews>
                 </observers>
@@ -82,7 +82,7 @@
             <core_block_abstract_to_html_after>
                 <observers>
                     <lipscore_ratingsreviews>
-                        <class>lipscore_ratingsreviews/observer</class>
+                        <class>lipscore_ratingsreviews/observer_output</class>
                         <method>addReviewsFeatures</method>
                     </lipscore_ratingsreviews>
                 </observers>
@@ -90,22 +90,38 @@
             <http_response_send_before>
                 <observers>
                     <lipscore_ratingsreviews>
-                        <class>lipscore_ratingsreviews/observer</class>
-                        <method>checkModuleVersion</method>
+                        <class>lipscore_ratingsreviews/observer_module</class>
+                        <method>checkVersion</method>
                     </lipscore_ratingsreviews>
                 </observers>
             </http_response_send_before>
+            <sales_order_load_after>
+                <observers>
+                    <lipscore_ratingsreviews>
+                        <class>lipscore_ratingsreviews/observer_order_status</class>
+                        <method>fetch</method>
+                    </lipscore_ratingsreviews>
+                </observers>
+            </sales_order_load_after>
+            <sales_order_save_after>
+                <observers>
+                    <lipscore_ratingsreviews>
+                        <class>lipscore_ratingsreviews/observer_order_status</class>
+                        <method>check</method>
+                    </lipscore_ratingsreviews>
+                </observers>
+            </sales_order_save_after>
         </events>
-        
+
         <resources>
             <lipscore_ratingsreviews_setup>
                 <setup>
                     <module>Lipscore_RatingsReviews</module>
                 </setup>
             </lipscore_ratingsreviews_setup>
-        </resources> 
+        </resources>
     </global>
-    
+
 	<admin>
 	     <routers>
             <adminhtml>
@@ -117,8 +133,8 @@
                 </args>
             </adminhtml>
 	     </routers>
-	</admin>    
-    
+	</admin>
+
     <frontend>
         <layout>
             <updates>
@@ -138,7 +154,7 @@
             </updates>
         </layout>
     </adminhtml>
-    
+
     <default>
         <lipscore_general>
             <api_key>
@@ -147,13 +163,13 @@
             </api_key>
             <product_brand>
                 <attr>brand</attr>
-            </product_brand>            
+            </product_brand>
             <locale>
                 <locale>auto</locale>
             </locale>
-            <extension>
-                <enabled>1</enabled>
-            </extension>   
+            <emails>
+                <order_status>pending</order_status>
+            </emails>
         </lipscore_general>
         <lipscore_coupons>
             <coupons>

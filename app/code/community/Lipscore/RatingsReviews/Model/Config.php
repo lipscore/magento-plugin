@@ -2,17 +2,20 @@
 
 class Lipscore_RatingsReviews_Model_Config
 {
+    const DEFAULT_SINGLE_REMINDER_TIMEOUT = 10;
+
     protected static $_systemConfigs = array(
-        'coupon'     => 'lipscore_coupons/coupons/',
-        'brand'      => 'lipscore_general/product_brand/',
-        'apiKey'     => 'lipscore_general/api_key/',
-        'locale'     => 'lipscore_general/locale/',
-        'tracking'   => 'lipscore_plugin/'
+        'coupon'   => 'lipscore_coupons/coupons/',
+        'brand'    => 'lipscore_general/product_brand/',
+        'apiKey'   => 'lipscore_general/api_key/',
+        'locale'   => 'lipscore_general/locale/',
+        'emails'   => 'lipscore_general/emails/',
+        'tracking' => 'lipscore_plugin/',
     );
-    
+
     protected $store   = null;
     protected $website = null;
-    
+
     public function __construct($params = array())
     {
         !empty($params['store'])   and $this->store   = $params['store'];
@@ -24,13 +27,13 @@ class Lipscore_RatingsReviews_Model_Config
         $key = $this->getKey($param, $type);
         return $this->getMageConfig($key);
     }
-    
+
     public function set($param, $type, $value)
     {
         $key = $this->getKey($param, $type);
         return $this->setMageConfig($key, $value);
     }
-    
+
     public function getMageConfig($path)
     {
         if ($this->store) {
@@ -39,7 +42,7 @@ class Lipscore_RatingsReviews_Model_Config
         if ($this->website) {
             return $this->website->getConfig($path);
         }
-        return Mage::getStoreConfig($path);        
+        return Mage::getStoreConfig($path);
     }
 
     public function setMageConfig($path, $value)
@@ -53,48 +56,54 @@ class Lipscore_RatingsReviews_Model_Config
             $scopeId = $store->getId();
         }
         return Mage::getConfig()->saveConfig($path, $value, $scope, $scopeId);
-    }    
-    
+    }
+
     public function apiKey()
     {
         return $this->get('api_key', 'apiKey');
     }
-    
+
     public function demoApiKey()
     {
         return $this->get('demo_api_key', 'apiKey');
     }
-    
+
     public function locale()
     {
         return $this->get('locale', 'locale');
     }
-    
+
     public function brandAttr()
     {
         return $this->get('attr', 'brand');
     }
-    
+
     public function lastTrackedVersion()
     {
         return $this->get('last_tracked_version', 'tracking');
     }
-    
+
     public function pluginInstallationId()
     {
         return $this->get('plugin_installation_id', 'tracking');
     }
 
-    #public function pluginInstallationId()
-    #{
-    #    return $this->get('enabled', 'general');
-    #}
-    
+    public function singleReminderTimeout()
+    {
+        $timeout = getenv('SINGLE_REMINDER_TIMEOUT');
+        return $timeout ? $timeout : static::DEFAULT_SINGLE_REMINDER_TIMEOUT;
+    }
+
+    public function singleReminderStatus()
+    {
+        return $this->get('order_status', 'emails');
+    }
+
     public function setLastTrackedVersion($value)
     {
         return $this->set('last_tracked_version', 'tracking', $value);
     }
-    
+
     public function setPluginInstallationId($value)
     {
         return $this->set('plugin_installation_id', 'tracking', $value);
