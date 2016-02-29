@@ -2,16 +2,9 @@
 
 class Lipscore_RatingsReviews_Model_Observer_Order_Status extends Lipscore_RatingsReviews_Model_Observer_Abstract
 {
-    public function fetch(Varien_Event_Observer $observer)
-    {
-        try {
-            $this->_fetch($observer);
-        } catch (Exception $e) {
-            Lipscore_RatingsReviews_Logger::logException($e);
-        }
-    }
+    protected static $logFile = 'observer_status';
 
-    private function _fetch(Varien_Event_Observer $observer)
+    protected function fetch(Varien_Event_Observer $observer)
     {
         $this->log(date('Y-m-d H:i:s') . ' start fetch');
         $order = $observer->getEvent()->getOrder();
@@ -23,16 +16,7 @@ class Lipscore_RatingsReviews_Model_Observer_Order_Status extends Lipscore_Ratin
         }
     }
 
-    public function check(Varien_Event_Observer $observer)
-    {
-        try {
-            $this->_check($observer);
-        } catch (Exception $e) {
-            Lipscore_RatingsReviews_Logger::logException($e);
-        }
-    }
-
-    private function _check(Varien_Event_Observer $observer)
+    protected function check(Varien_Event_Observer $observer)
     {
         $this->log(date('Y-m-d H:i:s') . ' start check');
         $order = $observer->getEvent()->getOrder();
@@ -103,8 +87,8 @@ class Lipscore_RatingsReviews_Model_Observer_Order_Status extends Lipscore_Ratin
         return Mage::helper('lipscore_ratingsreviews/config')->getScoped(null, $storeId);
     }
 
-    private function log($message)
+    protected function methodAvailable($method)
     {
-        //file_put_contents(Mage::getBaseDir('var') . '/log/order_status.log', print_r($message, true) . "\n", FILE_APPEND);
+        return $this->moduleHelper->isLipscoreModuleEnabled();
     }
 }

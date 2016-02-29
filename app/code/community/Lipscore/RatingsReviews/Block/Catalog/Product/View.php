@@ -13,6 +13,6 @@ class Lipscore_RatingsReviews_Block_Catalog_Product_View extends Mage_Catalog_Bl
     public function getReviewsSummaryHtml(Mage_Catalog_Model_Product $product, $templateType = false,
         $displayIfNoReviews = false)
     {
-        return parent::getReviewsSummaryHtml($product, 'long', $displayIfNoReviews);
-    }    
+        return parent::getReviewsSummaryHtml($product, 'long', true);
+    }
 }

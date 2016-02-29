@@ -39,14 +39,18 @@ class Lipscore_RatingsReviews_Helper_Module extends Lipscore_RatingsReviews_Help
         }
     }
 
-    protected function isLipscoreOutputEnabled()
+    public function isLipscoreOutputEnabled()
     {
-        return $this->isModuleOutputEnabled(self::MODULE_NAME) && $this->isLipscoreEnabledByConfig();
+        try {
+            return $this->isModuleOutputEnabled(self::MODULE_NAME) && $this->isLipscoreEnabledByConfig();
+        } catch (Exception $e) {
+            Lipscore_RatingsReviews_Logger::logException($e);
+            return false;
+        }
     }
 
     protected function isLipscoreEnabledByConfig()
     {
-        #return $this->_lipscoreConfig->enabled();
-        return true;
+        return $this->_lipscoreConfig->isModuleActive();
     }
 }

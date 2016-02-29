@@ -7,16 +7,7 @@ class Lipscore_RatingsReviews_Model_Observer_Output extends Lipscore_RatingsRevi
 
     const REVIEW_TITLE_PLACEHOLDER = 'lipscore_reviews_placeholder';
 
-    public function manageMageReviewModule(Varien_Event_Observer $observer)
-    {
-        try {
-            $this->_manageMageReviewModule($observer);
-        } catch (Exception $e) {
-            Lipscore_RatingsReviews_Logger::logException($e);
-        }
-    }
-
-    protected function _manageMageReviewModule(Varien_Event_Observer $observer)
+    protected function manageMageReviewModule(Varien_Event_Observer $observer)
     {
         if (!Mage::helper('core/data')->isModuleEnabled(self::REVIEW_MODULE)) {
             $nodePath = 'modules/' . self::REVIEW_MODULE . '/active';
@@ -33,16 +24,7 @@ class Lipscore_RatingsReviews_Model_Observer_Output extends Lipscore_RatingsRevi
         Mage::getConfig()->setNode($nodePath, 'Lipscore_RatingsReviews_Block_Catalog_Product_View', true);
     }
 
-    public function addRatings(Varien_Event_Observer $observer)
-    {
-        try {
-            $this->_addRatings($observer);
-        } catch (Exception $e) {
-            Lipscore_RatingsReviews_Logger::logException($e);
-        }
-    }
-
-    protected function _addRatings(Varien_Event_Observer $observer)
+    protected function addRatings(Varien_Event_Observer $observer)
     {
         $collection = $observer->getEvent()->getCollection();
         if ($collection->count()) {
@@ -54,16 +36,7 @@ class Lipscore_RatingsReviews_Model_Observer_Output extends Lipscore_RatingsRevi
         return $this;
     }
 
-    public function addReviewsTab(Varien_Event_Observer $observer)
-    {
-        try {
-            $this->_addReviewsTab($observer);
-        } catch (Exception $e) {
-            Lipscore_RatingsReviews_Logger::logException($e);
-        }
-    }
-
-    protected function _addReviewsTab(Varien_Event_Observer $observer)
+    protected function addReviewsTab(Varien_Event_Observer $observer)
     {
         $layout = $observer->getEvent()->getLayout();
 
@@ -80,16 +53,7 @@ class Lipscore_RatingsReviews_Model_Observer_Output extends Lipscore_RatingsRevi
         }
     }
 
-    public function addReviewsFeatures(Varien_Event_Observer $observer)
-    {
-        try {
-            $this->_addReviewsFeatures($observer);
-        } catch (Exception $e) {
-            Lipscore_RatingsReviews_Logger::logException($e);
-        }
-    }
-
-    protected function _addReviewsFeatures(Varien_Event_Observer $observer)
+    protected function addReviewsFeatures(Varien_Event_Observer $observer)
     {
         $block  = $observer->getBlock();
         $layout = $block->getLayout();
@@ -121,11 +85,8 @@ class Lipscore_RatingsReviews_Model_Observer_Output extends Lipscore_RatingsRevi
         }
     }
 
-    protected function disableModuleOutput($moduleName)
+    protected function methodAvailable($method)
     {
-        $outputPath = 'advanced/modules_disable_output/' . $moduleName;
-        if (!Mage::getStoreConfig($outputPath)) {
-            Mage::app()->getStore()->setConfig($outputPath, true);
-        }
+        return $this->moduleHelper->isLipscoreActive();
     }
 }

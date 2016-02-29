@@ -30,16 +30,6 @@
             <lipscore_ratingsreviews>
                 <class>Lipscore_RatingsReviews_Block</class>
             </lipscore_ratingsreviews>
-            <review>
-                <rewrite>
-                    <helper>Lipscore_RatingsReviews_Block_Review_Helper</helper>
-                </rewrite>
-            </review>
-            <catalog>
-	            <rewrite>
-	                <product_view>Lipscore_RatingsReviews_Block_Catalog_Product_View</product_view>
-	            </rewrite>
-	        </catalog>
         </blocks>
 
         <models>
@@ -55,6 +45,18 @@
         </helpers>
 
         <events>
+            <controller_action_predispatch>
+                <observers>
+                    <lipscore_ratingsreviews_output>
+                        <class>lipscore_ratingsreviews/observer_module</class>
+                        <method>disableOutput</method>
+                    </lipscore_ratingsreviews_output>
+                    <lipscore_ratingsreviews_version>
+                        <class>lipscore_ratingsreviews/observer_module</class>
+                        <method>checkVersion</method>
+                    </lipscore_ratingsreviews_version>
+                </observers>
+            </controller_action_predispatch>
             <controller_action_layout_load_before>
                 <observers>
                     <lipscore_ratingsreviews>
@@ -87,14 +89,6 @@
                     </lipscore_ratingsreviews>
                 </observers>
             </core_block_abstract_to_html_after>
-            <http_response_send_before>
-                <observers>
-                    <lipscore_ratingsreviews>
-                        <class>lipscore_ratingsreviews/observer_module</class>
-                        <method>checkVersion</method>
-                    </lipscore_ratingsreviews>
-                </observers>
-            </http_response_send_before>
             <sales_order_load_after>
                 <observers>
                     <lipscore_ratingsreviews>
@@ -127,7 +121,9 @@
             <adminhtml>
                 <args>
                     <modules>
-                        <lipscore_ratingsreviews after="Mage_Adminhtml">Lipscore_RatingsReviews</lipscore_ratingsreviews>
+                        <lipscore_ratingsreviews after="Mage_Adminhtml">
+                            Lipscore_RatingsReviews
+                        </lipscore_ratingsreviews>
                     </modules>
                     <frontName>lipscore</frontName>
                 </args>
@@ -170,6 +166,9 @@
             <emails>
                 <order_status>pending</order_status>
             </emails>
+            <module>
+                <active>1</active>
+            </module>
         </lipscore_general>
         <lipscore_coupons>
             <coupons>

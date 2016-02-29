@@ -2,21 +2,29 @@
 
 class Lipscore_RatingsReviews_Model_Observer_Module extends Lipscore_RatingsReviews_Model_Observer_Abstract
 {
-    public function checkVersion(Varien_Event_Observer $observer)
-    {
-        try {
-            $this->_checkVersion($observer);
-        } catch (Exception $e) {
-            Lipscore_RatingsReviews_Logger::logException($e);
-        }
-    }
+    const MODULE = 'Lipscore_RatingsReviews';
 
-    private function _checkVersion(Varien_Event_Observer $observer)
+    protected function checkVersion(Varien_Event_Observer $observer)
     {
         if ($this->moduleHelper->isNewVersion()) {
             $website = Mage::app()->getWebsite();
             $tracker = Mage::getModel('lipscore_ratingsreviews/tracker_installation');
             $tracker->trackUpgrade($website);
         }
+    }
+
+    protected function disableOutput(Varien_Event_Observer $observer)
+    {
+        if (!$this->moduleHelper->isLipscoreOutputEnabled()) {
+            $this->disableModuleOutput(self::MODULE);
+        }
+    }
+
+    protected function methodAvailable($method)
+    {
+        if ($method == 'disableOutput') {
+            return true;
+        }
+        return $this->moduleHelper->isLipscoreModuleEnabled();
     }
 }

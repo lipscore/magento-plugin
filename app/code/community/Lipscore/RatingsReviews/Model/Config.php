@@ -10,6 +10,7 @@ class Lipscore_RatingsReviews_Model_Config
         'apiKey'   => 'lipscore_general/api_key/',
         'locale'   => 'lipscore_general/locale/',
         'emails'   => 'lipscore_general/emails/',
+        'module'   => 'lipscore_general/module/',
         'tracking' => 'lipscore_plugin/',
     );
 
@@ -97,6 +98,11 @@ class Lipscore_RatingsReviews_Model_Config
     public function singleReminderStatus()
     {
         return $this->get('order_status', 'emails');
+    }
+
+    public function isModuleActive()
+    {
+        return $this->get('active', 'module');
     }
 
     public function setLastTrackedVersion($value)
