@@ -7,17 +7,27 @@ class Lipscore_RatingsReviews_Purchases_RemindersController extends Mage_Adminht
     public function preDispatch()
     {
         Mage::setIsDeveloperMode(true);
-        parent::preDispatch();
-    }
-
-    public function sendAction()
-    {
         if (!$this->getRequest()->isAjax()) {
             Lipscore_RatingsReviews_Logger::logException(new Exception('Non-ajax request to sending reminders action'));
             $this->_forward('noRoute');
             return;
         }
+        parent::preDispatch();
+    }
 
+    public function previewAction()
+    {
+        try {
+            $this->preview();
+        } catch (Exception $e) {
+            Lipscore_RatingsReviews_Logger::logException($e);
+            $this->response(false, $e->getMessage() . '\n' . $e->getTraceAsString());
+        }
+    }
+
+    public function sendAction()
+    {
+        return false;
         try {
             $this->send();
         } catch (Exception $e) {
@@ -26,9 +36,32 @@ class Lipscore_RatingsReviews_Purchases_RemindersController extends Mage_Adminht
         }
     }
 
+    protected function preview()
+    {
+        $period   = $this->getPeriod();
+        $statuses = $this->getStatuses();
+        $stores   = $this->getStores();
+
+        $data = array();
+
+        foreach ($stores as $key => $store) {
+            $orders = $this->getOrders($store, $period, $statuses)->getSize();
+            $config = Mage::helper('lipscore_ratingsreviews/config')->getScoped($store->getWebsite(), $store);
+            $data[] = array(
+                'website' => $store->getWebsite()->getName(),
+                'name'    => $store->getName(),
+                'group'   => $store->getGroup(),
+                'demo'    => $config->isDemoKey(),
+                'orders'  => $orders
+            );
+        }
+        $this->response(true, $data);
+    }
+
     protected function send()
     {
-        $this->checkKey();
+        //$this->checkKey();
+        $stores = $this->getStores();
 
         $period   = $this->getPeriod();
         $statuses = $this->getStatuses();
@@ -100,7 +133,7 @@ class Lipscore_RatingsReviews_Purchases_RemindersController extends Mage_Adminht
     {
         $statuses = $this->getRequest()->getParam('status', array());
         if (empty($statuses)) {
-            $this->response(false, 'Please select order status.');
+            $this->response(false, 'Please select order status(es).');
         }
         return $statuses;
     }
@@ -132,12 +165,32 @@ class Lipscore_RatingsReviews_Purchases_RemindersController extends Mage_Adminht
         return $this->lipscoreConfig;
     }
 
-    protected function getStore()
+    protected function getOrders($store, $period, $statuses)
     {
-        $code = $this->getStoreCode();
-        if ($code) {
-            return Mage::getModel('core/store')->load($code);
+        $orders = Mage::getModel('sales/order')->getCollection()
+            ->addAttributeToFilter('created_at', $period)
+            ->addAttributeToFilter('status', array('in' => $statuses))
+            ->addAttributeToFilter('store_id', array('eq' => $store->getId()));
+    }
+
+    protected function getStores()
+    {
+        $stores = array();
+
+        $websiteCode = $this->getWebsiteCode();
+        $storeCode   = $this->getStoreCode();
+
+        if ($storeCode) {
+            $store = Mage::getModel('core/store')->load($storeCode);
+            $stores = array($store);
+        } elseif ($websiteCode) {
+            $website = Mage::getModel('core/website')->load($websiteCode);
+            $stores = $website->getStores();
+        } else {
+            $stores = Mage::app()->getStores();
         }
+
+        return $stores ? $stores : array();
     }
 
     protected function getWebsiteCode()

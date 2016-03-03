@@ -105,6 +105,13 @@ class Lipscore_RatingsReviews_Model_Config
         return $this->get('active', 'module');
     }
 
+    public function isDemoKey()
+    {
+        $currentKey = $this->apiKey();
+        $demokey    = $this->demoApiKey();
+        return $currentKey == $demokey;
+    }
+
     public function setLastTrackedVersion($value)
     {
         return $this->set('last_tracked_version', 'tracking', $value);

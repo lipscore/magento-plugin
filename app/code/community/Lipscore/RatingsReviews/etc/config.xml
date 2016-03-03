@@ -121,9 +121,7 @@
             <adminhtml>
                 <args>
                     <modules>
-                        <lipscore_ratingsreviews after="Mage_Adminhtml">
-                            Lipscore_RatingsReviews
-                        </lipscore_ratingsreviews>
+                        <lipscore_ratingsreviews after="Mage_Adminhtml">Lipscore_RatingsReviews</lipscore_ratingsreviews>
                     </modules>
                     <frontName>lipscore</frontName>
                 </args>
