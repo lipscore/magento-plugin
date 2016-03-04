@@ -105,6 +105,6 @@ class Lipscore_RatingsReviews_Model_Observer_Order_Status extends Lipscore_Ratin
 
     private function log($message)
     {
-        //file_put_contents(Mage::getBaseDir('var') . '/log/order_status.log', print_r($message, true) . "\n", FILE_APPEND);
+        //file_put_contents(Mage::getBaseDir('var') . DS . 'log' . DS . 'order_status.log', print_r($message, true) . "\n", FILE_APPEND);
     }
 }
