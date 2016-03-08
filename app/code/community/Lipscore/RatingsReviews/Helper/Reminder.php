@@ -63,7 +63,7 @@ class Lipscore_RatingsReviews_Helper_Reminder extends Lipscore_RatingsReviews_He
             'buyer_name'       => $name,
             'discount_descr'   => $coupon ? $this->couponHelper->getCouponDescription() : '',
             'discount_voucher' => $coupon ? $coupon->getCode() : '',
-            'purchased_at'     => (int) $order->getCreatedAtDate()->get(),
+            'purchased_at'     => time(),
             'lang'             => $lang
         );
     }
