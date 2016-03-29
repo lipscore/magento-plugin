@@ -64,9 +64,7 @@ class Lipscore_RatingsReviews_Helper_Product extends Lipscore_RatingsReviews_Hel
         $url = '';
         try {
             $url = (string) Mage::helper('catalog/image')->init($product, 'image');
-        } catch (Exception $e) {
-            Mage::logException($e);
-        }
+        } catch (Exception $e) {}
         return $url;
     }
 

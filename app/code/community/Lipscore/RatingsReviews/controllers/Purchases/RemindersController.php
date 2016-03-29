@@ -2,7 +2,7 @@
 
 class Lipscore_RatingsReviews_Purchases_RemindersController extends Mage_Adminhtml_Controller_Action
 {
-    protected $lipscoreConfig = null;
+    protected $kickstartHelper;
 
     public function preDispatch()
     {
@@ -21,18 +21,17 @@ class Lipscore_RatingsReviews_Purchases_RemindersController extends Mage_Adminht
             $this->preview();
         } catch (Exception $e) {
             Lipscore_RatingsReviews_Logger::logException($e);
-            $this->response(false, $e->getMessage() . '\n' . $e->getTraceAsString());
+            $this->response(false, $e->getMessage() . "\n" . $e->getTraceAsString());
         }
     }
 
     public function sendAction()
     {
-        return false;
         try {
             $this->send();
         } catch (Exception $e) {
             Lipscore_RatingsReviews_Logger::logException($e);
-            $this->response(false, $e->getMessage() . '\n' . $e->getTraceAsString());
+            $this->response(false, $e->getMessage() . "\n" . $e->getTraceAsString());
         }
     }
 
@@ -40,70 +39,93 @@ class Lipscore_RatingsReviews_Purchases_RemindersController extends Mage_Adminht
     {
         $period   = $this->getPeriod();
         $statuses = $this->getStatuses();
-        $stores   = $this->getStores();
 
-        $data = array();
-
-        foreach ($stores as $key => $store) {
-            $orders = $this->getOrders($store, $period, $statuses)->getSize();
-            $config = Mage::helper('lipscore_ratingsreviews/config')->getScoped($store->getWebsite(), $store);
-            $data[] = array(
-                'website' => $store->getWebsite()->getName(),
-                'name'    => $store->getName(),
-                'group'   => $store->getGroup(),
-                'demo'    => $config->isDemoKey(),
-                'orders'  => $orders
-            );
+        $statusNames = array();
+        foreach ($statuses as $key => $statusCode) {
+            $statusNames[] = Mage::getSingleton('sales/order_config')->getStatusLabel($statusCode);
         }
-        $this->response(true, $data);
+        $format = $this->kickstartHelper()->dateFormat();
+
+        $results = array(
+            'statuses' => $statusNames,
+            'from'     => $period['from']->toString($format),
+            'to'       => $period['to']->toString($format),
+            'stores'   => array()
+        );
+
+        $stores = $this->getStores();
+        foreach ($stores as $key => $store) {
+            $storeName = $store->getName();
+            $config = $this->config($store);
+            if (!$config->apiKey()) {
+                $results['stores'][] = $this->kickstartHelper()->resultData($storeName, 0, 'invalid_key');
+                continue;
+            }
+            if ($config->isDemoKey()) {
+                $results['stores'][] = $this->kickstartHelper()->resultData($storeName, 0, 'demo_key');
+                continue;
+            }
+            $storeOrders = $this->kickstartHelper()->getOrders($store, $period, $statuses);
+            $ordersCount = count($storeOrders);
+            if ($ordersCount) {
+                $results['stores'][] = $this->kickstartHelper()->resultData($storeName, $ordersCount, null);
+            } else {
+                $results['stores'][] = $this->kickstartHelper()->resultData($storeName, 0, 'no_orders');
+            }
+        }
+        if ($results) {
+            $this->response(true, $results);
+        } else {
+            $this->response(false, 'No orders found.');
+        }
     }
 
     protected function send()
     {
-        //$this->checkKey();
-        $stores = $this->getStores();
-
         $period   = $this->getPeriod();
         $statuses = $this->getStatuses();
 
-        $orders = Mage::getModel('sales/order')->getCollection()
-            ->addAttributeToFilter('created_at', $period)
-            ->addAttributeToFilter('status', array('in' => $statuses));
+        $results = array();
+        $foundStores  = array();
 
-        $store = $this->getStore();
-        if ($store) {
-            $orders->addAttributeToFilter('store_id', array('eq' => $store->getId()));
+        $stores = $this->getStores();
+        foreach ($stores as $key => $store) {
+            $storeName = $store->getName();
+            $config = $this->config($store);
+            if (!$config->apiKey()) {
+                $results[] = $this->kickstartHelper()->resultData($storeName, 0, 'invalid_key');
+                continue;
+            }
+            if ($config->isDemoKey()) {
+                $results[] = $this->kickstartHelper()->resultData($storeName, 0, 'demo_key');
+                continue;
+            }
+            $storeOrders = $this->kickstartHelper()->getOrders($store, $period, $statuses);
+            if (count($storeOrders)) {
+                $foundStoreIds[] = $store->getId();
+            } else {
+                $results[] = $this->kickstartHelper()->resultData($storeName, 0, 'no_orders');
+            }
         }
 
-        if (!count($orders)) {
-            $this->response(false, 'No orders found for a selected period.');
+        if ($foundStoreIds) {
+            sleep(10);
+            $filePath = Mage::getBaseDir('var') . '/log/' . 'async' . '.log';
+            file_put_contents($filePath, print_r('done', true) . "\n", FILE_APPEND);
+            //$this->kickstartHelper()->schedule($foundStoreIds, $statuses, $period['from'], $period['to']);
         }
 
-        $sender = Mage::getModel('lipscore_ratingsreviews/purchase_reminder', array(
-            'websiteCode' => $this->getWebsiteCode(),
-            'storeCode'   => $this->getStoreCode()
-        ));
-
-        $result = $sender->sendMultiple($orders);
-        if ($result) {
-            $this->response(true, "Emails were scheduled successfully.");
+        if ($results) {
+            $this->response(true, $results);
         } else {
-            $this->response(false, $sender->getResponseMsg());
-        }
-    }
-
-    protected function checkKey()
-    {
-        $apiKey = $this->getLipscoreConfig()->apiKey();
-        if (!$apiKey) {
-            $this->response(false, 'You should provide your Api Key and save config.');
+            $this->response(false, 'No orders found.');
         }
     }
 
     protected function getPeriod()
     {
         $data   = $this->getRequest()->getParams();
-        $format = Mage::app()->getLocale()->getDateFormat(Mage_Core_Model_Locale::FORMAT_TYPE_SHORT);
+        $format = $this->kickstartHelper()->dateFormat();
 
         try {
             $startDate = empty($data['from']) ? false : new Zend_Date($data['from'], $format);
@@ -113,20 +135,12 @@ class Lipscore_RatingsReviews_Purchases_RemindersController extends Mage_Adminht
             $endDate   = false;
         }
 
-        $correctPeriod = $startDate && $endDate ? $startDate->compare($endDate) <= 0 : $startDate || $endDate;
+        $correctPeriod = $startDate && $endDate && $startDate->compare($endDate) <= 0;
         if (!$correctPeriod) {
             $this->response(false, 'Please set a correct period.');
         }
 
-        $result = array('datetime' => true);
-        if ($startDate) {
-            $result['from'] = $startDate;
-        }
-        if ($endDate) {
-            $result['to'] = $endDate;
-        }
-
-        return $result;
+        return $this->kickstartHelper()->period($startDate, $endDate);
     }
 
     protected function getStatuses()
@@ -138,47 +152,12 @@ class Lipscore_RatingsReviews_Purchases_RemindersController extends Mage_Adminht
         return $statuses;
     }
 
-    protected function response($result, $response)
-    {
-        $body = Zend_Json::encode(array('message' => $response));
-        $this->getResponse()
-            ->setHeader('Content-Type', 'application/json')
-            ->setBody($body);
-
-        if (!$result) {
-            $this->getResponse()->setHttpResponseCode(422);
-        }
-
-        $this->getResponse()->sendResponse();
-
-        exit(0);
-    }
-
-    protected function getLipscoreConfig()
-    {
-        if (!$this->lipscoreConfig) {
-            $websiteCode = $this->getWebsiteCode();
-            $storeCode   = $this->getStoreCode();
-
-            $this->lipscoreConfig = Mage::helper('lipscore_ratingsreviews/config')->getScoped($websiteCode, $storeCode);
-        }
-        return $this->lipscoreConfig;
-    }
-
-    protected function getOrders($store, $period, $statuses)
-    {
-        $orders = Mage::getModel('sales/order')->getCollection()
-            ->addAttributeToFilter('created_at', $period)
-            ->addAttributeToFilter('status', array('in' => $statuses))
-            ->addAttributeToFilter('store_id', array('eq' => $store->getId()));
-    }
-
     protected function getStores()
     {
         $stores = array();
 
-        $websiteCode = $this->getWebsiteCode();
-        $storeCode   = $this->getStoreCode();
+        $websiteCode = $this->getRequest()->getParam('website');
+        $storeCode   = $this->getRequest()->getParam('store');
 
         if ($storeCode) {
             $store = Mage::getModel('core/store')->load($storeCode);
@@ -193,13 +172,32 @@ class Lipscore_RatingsReviews_Purchases_RemindersController extends Mage_Adminht
         return $stores ? $stores : array();
     }
 
-    protected function getWebsiteCode()
+    protected function response($result, $response)
     {
-        return $this->getRequest()->getParam('website');
+        $body = Zend_Json::encode(array('data' => $response));
+        $this->getResponse()
+            ->setHeader('Content-Type', 'application/json')
+            ->setBody($body);
+
+        if (!$result) {
+            $this->getResponse()->setHttpResponseCode(422);
+        }
+
+        $this->getResponse()->sendResponse();
+
+        exit(0);
     }
 
-    protected function getStoreCode()
+    protected function config($store)
     {
-        return $this->getRequest()->getParam('store');
+        return Mage::getModel('lipscore_ratingsreviews/config', array('store' => $store));
+    }
+
+    protected function kickstartHelper()
+    {
+        if (!$this->kickstartHelper) {
+            $this->kickstartHelper = Mage::helper('lipscore_ratingsreviews/kickstart');
+        }
+        return $this->kickstartHelper;
     }
 }

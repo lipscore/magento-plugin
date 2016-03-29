@@ -12,7 +12,7 @@ class Lipscore_RatingsReviews_Helper_Widget extends Lipscore_RatingsReviews_Help
         }
         return $attrs;
     }
-    
+
     public function getRichsnippetPproductAttrs($productData)
     {
         $attrs = '';
@@ -20,10 +20,10 @@ class Lipscore_RatingsReviews_Helper_Widget extends Lipscore_RatingsReviews_Help
             $attrs = $this->_getRichsnippetPproductAttrs($productData);
         } catch (Exception $e) {
             Lipscore_RatingsReviews_Logger::logException($e);
-        }        
+        }
         return $attrs;
     }
-    
+
     protected function _getProductAttrs($productData)
     {
         $attrs = array(
@@ -38,7 +38,7 @@ class Lipscore_RatingsReviews_Helper_Widget extends Lipscore_RatingsReviews_Help
         );
         return $this->_toString($attrs);
     }
-    
+
     protected function _getRichsnippetPproductAttrs($productData)
     {
         $attrs = array(
@@ -47,14 +47,14 @@ class Lipscore_RatingsReviews_Helper_Widget extends Lipscore_RatingsReviews_Help
         );
         return $this->_toString($attrs);
     }
-    
+
     protected function _toString($attrs)
     {
         $strAttrs = array();
         foreach ($attrs as $attr => $value) {
             $value = htmlspecialchars($value);
             $strAttrs[] = "$attr=\"$value\"";
-        }        
+        }
         return implode($strAttrs, ' ');
     }
 }

@@ -8,13 +8,14 @@ class Lipscore_RatingsReviews_Block_System_Config_Form_Field_Reminderperiod
     {
         $text = '';
         try {
-            $text = '<div id="ls-reminder">' .
-                    $this->getNote() .
-                    $this->getStatusField() .
-                    $this->getDateFields() .
-                    $this->previewButton() .
-                    '</div>' .
-                    $this->reminderPreview();
+            //$text = "<div id='ls-reminder' data-result='{$this->reminderResult()}'>" .
+            $text = "<div id='ls-reminder'>" .
+                $this->getNote() .
+                $this->getStatusField() .
+                $this->getDateFields() .
+                $this->previewButton() .
+                '</div>' .
+                $this->reminderPreview();
         } catch (Exception $e) {
             Lipscore_RatingsReviews_Logger::logException($e);
         }
@@ -73,21 +74,6 @@ class Lipscore_RatingsReviews_Block_System_Config_Form_Field_Reminderperiod
         return 'remind_' . $name;
     }
 
-    public function previewButton()
-    {
-        $url = $this->getReminderUrl('preview');
-        $apiKey = $this->getLipscoreConfig()->apiKey();
-
-        $button = $this->getLayout()->createBlock('adminhtml/widget_button')
-            ->setData(array(
-                'label'     => $this->__('Send emails'),
-                'disabled'  => empty($apiKey),
-                'title'     => $this->__('Send emails'),
-                'onclick'   => "previewLipscoreReminder('$url');",
-                'id'        => 'ls-reminder-preview-button'
-            ));
-        return $button->toHtml();
-    }
 
     public function getNote()
     {
@@ -96,33 +82,34 @@ class Lipscore_RatingsReviews_Block_System_Config_Form_Field_Reminderperiod
 
         $msg  = "After installation of Lipscore you can send emails to recent customers asking them to write reviews of the purchases they have done. This is done automatically for all future customers but customers from before Lipscore was installed will not get these emails unless you invoke it below. They will be delivered according to <a href='$linkToDasboard'>reminder delay settings</a> and will only be done once.";
         $coupons = "To increase the chance of getting reviews you can also add coupons to these emails. Set up coupons <a href='$linkToCoupons'>here</a>.";
+        $settings = "<p>NOTE: Please make sure that your email settings are set up correctly in your <a href='$linkToDasboard'>Lipscore Dashboard</a> before invoking the Kickstart-feature!</p>";
         $heading = '<h4>Send review emails to these customers:</h4>';
-        return "<p>$msg $coupons<p>$heading";
+        return "<p>$msg $coupons<p>$settings $heading";
     }
 
-    protected function getReminderUrl($action)
+    public function previewButton()
     {
-        $scopeParams = "section/{$this->getSection()}/website/{$this->getWebsite()}/store/{$this->getStore()}";
-        return Mage::getModel('adminhtml/url')->getUrl("*/purchases_reminders/$action/$scopeParams");
-    }
-
-    protected function reminderPreview()
-    {
-        return '<div id="ls-reminder-preview">' .
-            '<p id="ls-reminder-preview-content">Emails will be sent for the next shops:</p>' .
-            '<div>' . $this->cancelButton() . $this->sendButton() . '</div>' .
-            "</div>";
+        $url = $this->getReminderUrl('preview');
+        $apiKey = $this->getLipscoreConfig()->apiKey();
+        $button = $this->getLayout()->createBlock('adminhtml/widget_button')
+            ->setData(array(
+                'label'     => $this->__('Send emails'),
+                'disabled'  => empty($apiKey),
+                'title'     => $this->__('Send emails'),
+                'onclick'   => "previewLsReminder('$url');",
+                'id'        => 'ls-reminder-preview-button'
+            ));
+        return $button->toHtml();
     }
 
     protected function sendButton()
     {
         $url = $this->getReminderUrl('send');
-
         $button = $this->getLayout()->createBlock('adminhtml/widget_button')
             ->setData(array(
                 'label'     => $this->__('Continue'),
                 'title'     => $this->__('Continue'),
-                'onclick'   => "sendLipscoreReminder('$url');",
+                'onclick'   => "sendLsReminder('$url');",
                 'id'        => 'ls-reminder-send-button'
             ));
         return $button->toHtml();
@@ -134,9 +121,45 @@ class Lipscore_RatingsReviews_Block_System_Config_Form_Field_Reminderperiod
             ->setData(array(
                 'label'     => $this->__('Cancel'),
                 'title'     => $this->__('Cancel'),
-                'onclick'   => 'cancelLipscoreReminder();',
+                'onclick'   => 'closeLsPreviewPopup();',
                 'id'        => 'ls-reminder-cancel-button'
             ));
         return $button->toHtml();
+    }
+
+    protected function reminderPreview()
+    {
+        $cancelLabel = $this->__('Cancel');
+        $popup =
+<<<EOT
+    <div id='message-popup-window-mask' class='ls-preview-popup-mask' style='display:none;'></div>
+    <div id='message-popup-window' class='message-popup ls-preview-popup'>
+        <div class='message-popup-head'>
+            <a href='#' onclick='closeLsPreviewPopup(); return false;' title='$cancelLabel'><span>$cancelLabel</span></a>
+            <h2>Kick-start summary</h2>
+        </div>
+        <div class='message-popup-content'>
+            <div class='message'>
+                <p id='ls-reminder-preview-text'></p>
+            </div>
+            {$this->cancelButton()}{$this->sendButton()}
+        </div>
+    </div>
+EOT;
+        return $popup;
+    }
+
+    protected function getReminderUrl($action)
+    {
+        $scopeParams = "section/{$this->getSection()}/website/{$this->getWebsite()}/store/{$this->getStore()}";
+        return Mage::getModel('adminhtml/url')->getUrl("*/purchases_reminders/$action/$scopeParams");
+    }
+
+    protected function reminderResult()
+    {
+        $config = Mage::getModel('lipscore_ratingsreviews/config_kickstart');
+        $result = $config->resultJson();
+        $config->clearResult();
+        return $result;
     }
 }

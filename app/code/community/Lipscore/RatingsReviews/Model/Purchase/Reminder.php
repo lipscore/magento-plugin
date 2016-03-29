@@ -2,38 +2,49 @@
 
 class Lipscore_RatingsReviews_Model_Purchase_Reminder
 {
-    protected $lipscoreConfig;
-    protected $sender;
     protected $dataHelper;
+    protected $config;
 
     public function __construct($params)
     {
-        $websiteCode = isset($params['websiteCode']) ? $params['websiteCode'] : null;
-        $storeCode = isset($params['storeCode']) ? $params['storeCode'] : null;
-
-        $this->lipscoreConfig = Mage::helper('lipscore_ratingsreviews/config')->getScoped($websiteCode, $storeCode);
-        $this->sender         = Mage::getModel('lipscore_ratingsreviews/api_request', array(
-            'lipscoreConfig' => $this->lipscoreConfig,
-            'path'           => 'purchases',
-            'timeout'        => isset($params['timeout']) ? $params['timeout'] : null
-        ));
         $this->dataHelper = Mage::helper('lipscore_ratingsreviews/reminder');
+        $this->config     = $params['config'];
     }
 
     public function sendSingle($order)
     {
-        $data = $this->dataHelper->orderData($order);
-        return $this->sender->send($data);
+        if (!$this->config->isValidApiKey()) {
+            return false;
+        }
+
+        $sender = $this->sender($this->config->singleReminderTimeout());
+        $data = $this->dataHelper->singleReminderData($order);
+        return $sender->send($data);
     }
 
     public function sendMultiple($orders)
     {
-        $data = array();
-
-        foreach ($orders as $order) {
-            $data[] = $this->dataHelper->orderData($order);
+        if (!$this->config->isValidApiKey()) {
+            return false;
         }
 
-        return $this->sender->send(array('purchases' => $data));
+        $data = array();
+        foreach ($orders as $order) {
+            $data[] = $this->dataHelper->multipleReminderData($order);
+        }
+        $sender = $this->sender($this->config->multipleReminderTimeout());
+        return $sender->send(array(
+            'purchases' => $data,
+            'kickstart' => true
+        ));
+    }
+
+    protected function sender($timeout)
+    {
+        return Mage::getModel('lipscore_ratingsreviews/api_request', array(
+            'lipscoreConfig' => $this->config,
+            'path'           => 'purchases',
+            'timeout'        => $timeout
+        ));
     }
 }

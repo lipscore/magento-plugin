@@ -1,10 +1,10 @@
 <?php if ($this->getLsProductAttrs()) { ?>
     <div class="ratings mg-lipscore-rating-wrapper">
-        <div <?php echo $this->getRatingType() ?> 
+        <div <?php echo $this->getRatingType() ?>
              <?php echo $this->getLsProductAttrs() ?>
              <?php echo $this->getRichsnippetAttrs() ?>>
         </div>
-     </div>   
+     </div>
 <?php } else { ?>
     <div style="display: none !important;">Lipscore: empty product data</div>
 <?php } ?>

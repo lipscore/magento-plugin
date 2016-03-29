@@ -4,3 +4,6 @@ img.lipscore-rating-small-image { display: inline; }
     display: block;
     margin-top: 15px;
 }
+.ls-demo-mode-label {
+    color: #e92631;
+}
