@@ -2,6 +2,8 @@
 
 class Lipscore_RatingsReviews_Purchases_RemindersController extends Mage_Adminhtml_Controller_Action
 {
+    //const BATCH_SIZE = 100;
+    const BATCH_SIZE = 1;
     protected $kickstartHelper;
 
     public function preDispatch()
@@ -86,7 +88,7 @@ class Lipscore_RatingsReviews_Purchases_RemindersController extends Mage_Adminht
         $statuses = $this->getStatuses();
 
         $results = array();
-        $foundStores  = array();
+        $processed = 0;
 
         $stores = $this->getStores();
         foreach ($stores as $key => $store) {
@@ -102,18 +104,29 @@ class Lipscore_RatingsReviews_Purchases_RemindersController extends Mage_Adminht
             }
             $storeOrders = $this->kickstartHelper()->getOrders($store, $period, $statuses);
             if (count($storeOrders)) {
-                $foundStoreIds[] = $store->getId();
+                $config = Mage::getModel('lipscore_ratingsreviews/config', array('store' => $store));
+                $sender = Mage::getModel('lipscore_ratingsreviews/purchase_reminder', array('config' => $config));
+
+                $storeOrders->setPageSize(BATCH_SIZE);
+                $pages = $collection->getLastPageNumber();
+                $currentPage = 1;
+                $scheduled = 0;
+                do {
+                    //$result = $sender->sendMultiple($storeOrders, $store);
+                    $result = false;
+                    if ($result) {
+                        $scheduled += is_array($result) ? count($result) : 0;
+                    }
+                    $processed += BATCH_SIZE;
+                    $this->kickstartHelper()->saveResult($processed, array(), false);
+                } while ($currentPage <= $pages);
+                $results[] = $this->kickstartHelper()->resultData($store->getName(), $scheduled, null);
             } else {
                 $results[] = $this->kickstartHelper()->resultData($storeName, 0, 'no_orders');
             }
         }
 
-        if ($foundStoreIds) {
-            sleep(10);
-            $filePath = Mage::getBaseDir('var') . '/log/' . 'async' . '.log';
-            file_put_contents($filePath, print_r('done', true) . "\n", FILE_APPEND);
-            //$this->kickstartHelper()->schedule($foundStoreIds, $statuses, $period['from'], $period['to']);
-        }
+        $this->kickstartHelper()->saveResult($processed, $results, true);
 
         if ($results) {
             $this->response(true, $results);

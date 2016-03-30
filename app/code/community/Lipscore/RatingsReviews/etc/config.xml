@@ -149,16 +149,6 @@
         </layout>
     </adminhtml>
 
-    <crontab>
-        <jobs>
-            <send_kickstart_orders>
-                <run>
-                    <model>lipscore_ratingsreviews/observer_purchase_kickstart::send</model>
-                </run>
-            </send_kickstart_orders>
-        </jobs>
-    </crontab>
-
     <default>
         <lipscore_general>
             <api_key>

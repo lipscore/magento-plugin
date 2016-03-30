@@ -1,3 +1,11 @@
+document.observe('dom:loaded', function () {
+    reminder = $('ls-reminder');
+    console.log(reminder);
+    if (reminder.length > 0) {
+
+    }
+});
+
 function previewLsReminder(url) {
     $statusEl = $('order_status');
     $fromEl   = $('remind_from');

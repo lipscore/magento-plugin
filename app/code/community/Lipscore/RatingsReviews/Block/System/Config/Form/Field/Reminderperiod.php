@@ -8,8 +8,7 @@ class Lipscore_RatingsReviews_Block_System_Config_Form_Field_Reminderperiod
     {
         $text = '';
         try {
-            //$text = "<div id='ls-reminder' data-result='{$this->reminderResult()}'>" .
-            $text = "<div id='ls-reminder'>" .
+            $text = "<div id='ls-reminder' data-result='{$this->reminderResult()}'>" .
                 $this->getNote() .
                 $this->getStatusField() .
                 $this->getDateFields() .
@@ -158,8 +157,13 @@ EOT;
     protected function reminderResult()
     {
         $config = Mage::getModel('lipscore_ratingsreviews/config_kickstart');
-        $result = $config->resultJson();
-        $config->clearResult();
-        return $result;
+        $resultJson = Zend_Json::decode($config->resultJson());
+
+        $result = Zend_Json::decode($config->resultJson());
+        if ($result['completed']) {
+            $config->clearResult();
+        }
+
+        return $resultJson;
     }
 }

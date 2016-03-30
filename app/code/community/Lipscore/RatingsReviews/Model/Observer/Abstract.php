@@ -30,7 +30,7 @@ abstract class Lipscore_RatingsReviews_Model_Observer_Abstract
             return;
         }
 
-        $filePath = Mage::getBaseDir('var') . '/log/' . static::$logFile . '.log';
+        $filePath = Mage::getBaseDir('var') . DS . 'log' . DS . static::$logFile . '.log';
         file_put_contents($filePath, print_r($message, true) . "\n", FILE_APPEND);
     }
 

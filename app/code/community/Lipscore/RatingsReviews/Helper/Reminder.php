@@ -58,6 +58,7 @@ class Lipscore_RatingsReviews_Helper_Reminder extends Lipscore_RatingsReviews_He
 
         $productsData = array();
         foreach ($products as $product) {
+            $product->setStoreId($order->getStoreId());
             $productsData[] = $this->productData($product);
         }
 
