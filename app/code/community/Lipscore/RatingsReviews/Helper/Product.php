@@ -41,7 +41,7 @@ class Lipscore_RatingsReviews_Helper_Product extends Lipscore_RatingsReviews_Hel
             'brand'        => $this->getAttributeValue($product, $brandAttr),
             'sku_values'   => array($this->getSku($product)),
             'internal_id'  => "{$product->getId()}",
-            'url'          => $product->getProductUrl(),
+            'url'          => $this->getUrl($product),
             'image_url'    => $this->getImageUrl($product),
             'price'        => $this->getPrice($product),
             'currency'     => $this->getCurrency(),
@@ -59,6 +59,11 @@ class Lipscore_RatingsReviews_Helper_Product extends Lipscore_RatingsReviews_Hel
         );
     }
 
+    public function getUrl(Mage_Catalog_Model_Product $product)
+    {
+        return $product->getProductUrl(false);
+    }
+
     protected function getImageUrl(Mage_Catalog_Model_Product $product)
     {
         $url = '';
@@ -66,10 +71,8 @@ class Lipscore_RatingsReviews_Helper_Product extends Lipscore_RatingsReviews_Hel
         try {
             Mage::app()->setCurrentStore($product->getStoreId());
             $url = (string) Mage::helper('catalog/image')->init($product, 'image');
-        } catch (Exception $e) {
-        } finally {
-            Mage::app()->setCurrentStore($currentStoreId);
-        }
+        } catch (Exception $e) {}
+        Mage::app()->setCurrentStore($currentStoreId);
         return $url;
     }
 

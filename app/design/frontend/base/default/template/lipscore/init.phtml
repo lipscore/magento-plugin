@@ -6,7 +6,7 @@
  */
 ?>
 
-<?php if ($this->lipscoreApiKey) { ?>
+<?php if ($this->isLipscoreActive && $this->lipscoreApiKey) { ?>
     <script type="text/javascript">
     //<![CDATA[
     window.lipscoreInit = function() {

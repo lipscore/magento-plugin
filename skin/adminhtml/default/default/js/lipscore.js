@@ -1,8 +1,19 @@
 document.observe('dom:loaded', function () {
     reminder = $('ls-reminder');
-    console.log(reminder);
-    if (reminder.length > 0) {
+    if (reminder) {
+        result = reminder.readAttribute('data-result');
 
+        if (!result) {
+            return;
+        }
+
+        result = JSON.parse(result);
+        if (result.completed) {
+            msg  = sendingResultMessage(result.stores);
+        } else {
+            msg = 'Emails scheduling is in progress... ' + result.processed + ' emails have been processed.'
+        }
+        renderLsReminderMessage('success', msg);
     }
 });
 
@@ -71,7 +82,7 @@ function showLsReminderMessage(response) {
     switch(response.status) {
     case 200:
         if (response.responseJSON && 'data' in response.responseJSON) {
-            txt  = sendingResultMessage(response);
+            txt  = sendingResultMessage(response.responseJSON.data);
             type = 'success';
         } else {
             txt  = errMessage(response);
@@ -98,7 +109,15 @@ function showLsReminderMessage(response) {
         break;
     }
 
-    var html = '<ul class="messages"><li class="' + type + '-msg"><ul><li>' + txt + '</li></ul></li></ul>';
+    renderLsReminderMessage(type, txt);
+}
+
+function renderLsReminderMessage(type, txt) {
+    var html = '<ul class="messages"><li class="' + type + '-msg"><ul><li>' + txt + '</li></ul>';
+    if (type == 'success') {
+        html += '<ul><li><br/>Scheduled emails can be found in <a href="https://members.lipscore.com/purchases">Lipscore Emails page</a></li></ul>';
+    }
+    html += '</li></ul>';
     $('messages').update(html);
 }
 
@@ -117,9 +136,7 @@ function previewMessage(response) {
     return html + storesMessage + totalRowHtml;
 }
 
-function sendingResultMessage(response) {
-    var stores = response.responseJSON.data;
-
+function sendingResultMessage(stores) {
     var total = totalEmails(stores);
     var html = '<h3 class="ls-reminder-result-header">' + total + ' emails were scheduled successfully:</h3>';
     var storesMessage = resultMessageByStores(stores);
@@ -146,6 +163,9 @@ function resultMessageByStores(stores) {
             break;
         case 'no_orders':
             msg = resMsg(store.store, true, 'no orders found.');
+            break;
+        case 'disabled':
+            msg = resMsg(store.store, true, 'Lipscore is disabled for the shop.');
             break;
         default:
             msg = resMsg(store.store, false, store.count + ' emails.');

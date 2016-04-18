@@ -1,4 +1,5 @@
 <?php
+
 class Lipscore_RatingsReviews_Block_System_Config_Form_Field_Reminderperiod
       extends Lipscore_RatingsReviews_Block_System_Config_Form_Field_Abstract
 {
@@ -157,11 +158,19 @@ EOT;
     protected function reminderResult()
     {
         $config = Mage::getModel('lipscore_ratingsreviews/config_kickstart');
-        $resultJson = Zend_Json::decode($config->resultJson());
+        $resultJson = $config->resultJson();
+        if (!$resultJson) {
+            return null;
+        }
 
-        $result = Zend_Json::decode($config->resultJson());
+        $result = Zend_Json::decode($resultJson);
         if ($result['completed']) {
             $config->clearResult();
+        } else {
+            $timeSinceLastUpdate = time() - (int) $result['updated_at'];
+            if ($timeSinceLastUpdate > (5 * 60)) {
+                $resultJson = null;
+            }
         }
 
         return $resultJson;

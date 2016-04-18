@@ -2,8 +2,8 @@
 
 class Lipscore_RatingsReviews_Purchases_RemindersController extends Mage_Adminhtml_Controller_Action
 {
-    //const BATCH_SIZE = 100;
-    const BATCH_SIZE = 1;
+    const BATCH_SIZE = 25;
+
     protected $kickstartHelper;
 
     public function preDispatch()
@@ -55,10 +55,17 @@ class Lipscore_RatingsReviews_Purchases_RemindersController extends Mage_Adminht
             'stores'   => array()
         );
 
+        $moduleHelper = Mage::helper('lipscore_ratingsreviews/module');
+
         $stores = $this->getStores();
         foreach ($stores as $key => $store) {
             $storeName = $store->getName();
             $config = $this->config($store);
+            $moduleHelper->setLipscoreConfig($config);
+            if (!$moduleHelper->isLipscoreModuleEnabled()) {
+                $results['stores'][] = $this->kickstartHelper()->resultData($storeName, 0, 'disabled');
+                continue;
+            }
             if (!$config->apiKey()) {
                 $results['stores'][] = $this->kickstartHelper()->resultData($storeName, 0, 'invalid_key');
                 continue;
@@ -90,10 +97,22 @@ class Lipscore_RatingsReviews_Purchases_RemindersController extends Mage_Adminht
         $results = array();
         $processed = 0;
 
+        session_write_close();
+        set_time_limit(0);
+        ignore_user_abort(true);
+        register_shutdown_function('logLsKickstartAbort');
+
+        $moduleHelper = Mage::helper('lipscore_ratingsreviews/module');
+
         $stores = $this->getStores();
         foreach ($stores as $key => $store) {
             $storeName = $store->getName();
             $config = $this->config($store);
+            $moduleHelper->setLipscoreConfig($config);
+            if (!$moduleHelper->isLipscoreModuleEnabled()) {
+                $results[] = $this->kickstartHelper()->resultData($storeName, 0, 'disabled');
+                continue;
+            }
             if (!$config->apiKey()) {
                 $results[] = $this->kickstartHelper()->resultData($storeName, 0, 'invalid_key');
                 continue;
@@ -102,31 +121,38 @@ class Lipscore_RatingsReviews_Purchases_RemindersController extends Mage_Adminht
                 $results[] = $this->kickstartHelper()->resultData($storeName, 0, 'demo_key');
                 continue;
             }
+
             $storeOrders = $this->kickstartHelper()->getOrders($store, $period, $statuses);
-            if (count($storeOrders)) {
+            $totalOrderCount = $storeOrders->getSize();
+            if ($totalOrderCount) {
                 $config = Mage::getModel('lipscore_ratingsreviews/config', array('store' => $store));
                 $sender = Mage::getModel('lipscore_ratingsreviews/purchase_reminder', array('config' => $config));
 
-                $storeOrders->setPageSize(BATCH_SIZE);
-                $pages = $collection->getLastPageNumber();
+                $storeOrders->setPageSize(static::BATCH_SIZE);
+                $pages = $storeOrders->getLastPageNumber();
                 $currentPage = 1;
                 $scheduled = 0;
+
+                $this->kickstartHelper()->saveTempResult($processed);
+
                 do {
-                    //$result = $sender->sendMultiple($storeOrders, $store);
-                    $result = false;
+                    $storeOrders->setCurPage($currentPage)->load();
+
+                    $result = $sender->sendMultiple($storeOrders, $currentPage, $totalOrderCount, $processed);
                     if ($result) {
                         $scheduled += is_array($result) ? count($result) : 0;
                     }
-                    $processed += BATCH_SIZE;
-                    $this->kickstartHelper()->saveResult($processed, array(), false);
+
+                    $currentPage++;
+                    $storeOrders->clear();
+                    gc_collect_cycles();
                 } while ($currentPage <= $pages);
                 $results[] = $this->kickstartHelper()->resultData($store->getName(), $scheduled, null);
             } else {
                 $results[] = $this->kickstartHelper()->resultData($storeName, 0, 'no_orders');
             }
         }
-
-        $this->kickstartHelper()->saveResult($processed, $results, true);
+        $this->kickstartHelper()->saveFinalResult($processed, $results);
 
         if ($results) {
             $this->response(true, $results);
@@ -152,7 +178,6 @@ class Lipscore_RatingsReviews_Purchases_RemindersController extends Mage_Adminht
         if (!$correctPeriod) {
             $this->response(false, 'Please set a correct period.');
         }
-
         return $this->kickstartHelper()->period($startDate, $endDate);
     }
 
@@ -212,5 +237,30 @@ class Lipscore_RatingsReviews_Purchases_RemindersController extends Mage_Adminht
             $this->kickstartHelper = Mage::helper('lipscore_ratingsreviews/kickstart');
         }
         return $this->kickstartHelper;
+    }
+}
+
+function logLsKickstartAbort()
+{
+    $status = connection_status();
+
+    switch ($status) {
+    case CONNECTION_ABORTED:
+       $state = 'aborted';
+       break;
+    case CONNECTION_TIMEOUT:
+       $state = 'timed out';
+       break;
+    case (CONNECTION_ABORTED + CONNECTION_TIMEOUT):
+       $state = 'aborted and timed out';
+       break;
+    default:
+       $state = '';
+    }
+
+    if ($state) {
+        $e = new Exception("Connection $state during Lipscore emails scheduling");
+        Mage::setIsDeveloperMode(true);
+        Lipscore_RatingsReviews_Logger::logException($e);
     }
 }

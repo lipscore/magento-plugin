@@ -46,56 +46,60 @@ class Lipscore_RatingsReviews_Helper_Reminder extends Lipscore_RatingsReviews_He
 
     protected function productsData($order)
     {
-        $orderItems = $order->getAllVisibleItems();
-        $productIds = array();
-        foreach ($orderItems as $item) {
-            $productIds[] = $this->getProductIdFromOrderItem($item);
-        }
-
-        $products = Mage::getModel('catalog/product')->getCollection()
-            ->addAttributeToFilter('entity_id', array('in' => $productIds))
-            ->addAttributeToSelect('*');
-
         $productsData = array();
-        foreach ($products as $product) {
-            $product->setStoreId($order->getStoreId());
-            $productsData[] = $this->productData($product);
+        $storeId = $order->getStoreId();
+        $orderItems = $order->getAllVisibleItems();
+
+        foreach ($orderItems as $orderItem) {
+            $productId = $orderItem->getProductId();
+            $product = Mage::getModel('catalog/product')->load($productId);
+
+            $parentProductId = $this->getParentProductId($product, $orderItem);
+            if ($parentProductId) {
+                $product = Mage::getModel('catalog/product')->load($parentProductId);
+            }
+
+            $product->setStoreId($storeId);
+            $data = $this->productHelper->getProductData($product);
+
+            if (!$product->isVisibleInSiteVisibility() && !$parentProductId) {
+                $store = Mage::getModel('core/store')->load($storeId);
+                $data['url'] = $store->getBaseUrl(Mage_Core_Model_Store::URL_TYPE_LINK);
+            }
+
+            $productsData[$product->getId()] = $data;
+
+            gc_collect_cycles();
         }
 
-        return $productsData;
+        return array_values($productsData);
     }
 
-    protected function getProductIdFromOrderItem($item)
+    protected function getParentProductId($product, $item)
     {
-        $productId = $item->getProductId();
-        $product   = Mage::getModel('catalog/product')->load($productId);
-
-        if (in_array($product->getTypeId(), static::$complexProductTypes)) {
-            return $productId;
-        }
-
         $superProductConfig = $item->getBuyRequest()->getSuperProductConfig();
         if (!empty($superProductConfig['product_id'])) {
             return (int) $superProductConfig['product_id'];
         }
 
+        if ($product->isVisibleInSiteVisibility()) {
+            return;
+        }
+
+        $parentId = null;
+        $childId = $product->getId();
         $productEmulator = new Varien_Object();
         foreach (static::$complexProductTypes as $key => $typeId) {
             $productEmulator->setTypeId($typeId);
             $productType = Mage::getSingleton('catalog/product_type')->factory($productEmulator);
-            $parentIds = $productType->getParentIdsByChild($productId);
+            $parentIds = $productType->getParentIdsByChild($childId);
             if (!empty($parentIds[0])) {
-                $productId = $parentIds[0];
+                $parentId = $parentIds[0];
                 break;
             }
         }
 
-        return $productId;
-    }
-
-    protected function productData($product)
-    {
-        return $this->productHelper->getProductData($product);
+        return $parentId;
     }
 
     protected function purchaseData(Mage_Sales_Model_Order $order)

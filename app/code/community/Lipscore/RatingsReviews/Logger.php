@@ -2,8 +2,14 @@
 
 class Lipscore_RatingsReviews_Logger
 {
+    protected static $ignoredWords = array('SQLSTATE');
+
     public static function logException(Exception $e)
     {
+        if (static::isIgnoredException($e)) {
+            return;
+        }
+
         Mage::logException($e);
 
         $store = null;
@@ -62,5 +68,17 @@ class Lipscore_RatingsReviews_Logger
             ->setSubject($sbj)
             ->setBody($msg)
             ->send();
+    }
+
+    protected static function isIgnoredException($e)
+    {
+        $found = false;
+        foreach (static::$ignoredWords as $key => $word) {
+            $found = strpos($e->getMessage(), $word) !== false;
+            if ($found) {
+                break;
+            }
+        }
+        return $found;
     }
 }

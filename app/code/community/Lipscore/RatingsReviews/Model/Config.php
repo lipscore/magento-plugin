@@ -3,7 +3,7 @@
 class Lipscore_RatingsReviews_Model_Config extends Lipscore_RatingsReviews_Model_Config_Abstract
 {
     const SINGLE_REMINDER_TIMEOUT   = 10;
-    const MULTIPLE_REMINDER_TIMEOUT = 3600;
+    const MULTIPLE_REMINDER_TIMEOUT = 1800;
 
     protected static $_systemConfigs = array(
         'coupon'   => 'lipscore_coupons/coupons/',

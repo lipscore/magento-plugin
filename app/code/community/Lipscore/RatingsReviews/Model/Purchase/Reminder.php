@@ -22,20 +22,27 @@ class Lipscore_RatingsReviews_Model_Purchase_Reminder
         return $sender->send($data);
     }
 
-    public function sendMultiple($orders)
+    public function sendMultiple($orders, $batchNumber, $totalOrderCount, &$processed)
     {
         if (!$this->config->isValidApiKey()) {
             return false;
         }
 
+        $kickstartHelper = Mage::helper('lipscore_ratingsreviews/kickstart');
         $data = array();
+
         foreach ($orders as $order) {
             $data[] = $this->dataHelper->multipleReminderData($order);
+            $processed++;
+            $kickstartHelper->saveTempResult($processed);
         }
+
         $sender = $this->sender($this->config->multipleReminderTimeout());
         return $sender->send(array(
-            'purchases' => $data,
-            'kickstart' => true
+            'purchases'             => $data,
+            'kickstart'             => true,
+            'kickstart_batch'       => $batchNumber,
+            'kickstart_total_count' => $totalOrderCount
         ));
     }
 
