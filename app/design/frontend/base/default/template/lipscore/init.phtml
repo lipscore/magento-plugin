@@ -7,7 +7,7 @@
 ?>
 
 <?php if ($this->isLipscoreActive && $this->lipscoreApiKey) { ?>
-    <script type="text/javascript">
+    <script data-cfasync="false" type="text/javascript">
     //<![CDATA[
     window.lipscoreInit = function() {
         lipscore.init({
@@ -15,7 +15,7 @@
         });
     };
     (function() {
-        var scr = document.createElement('script'); scr.async = 1;
+        var scr = document.createElement('script'); scr.async = 1; scr.setAttribute('data-cfasync', false);
         scr.src = "//<?php echo $this->assetsUrl ?>/<?php echo $this->getLipscoreLocale() ?>lipscore-v1.js";
         document.getElementsByTagName('head')[0].appendChild(scr);
     })();
