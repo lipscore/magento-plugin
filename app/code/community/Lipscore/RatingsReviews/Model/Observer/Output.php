@@ -45,7 +45,7 @@ class Lipscore_RatingsReviews_Model_Observer_Output extends Lipscore_RatingsRevi
         }
 
         $tabs = $layout->getBlock('product.info.tabs');
-        if ($tabs) {
+        if ($tabs && method_exists($tabs, 'addTab')) {
             $tabs->addTab(
                 'lipscore.reviews', self::REVIEW_TITLE_PLACEHOLDER, 'lipscore_ratingsreviews/catalog_product_reviews',
                 'lipscore/reviews/view.phtml'
