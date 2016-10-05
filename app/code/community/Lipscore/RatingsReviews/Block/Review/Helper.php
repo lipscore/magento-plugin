@@ -7,7 +7,7 @@ class Lipscore_RatingsReviews_Block_Review_Helper extends Mage_Review_Block_Help
         'long'  => 'id="lipscore-rating"',
         'short' => 'class="lipscore-rating-small"'
     );
-    
+
     public function getSummaryHtml($product, $templateType, $displayIfNoReviews)
     {
         try {
@@ -16,44 +16,50 @@ class Lipscore_RatingsReviews_Block_Review_Helper extends Mage_Review_Block_Help
             $templateType = 'short';
             Lipscore_RatingsReviews_Logger::logException($e);
         }
-        
+
         $this->setRatingType(self::$_availableTypes[$templateType]);
+        $this->setDisplayIfEmpty(true);
+
+        if (!$product->getRatingSummary()) {
+            Mage::getModel('review/review')->getEntitySummary($product, Mage::app()->getStore()->getId());
+        }
+
         $this->setProduct($product);
-        
+
         try {
             $this->setWidgetAttrs($product, $templateType);
         } catch (Exception $e) {
             Lipscore_RatingsReviews_Logger::logException($e);
-        }            
-    
+        }
+
         return $this->toHtml();
     }
-    
+
     protected function getTemplateType($templateType)
     {
         $layoutHandles = $this->getLayout()->getUpdate()->getHandles();
         $isProductView = in_array('catalog_product_view', $layoutHandles);
-        
+
         if ($isProductView) {
             return 'long';
-        }        
-        
+        }
+
         if (isset(self::$_availableTypes[$templateType])) {
             return $templateType;
         } else {
             return 'short';
-        }        
+        }
     }
-    
+
     protected function setWidgetAttrs($product, $templateType)
     {
         $widgetHelper  = $this->helper('lipscore_ratingsreviews/widget');
         $productHelper = $this->helper('lipscore_ratingsreviews/product');
-    
+
         $productData  = $productHelper->getProductData($product);
         $productAttrs = $widgetHelper->getProductAttrs($productData);
         $this->setLsProductAttrs($productAttrs);
-    
+
         if ($templateType == 'long') {
             $rsProductData = $productHelper->getRichsnippetProductData($product);
             $rsAttrs       = $widgetHelper->getRichsnippetPproductAttrs($rsProductData);

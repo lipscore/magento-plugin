@@ -9,14 +9,14 @@ class Lipscore_RatingsReviews_Block_System_Config_Form_Coupons extends Mage_Admi
             $generateCoupons = Mage::helper('lipscore_ratingsreviews/coupon')->isAutoGenerationSupported();
         } catch (Exception $e) {
             Lipscore_RatingsReviews_Logger::logException($e);
-        }            
-        
+        }
+
         switch ($field->getName()) {
             case 'coupons':
-                return $generateCoupons;
+                return (int) $generateCoupons;
                 break;
             case 'coupons_warning':
-                return !$generateCoupons;
+                return (int) !$generateCoupons;
                 break;
             default:
                 return parent::_canShowField($field);

@@ -29,7 +29,9 @@ class Lipscore_RatingsReviews_Model_Observer_Output extends Lipscore_RatingsRevi
         $collection = $observer->getEvent()->getCollection();
         if ($collection->count()) {
             foreach ($collection as $product) {
-                $product->setData('rating_summary', 1);
+                if (!is_a($product->getRatingSummary(), 'Mage_Review_Model_Review_Summary')) {
+                    Mage::getModel('review/review')->getEntitySummary($product);
+                }
             }
         }
 
