@@ -11,6 +11,7 @@ class Lipscore_RatingsReviews_Model_System_Config_Source_Locale
             array('value' => 'nl',   'label' => Mage::helper('adminhtml')->__('Dutch')),
             array('value' => 'en',   'label' => Mage::helper('adminhtml')->__('English')),
             array('value' => 'fi',   'label' => Mage::helper('adminhtml')->__('Finnish')),
+            array('value' => 'fr',   'label' => Mage::helper('adminhtml')->__('French')),
             array('value' => 'de',   'label' => Mage::helper('adminhtml')->__('German')),
             array('value' => 'it',   'label' => Mage::helper('adminhtml')->__('Italian')),
             array('value' => 'ja',   'label' => Mage::helper('adminhtml')->__('Japanese')),

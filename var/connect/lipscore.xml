@@ -1,5 +1,5 @@
 <_>
-   <form_key>11WpcfcpZhvwjW1Q</form_key>
+   <form_key>qnm93Qu55rZ9Ret2</form_key>
    <name>lipscore</name>
    <channel>community</channel>
    <version_ids>
@@ -12,9 +12,9 @@ take all the hassle out of collecting product reviews, and help convert more
 visitors in to profitable customers.</description>
    <license>Terms of use</license>
    <license_uri>https://lipscore.com/signup</license_uri>
-   <version>1.4.3</version>
+   <version>1.4.4</version>
    <stability>stable</stability>
-   <notes>Stability improvements
+   <notes>Add French locale
 
 </notes>
    <authors>
@@ -48,7 +48,7 @@ visitors in to profitable customers.</description>
             <max/>
          </max>
          <files>
-            <files>                                                                                              </files>
+            <files>                                                                                               </files>
          </files>
       </package>
       <extension>
