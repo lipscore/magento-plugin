@@ -1,5 +1,5 @@
 <_>
-   <form_key>qnm93Qu55rZ9Ret2</form_key>
+   <form_key>bynT5c58hF0jEobv</form_key>
    <name>lipscore</name>
    <channel>community</channel>
    <version_ids>
@@ -12,11 +12,10 @@ take all the hassle out of collecting product reviews, and help convert more
 visitors in to profitable customers.</description>
    <license>Terms of use</license>
    <license_uri>https://lipscore.com/signup</license_uri>
-   <version>1.4.4</version>
+   <version>1.4.6</version>
    <stability>stable</stability>
-   <notes>Add French locale
-
-</notes>
+   <notes>Charset attribute has been added to Lipscore initialiser script.
+Fix of empty in some environments Lipscore Coupons page.</notes>
    <authors>
       <name>
          <name>Henning Frettem</name>
@@ -48,7 +47,7 @@ visitors in to profitable customers.</description>
             <max/>
          </max>
          <files>
-            <files>                                                                                               </files>
+            <files>                                                                                                 </files>
          </files>
       </package>
       <extension>

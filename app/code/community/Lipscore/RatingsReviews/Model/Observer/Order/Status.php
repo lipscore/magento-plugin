@@ -9,6 +9,11 @@ class Lipscore_RatingsReviews_Model_Observer_Order_Status extends Lipscore_Ratin
         $this->log(date('Y-m-d H:i:s') . ' start fetch');
         $order = $observer->getEvent()->getOrder();
 
+        if (!$this->isReminderEnabled($order)) {
+            $this->log('extension is disabled');
+            return;
+        }
+
         $savedStatus = $this->fetchFromRegistery($order);
         $this->log('saved status: ' . $savedStatus);
         if (!$savedStatus) {
@@ -20,6 +25,11 @@ class Lipscore_RatingsReviews_Model_Observer_Order_Status extends Lipscore_Ratin
     {
         $this->log(date('Y-m-d H:i:s') . ' start check');
         $order = $observer->getEvent()->getOrder();
+
+        if (!$this->isReminderEnabled($order)) {
+            $this->log('extension is disabled');
+            return;
+        }
 
         $config = $this->config($order->getStore());
         if (!$config->isValidApiKey()) {
@@ -90,6 +100,13 @@ class Lipscore_RatingsReviews_Model_Observer_Order_Status extends Lipscore_Ratin
 
     protected function methodAvailable($method)
     {
+        return true;
+    }
+
+    private function isReminderEnabled($order)
+    {
+        $config = $this->config($order->getStore());
+        $this->moduleHelper->setLipscoreConfig($config);
         return $this->moduleHelper->isLipscoreModuleEnabled();
     }
 }
