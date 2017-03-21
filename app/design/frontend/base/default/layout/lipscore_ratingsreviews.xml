@@ -7,7 +7,7 @@
 
     <catalog_product_view>
         <reference name="product.info">
-            <block type="lipscore_ratingsreviews/catalog_product_reviews" name="lipscore.reviews" as="lipscore-reviews" template="lipscore/reviews/view.phtml">
+            <block type="lipscore_ratingsreviews/catalog_product_reviews" name="lipscore_reviews" as="lipscore-reviews" template="lipscore/reviews/view.phtml">
                 <action method="addToParentGroup"><group>detailed_info</group></action>
                 <action method="setTitle"><value>lipscore_reviews_placeholder</value></action>
             </block>
@@ -16,7 +16,7 @@
 
     <lipscore_common_head>
         <reference name="head">
-            <block type="lipscore_ratingsreviews/init" name="lipscore.init" template="lipscore/init.phtml" />
+            <block type="lipscore_ratingsreviews/init" name="lipscore_init" template="lipscore/init.phtml" />
             <action method="addItem"><type>skin_css</type><file>css/lipscore.css</file></action>
             <action method="addItem"><type>skin_js</type><file>js/lipscore.js</file></action>
         </reference>

@@ -13,19 +13,19 @@ class Lipscore_RatingsReviews_Block_System_Config_Form_Field_Abstract
         }
         return $this->lipscoreConfig;
     }
-    
+
     protected function getSection()
     {
         return $this->getRequest()->getParam('section', '');
     }
-    
+
     protected function getWebsite()
     {
         return $this->getRequest()->getParam('website', '');
     }
-    
+
     protected function getStore()
     {
         return $this->getRequest()->getParam('store', '');
-    }    
+    }
 }

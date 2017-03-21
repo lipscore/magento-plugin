@@ -6,11 +6,11 @@ class Lipscore_RatingsReviews_Logger
 
     public static function logException(Exception $e)
     {
+        Mage::logException($e);
+
         if (static::isIgnoredException($e)) {
             return;
         }
-
-        Mage::logException($e);
 
         $store = null;
         $storeInfo = $url = $to = '';
