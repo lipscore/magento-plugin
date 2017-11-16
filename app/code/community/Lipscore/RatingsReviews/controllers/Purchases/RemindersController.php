@@ -39,8 +39,16 @@ class Lipscore_RatingsReviews_Purchases_RemindersController extends Mage_Adminht
 
     protected function preview()
     {
-        $period   = $this->getPeriod();
+        $period = $this->getPeriod();
+        if (!$period) {
+            $this->response(false, 'Please set a correct period.');
+            return;
+        }
         $statuses = $this->getStatuses();
+        if (empty($statuses)) {
+            $this->response(false, 'Please select order status(es).');
+            return;
+        }
 
         $statusNames = array();
         foreach ($statuses as $key => $statusCode) {
@@ -91,8 +99,16 @@ class Lipscore_RatingsReviews_Purchases_RemindersController extends Mage_Adminht
 
     protected function send()
     {
-        $period   = $this->getPeriod();
+        $period = $this->getPeriod();
+        if (!$period) {
+            $this->response(false, 'Please set a correct period.');
+            return;
+        }
         $statuses = $this->getStatuses();
+        if (empty($statuses)) {
+            $this->response(false, 'Please select order status(es).');
+            return;
+        }
 
         $results = array();
         $processed = 0;
@@ -175,19 +191,14 @@ class Lipscore_RatingsReviews_Purchases_RemindersController extends Mage_Adminht
         }
 
         $correctPeriod = $startDate && $endDate && $startDate->compare($endDate) <= 0;
-        if (!$correctPeriod) {
-            $this->response(false, 'Please set a correct period.');
+        if ($correctPeriod) {
+            return $this->kickstartHelper()->period($startDate, $endDate);
         }
-        return $this->kickstartHelper()->period($startDate, $endDate);
     }
 
     protected function getStatuses()
     {
-        $statuses = $this->getRequest()->getParam('status', array());
-        if (empty($statuses)) {
-            $this->response(false, 'Please select order status(es).');
-        }
-        return $statuses;
+        return $this->getRequest()->getParam('status', array());;
     }
 
     protected function getStores()
@@ -220,10 +231,6 @@ class Lipscore_RatingsReviews_Purchases_RemindersController extends Mage_Adminht
         if (!$result) {
             $this->getResponse()->setHttpResponseCode(422);
         }
-
-        $this->getResponse()->sendResponse();
-
-        exit(0);
     }
 
     protected function config($store)
@@ -237,6 +244,11 @@ class Lipscore_RatingsReviews_Purchases_RemindersController extends Mage_Adminht
             $this->kickstartHelper = Mage::helper('lipscore_ratingsreviews/kickstart');
         }
         return $this->kickstartHelper;
+    }
+
+    protected function _isAllowed()
+    {
+        return Mage::getSingleton('admin/session')->isAllowed('system/config');
     }
 }
 
