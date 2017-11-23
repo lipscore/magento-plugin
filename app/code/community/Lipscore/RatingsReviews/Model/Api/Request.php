@@ -33,13 +33,15 @@ class Lipscore_RatingsReviews_Model_Api_Request
     public function send($data)
     {
         $apiKey = $this->lipscoreConfig->apiKey();
+        $secret = $this->lipscoreConfig->secret();
         $apiUrl = Mage::getModel('lipscore_ratingsreviews/config_env')->apiUrl();
 
         $client = new Zend_Http_Client(
             "http://$apiUrl/{$this->path}?api_key=$apiKey", array('timeout' => $this->timeout)
         );
         $client->setRawData(json_encode($data), 'application/json')
-               ->setMethod($this->getRequestType());
+               ->setMethod($this->getRequestType())
+               ->setHeaders('X-Authorization', $secret);
 
         $this->response = $client->request();
 

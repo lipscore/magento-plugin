@@ -20,6 +20,11 @@ class Lipscore_RatingsReviews_Model_Config extends Lipscore_RatingsReviews_Model
         return $this->get('api_key', 'apiKey');
     }
 
+    public function secret()
+    {
+        return $this->get('secret', 'apiKey');
+    }
+
     public function demoApiKey()
     {
         return $this->get('demo_api_key', 'apiKey');

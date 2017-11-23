@@ -29,7 +29,7 @@
 
                     <fields>
                         <api_key translate="label comment">
-                            <label>Api Key</label>
+                            <label>API Key</label>
                             <frontend_model>lipscore_ratingsreviews/system_config_form_field_apikey</frontend_model>
                             <backend_model>lipscore_ratingsreviews/system_config_backend_apikey</backend_model>
                             <frontend_type>text</frontend_type>
@@ -39,6 +39,15 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </api_key>
+                        <secret translate="label comment">
+                            <label>Secret API Key</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>20</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <frontend_class>js-ls-no-autocomplete-field</frontend_class>
+                        </secret>
                     </fields>
 		        </api_key>
 

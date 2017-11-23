@@ -3,18 +3,20 @@ document.observe('dom:loaded', function () {
     if (reminder) {
         result = reminder.readAttribute('data-result');
 
-        if (!result) {
-            return;
+        if (result) {
+            result = JSON.parse(result);
+            if (result.completed) {
+                msg  = sendingResultMessage(result.stores);
+            } else {
+                msg = 'Emails scheduling is in progress... ' + result.processed + ' emails have been processed.';
+            }
+            renderLsReminderMessage('success', msg);
         }
-
-        result = JSON.parse(result);
-        if (result.completed) {
-            msg  = sendingResultMessage(result.stores);
-        } else {
-            msg = 'Emails scheduling is in progress... ' + result.processed + ' emails have been processed.'
-        }
-        renderLsReminderMessage('success', msg);
     }
+
+    $$('.js-ls-no-autocomplete-fielde').each(function(field) {
+        field.setAttribute('autocomplete', 'off');
+    });
 });
 
 function previewLsReminder(url) {
@@ -37,7 +39,7 @@ function previewLsReminder(url) {
             showLsReminderMessage(response);
         }
     });
-};
+}
 
 function sendLsReminder(url) {
     $statusEl = $('order_status');
@@ -67,7 +69,7 @@ function sendLsReminder(url) {
         }
     });
     closeLsPreviewPopup();
-};
+}
 
 function showLsReminderMessage(response) {
     var txt = '';
@@ -148,7 +150,7 @@ function resultMessageByStores(stores) {
     resMsg = function(storeName, isError, msg) {
         var msgClass = isError ? 'ls-reminder-err' : 'ls-reminder-succsess';
         return '<b>' + storeName + ':</b> ' + '<span class="' + msgClass + '">' + msg + '</span>';
-    }
+    };
 
     var storeRows = [];
     var total = 0;
