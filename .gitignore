@@ -5,3 +5,4 @@
 /var/*
 !/var/connect/
 !/var/connect/*
+/var/connect/.DS_Store
