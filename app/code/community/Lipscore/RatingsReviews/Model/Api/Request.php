@@ -5,7 +5,7 @@ class Lipscore_RatingsReviews_Model_Api_Request
     protected $lipscoreConfig;
     protected $path;
     protected $requestType;
-    protected $timeout = 10;
+    protected $timeout = 5;
     protected $response;
 
     public function __construct($params)
