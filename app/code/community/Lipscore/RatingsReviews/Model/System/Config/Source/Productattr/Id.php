@@ -1,11 +1,12 @@
 <?php
 
-class Lipscore_RatingsReviews_Model_System_Config_Source_Productattr_Brand
+class Lipscore_RatingsReviews_Model_System_Config_Source_Productattr_Id
 {
     public function toOptionArray()
     {
         $attrs = array(
-            array('value' =>'', 'label' => Mage::helper('adminhtml')->__('--Please Select--'))
+            array('value' => 'id', 'label' => Mage::helper('adminhtml')->__('ID')),
+            array('value' => 'sku', 'label' => Mage::helper('adminhtml')->__('SKU')),
         );
 
         try {
@@ -27,7 +28,12 @@ class Lipscore_RatingsReviews_Model_System_Config_Source_Productattr_Brand
             ->addVisibleFilter();
 
         if ($collection->getSize() > 0) {
+            $excludedAttrs = array('sku', 'id');
             foreach ($collection->getItems() as $attr) {
+                if (in_array($attr->getAttributeCode(), $excludedAttrs)) {
+                    continue;
+                }
+
                 $attrs[] = array(
                     'value' => $attr->getAttributeCode(),
                     'label' => $attr->getStoreLabel()

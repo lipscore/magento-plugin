@@ -35,12 +35,13 @@ class Lipscore_RatingsReviews_Helper_Product extends Lipscore_RatingsReviews_Hel
         $product or $product = Mage::registry('product');
 
         $brandAttr = $this->_lipscoreConfig->brandAttr();
+        $idAttr    = $this->_lipscoreConfig->productIdAttr();
 
         return array(
             'name'         => $product->getName(),
             'brand'        => $this->getAttributeValue($product, $brandAttr),
             'sku_values'   => array($this->getSku($product)),
-            'internal_id'  => "{$product->getId()}",
+            'internal_id'  => $this->getAttributeValue($product, $idAttr),
             'url'          => $this->getUrl($product),
             'image_url'    => $this->getImageUrl($product),
             'price'        => $this->getPrice($product),
@@ -128,6 +129,14 @@ class Lipscore_RatingsReviews_Helper_Product extends Lipscore_RatingsReviews_Hel
 
     protected function getAttributeValue(Mage_Catalog_Model_Product $product, $attrCode)
     {
+        if ($attrCode == 'id') {
+            return $product->getId();
+        }
+
+        if ($attrCode == 'sku') {
+            return $this->getSku($product);
+        }
+
         $attr = $product->getResource()->getAttribute($attrCode);
 
         if (!$attr) {

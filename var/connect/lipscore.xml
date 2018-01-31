@@ -1,5 +1,5 @@
 <_>
-   <form_key>xnc6I3jH44h2YTSL</form_key>
+   <form_key>BQJwoDdMJDqyMkL9</form_key>
    <name>lipscore</name>
    <channel>community</channel>
    <version_ids>
@@ -12,9 +12,9 @@ take all the hassle out of collecting product reviews, and help convert more
 visitors in to profitable customers.</description>
    <license>Terms of use</license>
    <license_uri>https://lipscore.com/signup</license_uri>
-   <version>1.4.9</version>
+   <version>1.4.10</version>
    <stability>stable</stability>
-   <notes>Fix kickstart feature rendering if kickstart result is empty.</notes>
+   <notes>Add &quot;Product ID attribute&quot; setting</notes>
    <authors>
       <name>
          <name>Henning Frettem</name>
@@ -46,7 +46,7 @@ visitors in to profitable customers.</description>
             <max/>
          </max>
          <files>
-            <files>                                                                                                    </files>
+            <files>                                                                                                     </files>
          </files>
       </package>
       <extension>
