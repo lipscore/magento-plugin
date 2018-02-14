@@ -6,13 +6,13 @@ class Lipscore_RatingsReviews_Model_Config extends Lipscore_RatingsReviews_Model
     const MULTIPLE_REMINDER_TIMEOUT = 1800;
 
     protected static $_systemConfigs = array(
-        'coupon'   => 'lipscore_coupons/coupons/',
-        'brand'    => 'lipscore_general/product_brand/',
-        'apiKey'   => 'lipscore_general/api_key/',
-        'locale'   => 'lipscore_general/locale/',
-        'emails'   => 'lipscore_general/emails/',
-        'module'   => 'lipscore_general/module/',
-        'tracking' => 'lipscore_plugin/'
+        'coupon'             => 'lipscore_coupons/coupons/',
+        'product_attributes' => 'lipscore_general/product_attributes/',
+        'apiKey'             => 'lipscore_general/api_key/',
+        'locale'             => 'lipscore_general/locale/',
+        'emails'             => 'lipscore_general/emails/',
+        'module'             => 'lipscore_general/module/',
+        'tracking'           => 'lipscore_plugin/'
     );
 
     public function apiKey()
@@ -37,7 +37,12 @@ class Lipscore_RatingsReviews_Model_Config extends Lipscore_RatingsReviews_Model
 
     public function brandAttr()
     {
-        return $this->get('attr', 'brand');
+        return $this->get('brand', 'product_attributes');
+    }
+
+    public function productIdAttr()
+    {
+        return $this->get('id', 'product_attributes');
     }
 
     public function lastTrackedVersion()

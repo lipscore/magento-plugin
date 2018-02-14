@@ -159,18 +159,23 @@ EOT;
     {
         $config = Mage::getModel('lipscore_ratingsreviews/config_kickstart');
         $resultJson = $config->resultJson();
-        if (!$resultJson) {
+        if (empty($resultJson)) {
             return null;
         }
 
-        $result = Zend_Json::decode($resultJson);
-        if ($result['completed']) {
-            $config->clearResult();
-        } else {
-            $timeSinceLastUpdate = time() - (int) $result['updated_at'];
-            if ($timeSinceLastUpdate > (5 * 60)) {
-                $resultJson = null;
+        try {
+            $result = Zend_Json::decode($resultJson);
+            if ($result['completed']) {
+                $config->clearResult();
+            } else {
+                $timeSinceLastUpdate = time() - (int) $result['updated_at'];
+                if ($timeSinceLastUpdate > (5 * 60)) {
+                    $resultJson = null;
+                }
             }
+        } catch (Exception $e) {
+            $resultJson = null;
+            Lipscore_RatingsReviews_Logger::logException($e);
         }
 
         return $resultJson;
