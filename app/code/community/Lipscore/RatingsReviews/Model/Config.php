@@ -45,6 +45,11 @@ class Lipscore_RatingsReviews_Model_Config extends Lipscore_RatingsReviews_Model
         return $this->get('id', 'product_attributes');
     }
 
+    public function gtinAttr()
+    {
+        return $this->get('gtin', 'product_attributes');
+    }
+
     public function lastTrackedVersion()
     {
         return $this->get('last_tracked_version', 'tracking');

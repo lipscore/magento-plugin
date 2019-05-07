@@ -34,7 +34,8 @@ class Lipscore_RatingsReviews_Helper_Widget extends Lipscore_RatingsReviews_Help
             'ls-image-url'      => $productData['image_url'],
             'ls-price'          => $productData['price'],
             'ls-price-currency' => $productData['currency'],
-            'ls-category'       => $productData['category']
+            'ls-category'       => $productData['category'],
+            'ls-gtin'           => $productData['gtin']
         );
         return $this->_toString($attrs);
     }

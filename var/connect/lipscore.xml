@@ -1,5 +1,5 @@
 <_>
-   <form_key>q1TBWCDZ4WFa6SFN</form_key>
+   <form_key>IvdtcFM52ueGMZjp</form_key>
    <name>lipscore</name>
    <channel>community</channel>
    <version_ids>
@@ -12,9 +12,9 @@ take all the hassle out of collecting product reviews, and help convert more
 visitors in to profitable customers.</description>
    <license>Terms of use</license>
    <license_uri>https://lipscore.com/signup</license_uri>
-   <version>1.5.0</version>
+   <version>1.6.0</version>
    <stability>stable</stability>
-   <notes>Add Secure Lipscore API Key for compatibility with Lipscore API v2</notes>
+   <notes>Support GTIN</notes>
    <authors>
       <name>
          <name>Henning Frettem</name>
@@ -46,7 +46,7 @@ visitors in to profitable customers.</description>
             <max/>
          </max>
          <files>
-            <files>                                                                                                      </files>
+            <files>                                                                                                       </files>
          </files>
       </package>
       <extension>
@@ -123,4 +123,8 @@ visitors in to profitable customers.</description>
          <ignore/>
       </ignore>
    </contents>
+   <page>1</page>
+   <limit>200</limit>
+   <folder/>
+   <package/>
 </_>

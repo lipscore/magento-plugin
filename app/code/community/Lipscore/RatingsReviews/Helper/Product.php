@@ -36,6 +36,7 @@ class Lipscore_RatingsReviews_Helper_Product extends Lipscore_RatingsReviews_Hel
 
         $brandAttr = $this->_lipscoreConfig->brandAttr();
         $idAttr    = $this->_lipscoreConfig->productIdAttr();
+        $gtinAttr  = $this->_lipscoreConfig->gtinAttr();
 
         return array(
             'name'         => $product->getName(),
@@ -46,7 +47,8 @@ class Lipscore_RatingsReviews_Helper_Product extends Lipscore_RatingsReviews_Hel
             'image_url'    => $this->getImageUrl($product),
             'price'        => $this->getPrice($product),
             'currency'     => $this->getCurrency(),
-            'category'     => $this->getCategory($product)
+            'category'     => $this->getCategory($product),
+            'gtin'         => $this->getAttributeValue($product, $gtinAttr)
         );
     }
 

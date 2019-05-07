@@ -82,6 +82,17 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </brand>
+                        <gtin translate="label comment">
+                            <label>GTIN attribute</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>
+                                lipscore_ratingsreviews/system_config_source_productattr_gtin
+                            </source_model>
+                            <sort_order>30</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </gtin>
                     </fields>
                 </product_attributes>
 
